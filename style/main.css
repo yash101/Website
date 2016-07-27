@@ -30,7 +30,7 @@ body > div#menu {
   width: 320px;
   height: 100%;
 
-  background-color: <?= #slideoutMenuBgColor ?>;
+  background-color: <?= $slideoutMenuBgColor ?>;
 
   display: none;
 }
