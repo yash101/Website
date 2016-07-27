@@ -20,8 +20,8 @@ catch(PDOException $e) {
 
     <link href="style/main.css" rel="stylesheet" type="text/css">
 
-    <script src="js/main.js" type="text/css"></script>
-    <script src="js/nav_drawer.js" type="text/css"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+    <script src="js/nav_drawer.js" type="text/javascript"></script>
   </head>
   <body>
     <div id="content">&nbsp;</div>
