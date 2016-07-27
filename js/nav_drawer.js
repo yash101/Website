@@ -13,7 +13,7 @@
   app.navDrawer.open = function navDrawerOpen() {
     app.navDrawer.isOpen = true;
     $(app.navDrawer.toggleSelector).css({
-      "background-image": "url(\"../assets/icons/close.png\")"
+      "background-image": "url(\"assets/icons/close.png\")"
     });
 
     $(app.navDrawer.selector).css({
@@ -24,7 +24,7 @@
   app.navDrawer.close = function navDrawerClose() {
     app.navDrawer.isOpen = false;
     $(app.navDrawer.toggleSelector).css("background-image",
-      "url(\"../assets/icons/hamburger.png\")"
+      "url(\"assets/icons/hamburger.png\")"
     );
 
     $(app.navDrawer.selector).css({
