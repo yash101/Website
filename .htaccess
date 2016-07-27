@@ -1,0 +1,9 @@
+<FilesMatch "\.css$">
+	SetHandler application/x-httpd-php
+	Header set Content-type "text/css"
+</FilesMatch>
+
+<FilesMatch "\.js$">
+	SetHandler application/x-httpd-php
+	Header set Content-type "application/javascript"
+</FilesMatch>

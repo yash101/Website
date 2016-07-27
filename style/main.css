@@ -1,0 +1,36 @@
+<?php
+require("config.php");
+?>
+
+body {
+  background-color: <?= $bodyBgColor ?>;
+  color: <?= $bodyTextColor ?>;
+  margin: 0px;
+}
+
+body > div {
+  display: inline-block;
+  width: 100%;
+}
+
+body > div#header {
+  height: 64px;
+  background-color: <?= $menuColor ?>;
+}
+
+body > div#menu {
+  display: inline-block;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  width: 320px;
+  height: 100%;
+
+  background-color: #3D3196;
+
+  display: none;
+}
+
+body > div#header > div#logo {
+  background-image: url("<?php echo("../" . $siteLogo); ?>");
+}
