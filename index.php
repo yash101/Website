@@ -18,10 +18,7 @@ catch(PDOException $e) {
     <link href="style/main.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div id="header">
-      <div id="logo"></div>
-      <div id="menu"></div>
-    </div>
+    <div id="menuButton">&nbsp;</div>
     <div id="menu">&nbsp;</div>
   </body>
 </html>

@@ -13,16 +13,20 @@ body > div {
   width: 100%;
 }
 
-body > div#header {
+body > div#menuButton {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 64px;
   height: 64px;
-  background-color: <?= $menuColor ?>;
+  background-image: url("<?php echo("../" . $siteLogo); ?>");
 }
 
 body > div#menu {
   display: inline-block;
   position: fixed;
-  top: 0px;
-  right: 0px;
+  top: 64px;
+  left: 0px;
   width: 320px;
   height: 100%;
 
@@ -31,6 +35,3 @@ body > div#menu {
   display: none;
 }
 
-body > div#header > div#logo {
-  background-image: url("<?php echo("../" . $siteLogo); ?>");
-}
