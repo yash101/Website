@@ -1,5 +1,5 @@
 <?php
-require("config.php");
+require_once("config.php");
 
 $SqlConnection = NULL;
 try {
@@ -15,8 +15,13 @@ catch(PDOException $e) {
 <html>
   <head>
     <title><?php echo $siteTitle; ?></title>
+
     <script src="js/jquery-3.1.0.min.js" type="text/javascript"></script>
+
     <link href="style/main.css" rel="stylesheet" type="text/css">
+
+    <script src="js/main.js" type="text/css"></script>
+    <script src="js/nav_drawer.js" type="text/css"></script>
   </head>
   <body>
     <div id="content">&nbsp;</div>
