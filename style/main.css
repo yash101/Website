@@ -1,5 +1,6 @@
 <?php
 require_once("../config.php");
+require_once("csstools.php");
 ?>
 
 body {
@@ -20,10 +21,13 @@ body > div#menuButton {
   width: 32px;
   height: 32px;
   background-size: contain;
+
+  <?php css3function("transition", "0.5 ease-in-out"); ?>
 }
 
 body > div#menu {
-  display: inline-block;
+  <?php css3function("transition", "0.5 ease-in-out"); ?>
+  display: block;
   position: fixed;
   top: 48px;
   left: 0px;
@@ -31,7 +35,15 @@ body > div#menu {
   height: 100%;
 
   background-color: <?= $slideoutMenuBgColor ?>;
-
-  display: none;
 }
 
+body > div#content {
+  <?php css3function("transition", "0.5 ease-in-out"); ?>
+  display: block;
+  position: absolute;
+  top: 48px;
+  left: 320px;
+  right: 0px;
+  background-color: #C6C6C6;
+  min-height: 100vh;
+}
