@@ -15,7 +15,7 @@ catch(PDOException $e) {
 <html>
   <head>
     <title><?php echo $siteTitle; ?></title>
-    <script src="js/type=jquery-3.1.0.min.js"text/javascript"></script>
+    <script src="js/jquery-3.1.0.min.js" type="text/javascript"></script>
     <link href="style/main.css" rel="stylesheet" type="text/css">
   </head>
   <body>
