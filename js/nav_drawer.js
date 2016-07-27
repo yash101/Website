@@ -17,7 +17,7 @@
     });
 
     $(app.navDrawer.selector).css({
-      "display": "block:"
+      "display": "block"
     });
   };
 
