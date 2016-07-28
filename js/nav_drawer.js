@@ -15,12 +15,16 @@
 
   app.navDrawer.open = function navDrawerOpen() {
     app.navDrawer.isOpen = true;
+
+    $("body").css({
+      "overflow": "hidden"
+    });
+
     $(app.navDrawer.toggleSelector).css({
       "background-image": "url(\"assets/icons/close.png\")"
     });
 
     $(app.navDrawer.selector).css({
-      "display": "block",
       "left": "0px"
     });
 
@@ -28,19 +32,16 @@
       "left": "320px"
     });
 
-    $("body").css({
-      "overflow": "hidden"
-    });
   };
 
   app.navDrawer.close = function navDrawerClose() {
     app.navDrawer.isOpen = false;
+    
     $(app.navDrawer.toggleSelector).css("background-image",
       "url(\"assets/icons/hamburger.png\")"
     );
 
     $(app.navDrawer.selector).css({
-      "display": "none",
       "left": "-320px"
     });
 
@@ -49,8 +50,9 @@
     });
 
     $("body").css({
-      "overflow": "auto"
+      "overflow-y": "auto"
     });
+
   };
 
   app.navDrawer.toggle = function navDrawerToggle() {

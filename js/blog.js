@@ -1,0 +1,5 @@
+<?php
+require_once(__DIR__ . "/../dbconn.php");
+require_once(__DIR__ . "/../config.php");
+?>
+

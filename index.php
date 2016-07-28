@@ -1,15 +1,6 @@
 <?php
-require_once("config.php");
-
-$SqlConnection = NULL;
-try {
-  $SqlConnection = new PDO("mysql:host=" . $dbServername . ";dbname=" . $dbName, $dbUsername, $dbPassword);
-  $SqlConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch(PDOException $e) {
-  die("Connection Failed: " . $e->getMessage());
-}
-
+require_once(__DIR__ . "/config.php");
+require_once(__DIR__ . "/dbconn.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,13 +10,18 @@ catch(PDOException $e) {
     <script src="js/jquery-3.1.0.min.js" type="text/javascript"></script>
 
     <link href="style/main.css" rel="stylesheet" type="text/css">
+    <link href="style/header_image.css" rel="stylesheet" type="text/css">
+    <link href="style/blog.css" rel="stylsheet" type="text/css">
 
     <script src="js/main.js" type="text/javascript"></script>
     <script src="js/nav_drawer.js" type="text/javascript"></script>
   </head>
   <body>
-    <div id="content">&nbsp;</div>
-    <div id="menuButton">&nbsp;</div>
+    <div id="content">
+      <div id="intro_img"></div>
+      <div id="thoughts"></div>
+    </div>
     <div id="menu">&nbsp;</div>
+    <div id="menuButton">&nbsp;</div>
   </body>
 </html>
