@@ -10,7 +10,17 @@
     $(app.navDrawer.toggleSelector).click(function togglenavbar() {
       app.navDrawer.toggle();
     });
+
     app.navDrawer.close();
+
+    $(document).on("pageinit", function(event) {
+      $("body").on("swiperight", function() {
+        app.navDrawer.open
+      });
+      $("body").on("swipeleft", function() {
+        app.navDrawer.close();
+      });
+    });
   };
 
   app.navDrawer.open = function navDrawerOpen() {

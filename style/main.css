@@ -60,3 +60,8 @@ body > div#content > div {
   width: 100%;
   min-height: 320px;
 }
+
+body > div#content h1 {
+  margin: 0px;
+  text-align: center;
+}

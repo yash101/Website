@@ -28,7 +28,7 @@ try {
 
     $rm = intval($rangeMax);
 
-    $pst = $SqlConnection->prepare("SELECT * FROM `blogPosts` WHERE status='Draft' ORDER BY publish_date LIMIT " . $want . ", " . $rm);
+    $pst = $SqlConnection->prepare("SELECT * FROM `blogPosts` WHERE status='Draft' ORDER BY publish_date DESC LIMIT " . $want . ", " . $rm);
 
     $pst->execute();
     $result = $pst->fetchAll();
@@ -48,10 +48,10 @@ if(!$disable_blog) {
     <div class="author"><?php echo($post["author"]); ?></div>
     <div class="publish_date"><?php echo($post["publish_date"]); ?></div>
   </div>
-  <div class="contentPanel">
-    <div class="content"><?php echo($post["content"]); ?></div>
-  </div>
+  <div class="content"><?php echo($post["content"]); ?></div>
   <div class="footer">
+    <div class="author"><?php echo($post["author"]); ?></div>
+    <div class="publish_date"><?php echo($post["publish_date"]); ?></div>
     <div class="last_modified"><?php echo($post["last_modified"]); ?></div>
   </div>
 </div>

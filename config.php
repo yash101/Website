@@ -9,6 +9,8 @@ $dbPassword = "password";
 $white = "#FFFFFF";
 $black = "#000000";
 $lightgray = "#C6C6C6";
+$lightlightgray = "#F7F7F7";
+$darkgray = "#404040";
 $fuchsia = "#FF0080";
 
 $bodyBgColor = $white;
@@ -21,5 +23,9 @@ $siteTitle = "Devyash Everything!";
 $siteLogo = "assets/icons/dl_comp.png";
 
 //Blog
-$homepageBlogMaxDisplayedPosts = 5;
+$homepageBlogMaxDisplayedPosts = 10;
+
+
+//Debug stuff
+$debug_enabled = true;
 ?>

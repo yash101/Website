@@ -1,0 +1,50 @@
+<?php
+require_once(__DIR__ . "/../../../config.php")
+?>
+
+body > div#sidebar {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 240px;
+  background-color: <?= $lightlightgray ?>;
+  border-right: 1px solid <?= $darkgray ?>;
+}
+
+body > div#content {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 240px;
+  right: 0px;
+  min-height: 100vh;
+}
+
+body > div#sidebar > a > h1 {
+  text-align: center;
+  margin: 0px;
+}
+
+body > div#sidebar > hr {
+  margin: 0px;
+  padding: 0px;
+}
+
+body > div#sidebar > a,
+body > div#sidebar > a:link,
+body > div#sidebar > a:visited {
+  display: block;
+  padding: 8px;
+  text-align: left;
+  text-decoration: none;
+  color: <?= $darkgray ?>;
+}
+
+body > div#sidebar > a:hover,
+body > div#sidebar > a:active {
+  color: <?= $lightlightgray ?>;
+  background-color: <?= $darkgray ?>;
+}
+
