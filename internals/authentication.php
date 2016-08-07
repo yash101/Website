@@ -3,11 +3,22 @@ require_once(__DIR__ . "/../config.php");
 require_once(__DIR__ . "/../dbconn.php");
 
 $statement = $SqlConnection->prepare("
-CREATE TABLE IF NOT EXISTS `session_ids` ( `sid` CHAR(16) NULL DEFAULT NULL , `sid_key` INT NULL DEFAULT NULL , `uid` BIGINT NULL DEFAULT NULL , `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `last_accessed` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `last_ip` TINYTEXT NULL DEFAULT '0.0.0.0' , INDEX (`uid`), UNIQUE (`sid`)) ENGINE = InnoDB
+CREATE TABLE IF NOT EXISTS `session_ids` ( `sid` CHAR(16) NULL DEFAULT NULL , `sid_key` INT NULL DEFAULT NULL , `uid` BIGINT NULL DEFAULT NULL , `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `last_accessed` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `last_ip` TINYTEXT NULL , INDEX (`uid`), UNIQUE (`sid`)) ENGINE = InnoDB
 ");
 $statement->execute();
 $statement = $SqlConnection->prepare("
-CREATE TABLE `users` ( `username` VARCHAR(64) NOT NULL , `uid` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT , `password` VARCHAR(128) NULL DEFAULT NULL , `first_name` TINYTEXT NULL DEFAULT NULL , `last_name` INT NULL DEFAULT NULL , `email` TINYTEXT NULL DEFAULT NULL , `role` VARCHAR(20) NOT NULL DEFAULT 'Commenter' , `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`username`, `uid`, `email`)) ENGINE = InnoDB
+  CREATE TABLE `users`
+  (
+    `username` VARCHAR(64) NOT NULL ,
+    `uid` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+    `password` VARCHAR(128) NULL DEFAULT NULL ,
+    `first_name` TINYTEXT NULL DEFAULT NULL ,
+    `last_name` INT NULL ULT NULL ,
+    `email` VARCHAR(128) NULL DEFAULT NULL ,
+    `role` VARCHAR(20) NOT NULL DEFAULT 'Commenter' ,
+    `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    PRIMARY KEY (`username`, `uid`, `email`)
+  ) ENGINE = InnoDB
 ");
 $statement->execute();
 
@@ -65,12 +76,25 @@ function logIn($username, $password) {
       return false;
     } else {
       $sid = generateRandomKey(16);
-      $sid_key = mt_rand(0, )
+      $sid_key = mt_rand();
+      setcookie("sid", strval($sid), date() + $sid_timeout);
+      setcookie("sid_auth", strval($sid_key), date() + $sid_timeout);
+      return true;
     }
   }
 }
 
-function register() {
-
+function register($username, $password, $first_name, $last_name, $email, $role) {
+  if(logIn($username, $password)) {
+    return "logged in";
+  } else {
+    $statement = $SqlConnection->prepare("
+      SELECT * FROM `users` WHERE `username`=:username OR `email`=:email
+    ");
+    $statement->bindParam(":username", $username);
+    $statement->bindParam(":password", $password);
+    $statement->execute();
+    $result = $statement->fetchAll();
+  }
 }
 ?>

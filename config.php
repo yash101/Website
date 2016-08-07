@@ -5,6 +5,9 @@ $dbName = "MyWebsite";
 $dbUsername = "MyWebsite";
 $dbPassword = "password";
 
+//Authentication
+$sid_timeout = 60 * 60 * 24 * 30;
+
 //Colors
 $white = "#FFFFFF";
 $black = "#000000";
@@ -24,7 +27,6 @@ $siteLogo = "assets/icons/dl_comp.png";
 
 //Blog
 $homepageBlogMaxDisplayedPosts = 10;
-
 
 //Debug stuff
 $debug_enabled = true;

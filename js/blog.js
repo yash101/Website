@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . "/../dbconn.php");
 require_once(__DIR__ . "/../config.php");
+
 ?>
 
 var app = app || {};
@@ -16,7 +17,7 @@ var app = app || {};
   };
 
   app.blog.getPosts = app.blog.getPosts || function getPosts(start) {
-    $.get("apps/blog/blog_int.php?l=" + start, function(data) {
+    $.get(window.location.href + "/apps/blog/blog_int.php?l=" + start, function(data) {
       $("body > div#content > div#thoughts > div#blog_content").html(data);
       if(data.trim().length == 0) {
         $("body > div#content > div#thoughts").css({
