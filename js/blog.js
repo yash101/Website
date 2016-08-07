@@ -9,7 +9,7 @@ var app = app || {};
   app.blog.initialized = app.blog.initialized || false;
   app.blog.init = function blogInit() {
     if(app.blog.initialized) return;
-    $.get("../apps/blog/blog.php", function(data) {
+    $.get(app.location.getAbsolutePath("/apps/blog/blog.php"), function(data) {
       $("body > div#content > div#thoughts").html(data);
       app.blog.getPosts(0);
     });
