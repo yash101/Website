@@ -1,7 +1,7 @@
 ;var app = app || {};
 (function init() {
   app.location = app.location || {};
-  if(window.location.href.indexOf(window.location.href.length - 1) == "/") {
+  if(window.location.href[window.location.href.length - 1] == "/") {
     app.location.path = app.location.path || window.location.href.substring(0, window.location.href.length - 1);
   } else {
     app.location.path = app.location.path || window.location.href;
