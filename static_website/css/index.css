@@ -1,0 +1,177 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+body .menu-sizing {
+	height: 64px;
+	width: 100%;
+}
+
+body > #home {
+	display: block;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	min-height: 100vh;
+	background: url("../res/brain.jpg");
+	background-size: cover;
+	background-position: 50% 50%;
+	text-align: center;
+}
+
+body > #home div {
+	color: white;
+}
+
+body > #home #details {
+	display: inline-block;
+	min-width: 250px;
+	width: 80vw;
+	max-width: 768px;
+	background-color: rgba(0, 0, 0, 0.85);
+	margin-top: 32px;
+	border-radius: 32px;
+	margin-bottom: 32px;
+}
+
+body > #home #details * {
+	font-family: 'Griffy', cursive;
+}
+
+body > #home #details #picture {
+	background-size: contain;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	height: 40vw;
+	max-height: 30vh;
+}
+@media (max-width: 445px) {
+	body > #menu {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		background-color: black;
+		margin: 0px;
+		text-align: center;
+	}
+	body > #home #details {
+		padding: 16px;
+	}
+	body > #home #details #name {
+		font-size: 32pt;
+	}
+	body > #home #details #tagline,
+	body > #home #details #continue {
+		font-size: 12pt;
+	}
+	body > #menu > * {
+		font-size: 12pt;
+	}
+}
+@media (min-width: 445px) {
+	body > #menu {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		background-color: black;
+		margin: 0px;
+		text-align: right;
+		padding-right: 16px;
+	}
+	body > #home #details {
+		padding: 64px;
+	}
+	body > #home #details #name,
+	body > #home #details #continue {
+		font-size: 48pt;
+	}
+	body > #home #details #tagline {
+		font-size: 24pt;
+	}
+	body > #menu > * {
+		font-size: 16pt;
+	}
+}
+
+@media (min-width: 768px) {
+	body > #menu > * {
+		font-size: 24pt;
+	}
+	body > #home #details #tagline {
+		font-size: 32pt;
+	}
+	body > #home #details #continue {
+		font-size: 32pt;
+	}
+}
+
+body > #home #details #continue {
+	margin-top: 8px;
+	display: inline-block;
+	padding: 8px;
+	height: 64px;
+	line-height: 64px;
+	background-color: #C6C6C6;
+	color: #FF1493;
+	border-radius: 8px;
+	text-decoration: none;
+}
+
+body > #home #details #continue:hover {
+	background-color: #C6C6C6;
+	color: black;
+}
+
+body > #menu > * {
+	display: inline-block;
+	height: 64px;
+	min-width: 64px;
+	word-spacing: 0px;
+	color: #FF1493;
+	margin: 0px;
+	text-align: center;
+	line-height: 64px;
+	padding-left: 8px;
+	padding-right: 8px;
+	font-family: 'Griffy', cursive;
+	text-decoration: none;
+}
+
+body > #menu > *:hover,
+body > #menu > *:active {
+	background-color: #C6C6C6;
+	color: black;
+}
+
+body > #body {
+	background-color: white;
+	padding: 16px;
+}
+
+body > #body * {
+	font-family: 'Harmattan', sans-serif;
+}
+
+@media(max-width: 425px) {
+	body > #body h1 {
+		text-align: center;
+		font-size: 48pt;
+	}
+}
+@media(min-width: 425px) {
+	body > #body h1 {
+		text-align: center;
+		font-size: 64pt;
+	}
+	body > #body h2 {
+		text-align: center;
+	}
+	body > #body hr {
+		max-width: 300px;
+	}
+}

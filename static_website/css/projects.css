@@ -1,0 +1,56 @@
+.projects-flex {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.project {
+	display: inline-block;
+	width: 640px;
+	max-width: 80vw;
+	background-color: #C6C6C6;
+	border-radius: 16px;
+	margin: 8px;
+	max-height: 6400px;
+	overflow: hidden;
+	border: 32px solid transparent;
+}
+
+.project * {
+	font-family: 'Harmattan', sans-serif;
+}
+
+.project .title {
+	font-size: 24pt;
+	color: black;
+	border-bottom: 1px dashed #404040;
+}
+
+.project .description {
+	font-size: 12pt;
+	color: #404040;
+}
+
+.project .link {
+	font-size: 16pt;
+	color: #404040;
+}
+
+.project .categories {
+	font-size: 16pt;
+	color: #404040;
+	word-spacing: 0;
+}
+
+.project .category {
+	font-size: 16pt;
+	color: black;
+	display: inline-block;
+	padding: 4px;
+	background-color: black;
+	color: #FF1493;
+	border-radius: 4px;
+	margin: 4px;
+	text-align: center;
+}

@@ -1,0 +1,93 @@
+<link rel="stylesheet" type="text/css" href="css/projects.css">
+<h1>Projects</h1>
+<hr />
+
+<h2>Personal Projects</h2>
+<div class="projects-flex">
+	<div class="project">
+		<div class="title">Neural Network</div>
+
+		<h3>Description</h3>
+		<div class="description">
+			<p>A vanilla neural network built in C++. It is a work in progress. The point of this project is to teach me neural networks at their most basic level, as well as the mathematics that surround them. Thus, I am not using the most optimal algorithms, but ones that just work.</p>
+			<p>This project does not use a BLAS system, but instead, classes for matrices and tenors, completely written from scratch.</p>
+		</div>
+
+		<h3>What I Learned</h3>
+		<div class="learned">
+			<p>I learned neural networks, linear algebra and strengthened my software engineering skills.</p>
+		</div>
+
+		<h3>Links</h3>
+		<div class="link"><a href="https://github.com/yash101/NeuralNetwork.git">GitHub Source</a></div>
+
+		<h3>Categories</h3>
+		<div class="categories">
+			<div class="category">AI</div>
+			<div class="category">Neural Nets</div>
+			<div class="category">Software Engineering</div>
+		</div>
+	</div>
+	
+	<div class="project">
+		<div class="title">Limited Movement Vehicle Control</div>
+
+		<h3>Description</h3>
+		<div class="description">
+			<p>This was my HackMIT 2016 project. My team came in the top ten, out of ~300 teams. It was also the first hackathon for everyone on my team. The point of this project was to learn as many things in as little time. Thus, we took no shortcuts and designed/built everything from scratch.</p>
+			<p>We used many different components and connected them together, creating a cool, final contraption.</p>
+			<p>Our robot was built using an Intel Edison developer board, a robotics chassis with a power supply, dual motor driver and a tank-drive setup using four motorized wheels. Almost all of our setbacks during the course of building this project were centered around getting the hardware to behave. It turns out that there was a hardware bug on our development board, causing issues with i<sup>2</sup>c connectivity.</p>
+			<p>A Muse headset was used to control the robot. It is an EEG headband that sends its data over Bluetooth to an Android or iOS smartphone. I was in charge of retrieving and performing signal analysis on the EEG data. Unfortunately, this was the first time developing an Android app for me. It took me a few hours, out of the 24 allocated, just to build the app.</p>
+			<p>Because I have most of my experience in C/C++ and did not have the time to learn any Android libraries for signal analysis, I tried to send all the raw EEG data over TCP to the robot, where it could be processed in C/C++. But while getting this to work, I ran out of time and then resorted to ditching using EEG signals, and instead use accelerometer information and a simple thresholding operation.</p>
+			<p>Communications between the different parts was tricky. We had wireless devices everywhere. How do we make them talk to each other? I had a networking background, and thus, created a TCP socket server on the robot, using Node. The TCP server can receive commands from every device simultaneously, and echo them to the others for debug. This also allowed us to telnet into the robot's communication network using a cell phone or a laptop.</p>
+			<p>At the end, our device worked fairly well. It wasn't perfect, but was a lot for 24 hours of work. And I learned a lot.</p>
+		</div>
+
+		<h3>What I Learned</h3>
+		<div class="learned">
+			<p>I learned networking programming, hardware debugging, robotics, signal analysis, inertial motion units, Intel Edison, Raspberry Pi, JavaScript, Node.js, Android, and System D</p>
+		</div>
+
+		<h3>Links</h3>
+		<div class="link"><a href="https://github.com/yash101/HackMIT-2016-Android-Source">GitHub Source (Android Project)</a></div>
+
+		<h3>Categories</h3>
+		<div class="categories">
+			<div class="category">Signal Analysis</div>
+			<div class="category">Android</div>
+			<div class="category">Health</div>
+			<div class="category">Robotics</div>
+			<div class="category">AI</div>
+			<div class="category">Networking</div>
+			<div class="category">Hardware</div>
+			<div class="category">EEG</div>
+		</div>
+	</div>
+	
+	<div class="project">
+		<div class="title">Cat v. Dog Classifier</div>
+
+		<h3>Description</h3>
+		<div class="description">
+			<p>I used a convolutional neural network to train a model to predict whether an image contained a cat or a dog. I was able to achieve 78% accuracy after training on a relatively small dataset for 50 epoch's.</p>
+			<p>I could have accomplished a higher accuracy than 78%, but had singificant computational limitations preventing me from training for a significant amount of time.</p>
+		</div>
+
+		<h3>What I Learned</h3>
+		<div class="learned">
+			<p>I learned how to use convolutional neural networks to create a powerful classification model for images.</p>
+			<p>I used the project to propel myself into the Python development ecosystem. I used a library, Keras, which wraps around TensorFlow and Theano to provide the development framework.</p>
+		</div>
+
+		<h3>Categories</h3>
+		<div class="categories">
+			<div class="category">AI</div>
+			<div class="category">Neural Nets</div>
+			<div class="category">Convolutional Neural Networks</div>
+			<div class="category">Deep Learning</div>
+		</div>
+	</div>
+</div>
+<h2>Class Projects</h2>
+<div class="projects-flex">
+</div>
