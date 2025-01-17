@@ -1,0 +1,22 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yash101/Website.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yash101/Website/issues"
+  },
+  "homepage": "https://github.com/yash101/Website#readme",
+  "dependencies": {
+    "marked": "^15.0.6"
+  }
+}
