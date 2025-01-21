@@ -1,22 +1,38 @@
 {
   "name": "website",
-  "version": "1.0.0",
-  "description": "Website",
-  "main": "index.js",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prebuild": "node --loader ts-node/esm src/jupyter/JupyterBuild.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yash101/Website.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/yash101/Website/issues"
-  },
-  "homepage": "https://github.com/yash101/Website#readme",
   "dependencies": {
-    "marked": "^15.0.6"
+    "@radix-ui/react-slot": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "html-react-parser": "^5.2.2",
+    "lucide-react": "^0.473.0",
+    "next": "15.1.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "cheerio": "^1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.5",
+    "marked": "^15.0.6",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

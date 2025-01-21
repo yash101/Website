@@ -1,0 +1,50 @@
+@media (min-width: 1300px) {
+  #hamburger-menu-icon, #hamburger-menu-icon-closed {
+    display: none;
+  }
+
+  #main-nav {
+    display: block;
+  }
+
+  #nav-content-open, #nav-content-closed {
+    @apply bg-slate-200;
+    display: block;
+    overflow-y: auto;
+    max-height: 100vh;
+    padding-top: 1em;
+    padding-left: 64px;
+    padding-right: 32px;
+    margin-right: 8px;
+    width: 300px;
+  }
+}
+
+@media (max-width: 1300px) {
+  #hamburger-menu-icon-open {
+    @apply bg-transparent;
+    display: block;
+  }
+
+  #hamburger-menu-icon-closed {
+    @apply bg-transparent;
+    display: block;
+  }
+
+  #nav-content-closed {
+    display: none;
+  }
+
+  #nav-content-open {
+    @apply bg-slate-200/30 backdrop-blur-sm;
+
+    display: block;
+    overflow-y: auto;
+    max-height: 100vh;
+    padding-top: calc(32px + 32pt);
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 999;
+  }
+}
