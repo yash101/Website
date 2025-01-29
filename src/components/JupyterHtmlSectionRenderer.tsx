@@ -17,8 +17,8 @@ function replace(node: DOMNode, index: number) {
         key={index}
         src={uri}
         alt={node.attribs.alt || ''}
-        width={Number(node.attribs.width)}
-        height={Number(node.attribs.height)} />;
+        width="500"
+        height="500"/>;
     case 'a':
       return (
         <Link href={node.attribs.href}>
@@ -39,3 +39,4 @@ const JupyterHtmlSectionRenderer: React.FunctionComponent<JupyterHtmlRendererPro
 };
 
 export default JupyterHtmlSectionRenderer;
+export const dynamic = 'force-static';
