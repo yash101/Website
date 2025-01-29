@@ -1,33 +1,33 @@
-export interface JupyterMetadata {
-  [key: string]: any;
-}
+// export interface JupyterMetadata {
+//   [key: string]: string | object | number | null;
+// }
 
-export interface JupyterAttachments {
-  [key: string]: { [mime: string]: string };
-}
+// export interface JupyterAttachments {
+//   [key: string]: { [mime: string]: string };
+// }
 
-export interface PageMetadata {
-  title: string;
-  lastModified: Date;
-  initialPublish: Date;
-}
+// export interface PageMetadata {
+//   title: string;
+//   lastModified: Date;
+//   initialPublish: Date;
+// }
 
-export interface JupyterCell {
-  cell_type: string;
-  source: string[];
-  metadata?: JupyterMetadata;
-  execution_count?: number;
-  outputs: string[];
-  attachments?: JupyterAttachments;
+// export interface JupyterCell {
+//   cell_type: string;
+//   source: string[];
+//   metadata?: JupyterMetadata;
+//   execution_count?: number;
+//   outputs: string[];
+//   attachments?: JupyterAttachments;
 
-  [key: string]: any;
-}
+//   [key: string]: string | object | number | null;
+// }
 
-export interface JupyterNotebook {
-  cells?: JupyterCell[];
-  metadata: JupyterMetadata;
-  nbformat: number;
-  nbformat_minor: number;
+// export interface JupyterNotebook {
+//   cells?: JupyterCell[];
+//   metadata: JupyterMetadata;
+//   nbformat: number;
+//   nbformat_minor: number;
 
-  [key: string]: any;
-}
+//   [key: string]: any;
+// }

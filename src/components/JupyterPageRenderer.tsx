@@ -1,9 +1,9 @@
-import { Notebook, NotebookSection } from 'jupyter/NotebookTransformer';
 import React from 'react';
 import JupyterHtmlSectionRenderer from './JupyterHtmlSectionRenderer';
+import { NotebookContainer, NotebookSection } from 'jupyter/JupyterTypes';
 
 interface JupyterPageRendererProps {
-  notebook: Notebook;
+  notebook: NotebookContainer;
 }
 
 /**
@@ -12,32 +12,31 @@ interface JupyterPageRendererProps {
  * @returns 
  */
 function renderRawSection(section: NotebookSection) {
+  console.log('ignoring section', section);
   // Render the raw section
   return null; // this will render embeds later on
 }
 
 function renderMarkdownSection(section: NotebookSection) {
-  return (<section>
-      <JupyterHtmlSectionRenderer html={section.content} />
-    </section>);
-}
-
-function renderCodeSection(section: NotebookSection) {
+  return (
+    <section>
+      <JupyterHtmlSectionRenderer html={section.content || ''} />
+    </section>
+  );
 }
 
 const JupyterPageRenderer: React.FunctionComponent<JupyterPageRendererProps> = ({ notebook }) => {
-  notebook
-    .sections
+  return (notebook.sections)
     .map(section => {     // Render the section
-      switch (section.type) {
+      switch (section['type'] as string) {
         case 'raw':
           return renderRawSection(section);
         case 'markdown':
           return renderMarkdownSection(section);
         case 'code':
+          return null;
       }
     });
-  return null;
 }
 
 export default JupyterPageRenderer;

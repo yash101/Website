@@ -4,22 +4,11 @@ import { Button } from "@/components/ui/button";
 import { MenuIcon, X } from "lucide-react";
 import React, { useState } from "react";
 import './menu.css'
+import Link from "next/link";
 
 interface MenuProps {
+  [props: string]: object | string | number;
 }
-
-const menuStyle: React.CSSProperties = {
-  position: 'fixed',
-  left: 0,
-  top: 0,
-  width: '250px',
-  height: '100vh',
-  backgroundColor: 'white',
-  boxShadow: '2px 0 5px rgba(0,0,0,0.2)',
-  overflowY: 'auto',
-  transform: 'translateX(-100%)',
-  transition: 'transform 0.3s ease-in-out'
-};
 
 const topStyle: React.CSSProperties = {
   display: 'flex',
@@ -54,13 +43,13 @@ const Menu: React.FunctionComponent<MenuProps> = ({}) => {
         >
           {menuTriggerIcon}
         </Button>
-        <div className="text-4xl">yash's blog</div>
+        <div className="text-4xl">yash blog</div>
       </header>
       <nav id={open ? 'nav-content-open' : 'nav-content-closed'} style={navContentDefaultStyle}>
         <div>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about-me">About Me</a></li>
-          <li><a href="/blog">Blog</a></li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/about-me">About Me</Link></li>
+          <li><Link href="/blog">Blog</Link></li>
         </div>
       </nav>
     </>

@@ -1,4 +1,3 @@
-import React, { ReactNode } from "react";
 import parse, { DOMNode, domToReact } from "html-react-parser";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,15 +8,23 @@ function replace(node: DOMNode, index: number) {
 
   switch (node.name) {
     case 'img':
+      let uri = node.attribs.src;
+      if (uri.includes('attachment:')) {
+        uri = `/assets/${uri.substring('attachment:'.length)}`;
+      }
+
       return <Image
-          key={index}
-          src={node.attribs.src}
-          alt={node.attribs.alt || ''}
-          width={Number(node.attribs.width)}          // To be defined
-          height={Number(node.attribs.height)}        // To be defined
-        />;
+        key={index}
+        src={uri}
+        alt={node.attribs.alt || ''}
+        width={Number(node.attribs.width)}
+        height={Number(node.attribs.height)} />;
     case 'a':
-      return <Link href={node.attribs.href}>{domToReact(node.children as DOMNode[])}</Link>;
+      return (
+        <Link href={node.attribs.href}>
+          {domToReact(node.children as DOMNode[])}
+        </Link>
+      );
     default:
       return undefined;
   }

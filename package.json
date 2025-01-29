@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node --loader ts-node/esm src/jupyter/JupyterBuild.ts"
+    "prebuild": "node src/jupyter/JupyterBuild.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",

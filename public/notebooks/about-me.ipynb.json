@@ -1,0 +1,94 @@
+{
+  "sections": [
+    {
+      "content": "{\n    \"role\": \"metadata\",\n    \"title\": \"About Me\",\n    \"author\": \"Devyash Lodha\",\n    \"lastModified\": \"1/21/2025\",\n    \"published\": \"1/21/2025\"\n}",
+      "output": "",
+      "attachments": {},
+      "type": "raw"
+    },
+    {
+      "content": "<h1>About Me</h1>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<p>Hi, I&#39;m Devyash, although I frequently go by Yash!</p>\n<p>I&#39;m a software engineer who graduated in 2020 from ASU.</p>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<h2>Values</h2>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<p>Whenever I work on something, I consider the impacts it has to my core values:</p>\n<ol>\n<li>Cybersecurity</li>\n<li>Public Safety</li>\n<li>Do no evil</li>\n<li>Accessibility</li>\n</ol>\n<p><strong>Cybersecurity</strong>: ...</p>\n<p><strong>Public Safety</strong></p>\n<p><strong>Do no Evil</strong>:</p>\n<p><strong>Accessibility</strong> and internationalization:</p>\n<p>We are all unique with the way we think, our capabilities, our knowledge, and our ways of communication. I am a strong believer that quality products are not for one person, but instead, for all.</p>\n<p><strong>Software Performance &amp; Efficiency</strong>:</p>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<h2>Goals</h2>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<h2>Experience</h2>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<h2>Interests</h2>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<h2>My Struggles</h2>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "<p>At the beginning of 2025, I lost my job of 4.5 years at American Express. </p>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "print('hello world')",
+      "output": "hello world\n",
+      "attachments": {},
+      "type": "code"
+    },
+    {
+      "content": "for i in range(10):\n    print(f'hello {i}')",
+      "output": "hello 0\nhello 1\nhello 2\nhello 3\nhello 4\nhello 5\nhello 6\nhello 7\nhello 8\nhello 9\n",
+      "attachments": {},
+      "type": "code"
+    },
+    {
+      "content": "<p><img src=\"attachment:d6b69cc1-ec17-4223-a4dd-adb668a435c4.png\" alt=\"image.png\"></p>\n",
+      "output": "",
+      "attachments": {},
+      "type": "markdown"
+    },
+    {
+      "content": "",
+      "output": "",
+      "attachments": {},
+      "type": "code"
+    }
+  ],
+  "meta": {
+    "title": "About Me",
+    "lastModified": "2025-01-21T07:00:00.000Z",
+    "published": "2025-01-21T07:00:00.000Z",
+    "author": "Devyash Lodha"
+  }
+}
