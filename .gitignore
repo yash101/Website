@@ -40,4 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Drawio
 *.bkp
+
+# build files
+/public/assets
+/public/ipynb_pp
+/public/ipynb_index.json

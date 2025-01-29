@@ -1,32 +1,25 @@
-import { NotebooksIndex } from "jupyter/JupyterTypes";
+import { Separator } from "@/components/ui/separator";
+import { NotebookIndex } from "app/ipynb/notebook";
+import { readNotebooksIndex } from "app/util/FsUtil";
+import { blog_title } from "site-config";
+import { filepathMatch } from "./[slug]/page";
+import BlogHero from "components/BlogHero";
 
-export default function BlogHome() {
+export default async function BlogHome() {
+  const posts = await readNotebooksIndex();
+
   return (
-    <div>Blog home</div>
-  )
+    <article>
+      <section>
+        <h1>{blog_title}</h1>
+      </section>
+      <Separator />
+      <section>{
+        posts
+          .notebooks
+          .filter(notebook => filepathMatch(notebook.file))
+          .map(notebook => (<BlogHero title={notebook.title} preview={notebook.renderedHero} key={notebook.file} />))
+      }</section>
+    </article>
+  );
 };
-
-export async function getStaticPaths() {
-  const fs = require('fs/promises');
-  const path = require('path');
-  console.log('getStaticPaths()==============')
-  const file: string = await fs.readFile(path.join(process.cwd(), 'public', 'notebook.index.json'), 'utf-8');
-  const index: NotebooksIndex = JSON.parse(file);
-
-  console.log(file, index);
-
-  const retVal = {
-    paths: index.notebooks.map(slug => {
-      return {
-        params: {
-          slug: slug.file.replace(/\.ipynb\.json$/, '').replace(/^\/notebooks\//, ''),
-        },
-      };
-    }),
-    fallback: false,
-  };
-
-  console.log(retVal);
-
-  return retVal;
-}

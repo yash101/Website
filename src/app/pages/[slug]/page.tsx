@@ -11,8 +11,8 @@ interface BlogProps {
   }>
 };
 
-export function filepathMatch(filepath: string): boolean {
-  return filepath.match(/^ipynb_pp\/blogs\/.*.dnb$/) ? true : false;
+function filepathMatch(filepath: string): boolean {
+  return filepath.match(/^ipynb_pp\/pages\/.*.dnb$/) ? true : false;
 }
 
 const BlogPage: React.FunctionComponent<BlogProps> = async (props) => {

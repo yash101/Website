@@ -1,9 +1,9 @@
 import React from 'react';
 import JupyterHtmlSectionRenderer from './JupyterHtmlSectionRenderer';
-import { NotebookContainer, NotebookSection } from 'jupyter/JupyterTypes';
+import { Notebook, NotebookCell } from 'app/ipynb/notebook';
 
 interface JupyterPageRendererProps {
-  notebook: NotebookContainer;
+  notebook: Notebook;
 }
 
 /**
@@ -11,24 +11,24 @@ interface JupyterPageRendererProps {
  * @param section raw section to render
  * @returns 
  */
-function renderRawSection(section: NotebookSection) {
+function renderRawSection(section: NotebookCell) {
   console.log('ignoring section', section);
   // Render the raw section
   return null; // this will render embeds later on
 }
 
-function renderMarkdownSection(section: NotebookSection) {
+function renderMarkdownSection(section: NotebookCell) {
   return (
     <section>
-      <JupyterHtmlSectionRenderer html={section.content || ''} />
+      <JupyterHtmlSectionRenderer html={section.source || ''} />
     </section>
   );
 }
 
 const JupyterPageRenderer: React.FunctionComponent<JupyterPageRendererProps> = ({ notebook }) => {
-  return (notebook.sections)
+  return (notebook.cells || [])
     .map(section => {     // Render the section
-      switch (section['type'] as string) {
+      switch (section.cell_type) {
         case 'raw':
           return renderRawSection(section);
         case 'markdown':
