@@ -13,9 +13,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ links, logo }) => {
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
+    <header className="flex items-center justify-between px-2 py-4 bg-white shadow-sm">
       <div className="flex items-center">
-        <img src={logo} alt="Logo" className="h-8 w-auto" />
       </div>
       
       <nav className="flex items-center space-x-6">

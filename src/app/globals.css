@@ -76,3 +76,19 @@ body {
   width: 100vw;
   max-width: 800px;
 }
+
+.nbsection h1 {
+  @apply text-3xl;
+}
+
+.nbsection h2 {
+  @apply text-2xl;
+}
+
+.nbsection h3 {
+  @apply text-xl;
+}
+
+.nbsection h4 {
+  @apply text-lg;
+}

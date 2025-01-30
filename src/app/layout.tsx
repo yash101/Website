@@ -59,7 +59,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div
-          className="flex flex-row flex-wrap justify-center justify-items-center w-screen"
+          className="flex flex-row flex-wrap xl:justify-start justify-center justify-items-center w-screen"
           style={{ marginTop: "calc(32px + 32pt)"}}
         >
           {/* <Header links={[ {displayName: "About Me", href: "/about-me"} ]} logo="/next.svg" /> */}

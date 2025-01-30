@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { NotebookIndex, NotebookIndexEntry } from "app/ipynb/notebook";
 
-let memoize = false;
+const memoize = true;
 let notebooksIndex: NotebookIndex | null = null;
 let notebooksBySlug: Map<string, NotebookIndexEntry> | null = null;
 

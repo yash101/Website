@@ -1,4 +1,5 @@
-import { Notebook, NotebookIndex } from "app/ipynb/notebook";
+import { Notebook } from "app/ipynb/notebook";
+import { filepathMatchBlogs } from "app/util/filepath";
 import { getNotebooksBySlug, readNotebooksIndex } from "app/util/FsUtil";
 import JupyterPageRenderer from "components/JupyterPageRenderer";
 import fs from 'fs/promises';
@@ -11,15 +12,11 @@ interface BlogProps {
   }>
 };
 
-export function filepathMatch(filepath: string): boolean {
-  return filepath.match(/^ipynb_pp\/blogs\/.*.dnb$/) ? true : false;
-}
-
 const BlogPage: React.FunctionComponent<BlogProps> = async (props) => {
   const slug = (await props.params).slug;
   const post = (await getNotebooksBySlug()).get(slug);
 
-  if (!post || !filepathMatch(post.file))
+  if (!post || !filepathMatchBlogs(post.file))
     notFound();
 
   const fileName = path.join(process.cwd(), 'public', post.file);
@@ -36,12 +33,10 @@ const BlogPage: React.FunctionComponent<BlogProps> = async (props) => {
 export async function generateStaticParams() {
   return (await readNotebooksIndex())
     .notebooks
-    .filter(notebook => filepathMatch(notebook.file))
+    .filter(notebook => filepathMatchBlogs(notebook.file))
     .map(notebook => {
       return {
-        params: {
-          slug: notebook.slug,
-        },
+        slug: notebook.slug,
       };
     });
 }

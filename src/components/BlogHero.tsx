@@ -10,7 +10,7 @@ export default function BlogHero(props: BlogHeroProps) {
     <article>
       <h1>Hero</h1>
       <section>
-        <JupyterHtmlSectionRenderer html={props.preview} />
+        <JupyterHtmlSectionRenderer html={props.preview} notebook={null} />
       </section>
     </article>
   )

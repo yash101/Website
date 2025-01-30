@@ -22,18 +22,6 @@ interface MenuProps {
   sections: NavSection[];
 }
 
-const topStyle: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '16px',
-  position: 'fixed',
-  width: '100%',
-  zIndex: 1000,
-  top: 0,
-  borderBottom: '1px solid rgba(0,0,0,0.1)',
-}
-
 const navContentDefaultStyle: React.CSSProperties = {
   transition: 'all 0.3s ease-in-out',
 }
@@ -48,35 +36,40 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
   const renderedSections = sections.map(section => {
     const links = section.items.map(item => {
       return (
-        <li key={item.href}>
-          <Link href={item.href}>{item.shortTitle}</Link>
+        <li key={item.href} className="my-[0.5em]">
+          <Link href={item.href} className="text-slate-700 hover:text-slate-950 hover:dark:text-slate-100 dark:text-slate-50 underline block">{item.shortTitle}</Link>
         </li>
       );
     });
 
     return (
-      <section key={section.sectionHeader}>
-        <h2>{section.sectionHeader}</h2>
-        <ul>{links}</ul>
-        <Separator />
+      <section key={section.sectionHeader} className="my-[1em]">
+        <h2 className="text-4xl">{section.sectionHeader}</h2>
+        <ul className="text-lg">{links}</ul>
+        <hr className="mt-[1em]" />
       </section>
     );
   });
 
   return (
     <>
-      <header style={topStyle} className="bg-transparent">
+      <header
+        className="fixed flex justify-between items-center p-4 w-full z-1000 top-0 border-b bg-slate-50/90 border-slate-600 dark:bg-slate-950/90 dark:border-slate-800"
+      >
         <Button
           id={open ? 'hamburger-menu-icon-open' : 'hamburger-menu-icon-closed'}
+          className='xl:hidden text-slate-800 dark:text-slate-100'
           size="icon"
           onClick={() => setOpen(!open)}
         >
           {menuTriggerIcon}
         </Button>
-        <div className="text-4xl">{site_title}</div>
+        <div className="text-4xl text-slate-800 dark:text-slate-100">{site_title}</div>
       </header>
+
       <nav
         role="navigation"
+        className={`overflow-auto bg-slate-100 p-[1em] xl:block xl:static xl:w-[350px] xl:mr-[1em] w-[100%] fixed ${open ? 'block' : 'hidden'}`}
         id={open ? 'nav-content-open' : 'nav-content-closed'}
         style={navContentDefaultStyle}
       >

@@ -30,8 +30,11 @@ export type NotebookCell = {
 export type NotebookMetadata = {
   kernelspec?: object;
   language_info?: object;
-  img?: object;
+  img?: ImageMetadata;
   pageinfo: NotebookPageInfo;
+}
+export type ImageMetadata = {
+  [key: string]: object | null;
 }
 
 export type NotebookPageInfo = {
