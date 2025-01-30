@@ -16,6 +16,7 @@ export type NavItem = {
 export type NavSection = {
   items: NavItem[];
   sectionHeader: string;
+  sectionLink?: string;
 }
 
 interface MenuProps {
@@ -42,9 +43,13 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
       );
     });
 
+    const header = <h2 className="text-4xl">{section.sectionHeader}</h2>
+    const optionalLink = section.sectionLink ?
+      <Link href={section.sectionLink}>{header}</Link> : header;
+
     return (
       <section key={section.sectionHeader} className="my-[1em]">
-        <h2 className="text-4xl">{section.sectionHeader}</h2>
+        {optionalLink}
         <ul className="text-lg">{links}</ul>
         <hr className="mt-[1em]" />
       </section>

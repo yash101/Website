@@ -49,7 +49,8 @@ export default async function RootLayout({
           href: `/blog/${notebook.slug}`,
           shortTitle: notebook['shortTitle'] as string || notebook.title,
         })),
-      sectionHeader: 'Blog'
+      sectionHeader: 'Blog',
+      sectionLink: '/blog'
     },
   ];
 
@@ -62,13 +63,12 @@ export default async function RootLayout({
           className="flex flex-row flex-wrap xl:justify-start justify-center justify-items-center w-screen"
           style={{ marginTop: "calc(32px + 32pt)"}}
         >
-          {/* <Header links={[ {displayName: "About Me", href: "/about-me"} ]} logo="/next.svg" /> */}
           <Menu sections={navSections} />
           <div id="content-main">
             {children}
           </div>
         </div>
-        <Footer links={[ {href: "/about-me", label: "About Me"} ]} logoSrc="/next.svg" />
+        <Footer links={[ {href: "/pages/about-me", label: "About Me"} ]} logoSrc="/icon.png" />
       </body>
     </html>
   );

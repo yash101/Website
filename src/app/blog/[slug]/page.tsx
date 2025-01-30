@@ -2,6 +2,7 @@ import { Notebook } from "app/ipynb/notebook";
 import { filepathMatchBlogs } from "app/util/filepath";
 import { getNotebooksBySlug, readNotebooksIndex } from "app/util/FsUtil";
 import JupyterPageRenderer from "components/JupyterPageRenderer";
+import NotebookRenderer from "components/NotebookRenderer";
 import fs from 'fs/promises';
 import { notFound } from "next/navigation";
 import path from 'path';
@@ -22,12 +23,7 @@ const BlogPage: React.FunctionComponent<BlogProps> = async (props) => {
   const fileName = path.join(process.cwd(), 'public', post.file);
   const notebook: Notebook = JSON.parse(await fs.readFile(fileName, 'utf8')) as Notebook;
 
-  return (
-    <article className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Blog Post</h1>
-      <JupyterPageRenderer notebook={notebook} />
-    </article>
-  )
+  return <NotebookRenderer notebook={notebook} />;
 }
 
 export async function generateStaticParams() {

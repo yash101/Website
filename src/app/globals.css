@@ -74,7 +74,7 @@ body {
 #content-main {
   @apply bg-card text-card-foreground;
   width: 100vw;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .nbsection h1 {
@@ -91,4 +91,8 @@ body {
 
 .nbsection h4 {
   @apply text-lg;
+}
+
+.nbsection p {
+  @apply mb-[1em];
 }

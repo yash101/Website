@@ -9,30 +9,26 @@ export default async function BlogHome() {
   const posts = await readNotebooksIndex();
 
   return (
-    <article>
+    <article className="px-4 py-8">
       <section>
-        <h1>{blog_title}</h1>
+        <h1 className="text-5xl font-bold mb-4">{blog_title}</h1>
       </section>
-      <Separator />
-      <section className="blog-hero ">{
+      <hr className="my-4" />
+      <section className="">{
         posts
           .notebooks
           .filter(notebook => filepathMatchBlogs(notebook.file))
-          .map(notebook => (<BlogHero title={notebook.title} preview={notebook.renderedHero} key={notebook.file} />))
+          .map(notebook => (<BlogHero
+              title={notebook.title}
+              preview={notebook.renderedHero}
+              key={notebook.file}
+              href={`/blog/${notebook.slug}`}
+              author={notebook.author}
+              published={new Date(notebook.published).toLocaleDateString()}
+            />)
+          )
       }</section>
     </article>
   );
 };
 
-// export async function generateStaticParams() {
-//   return (await readNotebooksIndex())
-//   .notebooks
-//   .filter(notebook => filepathMatchBlogs(notebook.file))
-//   .map(notebook => {
-//     return {
-//       params: {
-//         slug: notebook.slug,
-//       },
-//     };
-//   });
-// }

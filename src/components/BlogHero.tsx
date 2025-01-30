@@ -1,17 +1,31 @@
+import Link from "next/link";
 import JupyterHtmlSectionRenderer from "./JupyterHtmlSectionRenderer";
+import { Calendar, User } from "lucide-react";
 
 interface BlogHeroProps {
   title: string;
   preview: string;
+  href: string;
+  author: string;
+  published: string;
 }
 
 export default function BlogHero(props: BlogHeroProps) {
   return (
-    <article>
-      <h1>Hero</h1>
-      <section>
-        <JupyterHtmlSectionRenderer html={props.preview} notebook={null} />
-      </section>
-    </article>
+    <Link href={props.href}>
+      <article className="blog-hero my-4 bg-slate-200 shadow-lg rounded-lg border-1">
+        <section className="p-4 pb-0 flex flex-row">
+          <div className="text-1xl text-slate-700 mr-8"><User className="inline-block w-[16pt] h-[16pt]" /> {props.author}</div>
+          <div className="text-1xl text-slate-700 mr-8"><Calendar className="inline-block w-[16pt] h-[16pt]" /> {props.published}</div>
+        </section>
+        <h1 className="p-4 pb-0 text-4xl mb-2">{props.title}</h1>
+        <section className="p-4 nbsection">
+          <JupyterHtmlSectionRenderer html={props.preview} notebook={null} />
+        </section>
+        <section className="border-t-[1px] border-t-slate-950 p-4">
+          <p className="text-lg text-bold text-slate-950 dark:text-slate-50">Continue reading...</p>
+        </section>
+      </article>
+    </Link>
   )
 }

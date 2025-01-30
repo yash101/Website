@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({
   companyName = 'Devyash Systems, llc.'
 }) => {
   return (
-    <footer className="bg-gray-900 text-white py-8">
+    <footer className="bg-slate-200 text-white py-8">
       <div className="container mx-auto px-4 text-slate-50">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-6 md:mb-0">
@@ -43,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({
               <Link 
                 key={index}
                 href={link.href}
-                className="hover:text-gray-300 transition-colors"
+                className="hover:text-slate-950 text-slate-700"
               >
                 {link.label}
               </Link>
@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
         
-        <div className="text-center mt-8 text-sm text-gray-400">
+        <div className="text-center mt-8 text-sm text-slate-700">
           © {new Date().getFullYear()} {companyName}. All rights reserved.
         </div>
       </div>
