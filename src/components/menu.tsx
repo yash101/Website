@@ -69,7 +69,9 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
         >
           {menuTriggerIcon}
         </Button>
-        <div className="text-4xl text-slate-800 dark:text-slate-100">{site_title}</div>
+        <Link href='/'>
+          <div className="text-4xl text-slate-800 dark:text-slate-100">{site_title}</div>
+        </Link>
       </header>
 
       <nav

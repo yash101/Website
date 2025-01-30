@@ -1,4 +1,4 @@
-import { Notebook } from "app/ipynb/notebook";
+import { Notebook, NotebookIndexEntry } from "app/ipynb/notebook";
 import { filepathMatchBlogs } from "app/util/filepath";
 import { getNotebooksBySlug, readNotebooksIndex } from "app/util/FsUtil";
 import JupyterPageRenderer from "components/JupyterPageRenderer";
@@ -6,6 +6,7 @@ import NotebookRenderer from "components/NotebookRenderer";
 import fs from 'fs/promises';
 import { notFound } from "next/navigation";
 import path from 'path';
+import { site_title } from "site-config";
 
 interface BlogProps {
   params: Promise<{
@@ -26,6 +27,10 @@ const BlogPage: React.FunctionComponent<BlogProps> = async (props) => {
   return <NotebookRenderer notebook={notebook} />;
 }
 
+function generateTitle(entry: NotebookIndexEntry) {
+  return `${entry.title} | ${site_title}`;
+}
+
 export async function generateStaticParams() {
   return (await readNotebooksIndex())
     .notebooks
@@ -35,6 +40,18 @@ export async function generateStaticParams() {
         slug: notebook.slug,
       };
     });
+}
+
+export async function generateMetadata({ params, }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = (await getNotebooksBySlug()).get(slug);
+  return {
+    title: generateTitle(post),
+    description: post['description'] || null,
+    applicationName: site_title,
+    keywords: post['keywords'] || null,
+    authors: [{ name: post.author, }],
+  };
 }
 
 export default BlogPage;

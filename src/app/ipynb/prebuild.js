@@ -62,6 +62,9 @@ async function run() {
     });
 
   const notebooks = await Promise.all(notebooksPromises);
+  index.notebooks.sort((a, b) => {
+    return b.published - a.published;
+  });
   await fs.writeFile(path.join(PUBLIC_DIR, 'ipynb_index.json'), JSON.stringify(index));
 }
 
