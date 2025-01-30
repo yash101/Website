@@ -1,8 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { NotebookIndex, NotebookIndexEntry } from "app/ipynb/notebook";
+import { memoizeIndex } from 'site-config';
 
-const memoize = true;
 let notebooksIndex: NotebookIndex | null = null;
 let notebooksBySlug: Map<string, NotebookIndexEntry> | null = null;
 
@@ -10,17 +10,17 @@ export async function readNotebooksIndex(): Promise<NotebookIndex> {
   const file: string = await fs.readFile(path.join(process.cwd(), 'public', 'ipynb_index.json'), 'utf8');
   const index = JSON.parse(file) as NotebookIndex;
 
-  if (notebooksIndex === null && memoize === true) {
+  if (notebooksIndex === null && memoizeIndex === true) {
     notebooksIndex = index;
   }
 
-  return (memoize) ? notebooksIndex || index : index;
+  return (memoizeIndex) ? notebooksIndex || index : index;
 }
 
 export async function getNotebooksBySlug(): Promise<Map<string, NotebookIndexEntry>> {
   const notebookIndex = await readNotebooksIndex();
 
-  if (memoize === true && notebooksBySlug !== null) {
+  if (memoizeIndex === true && notebooksBySlug !== null) {
     return notebooksBySlug;
   }
 
@@ -30,14 +30,14 @@ export async function getNotebooksBySlug(): Promise<Map<string, NotebookIndexEnt
       entries.set(entry.slug, entry);
     }
     
-    if (memoize === true) {
+    if (memoizeIndex === true) {
       notebooksBySlug = entries;
     }
   }
 
-  return (memoize) ? notebooksBySlug as Map<string, NotebookIndexEntry>
+  return (memoizeIndex) ? notebooksBySlug as Map<string, NotebookIndexEntry>
     : entries;
 }
 
-if (!memoize)
+if (!memoizeIndex)
   console.warn('FsUtil::memoize = false. May result in significant performance penalty.');

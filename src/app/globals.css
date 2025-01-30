@@ -96,3 +96,15 @@ body {
 .nbsection p {
   @apply mb-[1em];
 }
+
+.nbsection ul, .nbsection ol {
+  @apply ml-[2em] my-[1em];
+}
+
+.nbsection ul > li {
+  @apply list-disc;
+}
+
+.nbsection ol > li {
+  @apply list-decimal;
+}

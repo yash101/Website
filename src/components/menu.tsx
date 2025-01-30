@@ -25,7 +25,9 @@ interface MenuProps {
 
 const navContentDefaultStyle: React.CSSProperties = {
   transition: 'all 0.3s ease-in-out',
-}
+  height: 'calc(100vh - 2rem - 2em)',
+  overflowY: 'auto',
+};
 
 const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
   const [open, setOpen] = useState(false);
