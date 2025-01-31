@@ -48,6 +48,7 @@ export type NotebookCellOutput = {
   output_type: 'error' | 'stream';
   ename?: string;
   evalue?: string;
-  text?: string;
-  traceback?: string;
+  text?: string[];
+  traceback?: string[];
+  name?: string;
 }

@@ -48,24 +48,11 @@ export async function optimizeNotebook(notebook) {
   for (const cell of notebook.cells) {
     delete cell.id;
     delete cell.execution_count;
-    cell.source = (cell.source || []).join('');
-    cell.outputs = (cell.outputs || [])
-      .map(output => {
-        switch (output.output_type) {
-          case "error":
-            output.traceback = (output.traceback || []).join('');
-            return output;
-          case "stream":
-            output.text = (output.text || []).join('');
-            return output;
-          case "execute_result":
-            return null;
-          default:
-            return null;
-        }
-      })
-      .filter(output => output !== null);
-
+    cell.source = (cell.source || [])
+//      .filter(line => line instanceof string)
+      .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+      .join('\n') || '';
+    
     // 1. add all the attachments to our attachments list
     // 2. drop attachments from the notebook itself
     // 3. add metadata for image into the notebook for faster rendering

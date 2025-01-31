@@ -58,6 +58,16 @@ interface JupyterHtmlRendererProps {
   notebook: Notebook;
 }
 
+/**
+ * Renders the html from a notebook markdown/html section as react code.
+ * 
+ * XSS / security note: HTML is directly rendered without cleanup. The assumption is made that the site author controls the HTML is displayed.
+ * 
+ * If displaying user content, ensure to sanitize the HTML first.
+ * 
+ * @param param0 
+ * @returns 
+ */
 const JupyterHtmlSectionRenderer: React.FunctionComponent<JupyterHtmlRendererProps> = ({ html, notebook }) => {
   return parse(html, {
     replace: (node, index) => {

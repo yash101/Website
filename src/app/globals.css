@@ -72,17 +72,15 @@ body {
 }
 
 #content-main {
-  @apply bg-card text-card-foreground;
-  width: 100vw;
-  max-width: 900px;
+  @apply bg-card text-card-foreground w-screen max-w-4xl;
 }
 
 .nbsection h1 {
-  @apply text-3xl pt-[1em] font-bold;
+  @apply text-3xl py-[1em] first:pt-0 first:pb-[0.25em] font-bold;
 }
 
 .nbsection h2 {
-  @apply text-2xl pb-[0.25em] pt-[0.5em] font-bold;
+  @apply text-2xl pb-[0.25em] pt-[0.5em] first:py-0 font-bold;
 }
 
 .nbsection h3 {
@@ -135,4 +133,8 @@ body {
 
 .nbsection a, a.link {
   @apply transition-all duration-300 ease-in-out underline hover:text-slate-950 text-slate-600 dark:text-slate-200 dark:hover:text-slate-50 origin-center relative inline-block;
+}
+
+.blog-hero > section {
+  @apply py-0 first:py-4 last:py-4;
 }

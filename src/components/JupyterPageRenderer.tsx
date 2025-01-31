@@ -26,8 +26,11 @@ function renderMarkdownSection(section: NotebookCell, notebook: Notebook) {
 }
 
 function renderCodeSection(section: NotebookCell, notebook: Notebook) {
+  const language = (section.metadata && section.metadata['language']) ? section.metadata['language'] as string : 'unknown';
+
   return (
-    <section className='codeblock border border-slate-950 bg-slate-100 p-[1em] my-[0.5em] dark:border-slate-50 dark:bg-slate-900 block'>
+    <section className='codeblock border border-slate-950 bg-slate-100 my-[0.5em] dark:border-slate-50 dark:bg-slate-900 block'>
+      <header className='block my-[0.5em] mx-[1em] text-md border-b border-b-slate-400 capitalize'>{language}</header>
       <JupyterCodeCellRenderer notebook={notebook} cell={section} />
     </section>
   )

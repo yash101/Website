@@ -2,6 +2,7 @@ import markdownit from "markdown-it";
 import { full as emoji } from 'markdown-it-emoji';
 import hljs from "highlight.js";
 import { createMathjaxInstance, mathjax } from "@mdit/plugin-mathjax";
+import ConvertAnsiToHtml from 'ansi-to-html';
 
 import { markdownitConfig, mathjaxConfig } from '../../site-config.ts';
 
@@ -17,6 +18,12 @@ export class Prerenderer {
     })
       .use(emoji)
       .use(mathjax, this.mathjaxInstance)
+    
+    this.convertAnsiToHtml = new ConvertAnsiToHtml({
+      newline: true,
+      escapeXML: true,
+      stream: false,
+    });
   }
 
   highlight(str, lang) {
@@ -40,11 +47,27 @@ export class Prerenderer {
     try {
       language = notebook.metadata.language_info.name || notebook.metadata.kernelspec.name;
     } catch (__) { }
-    const rendered = this.prerenderCodeBlockToHTML(cell.source, language);
+    const rendered = this.prerenderCodeBlockToHTML(cell.source || '', language);
 
     cell.source = rendered.code;
     cell.metadata = (cell.metadata || {});
     cell.metadata.language = language;
+    cell.outputs = (cell.outputs || []);
+
+    for (const output of cell.outputs) {
+      if (output.output_type === 'error') {
+        output.traceback = (output.traceback || [])
+          .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+          .map(line => this.convertAnsiToHtml.toHtml(line));
+      } else if (output.output_type === 'stream'
+        && ['stdout', 'stderr'].includes(output.name)) {
+        output.text = (output.text || [])
+          .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+          .map(line => this.convertAnsiToHtml.toHtml(line));
+      } else if (output.output_type === 'display_data') {
+        // we will work on this later
+      }
+    }
 
     return cell;
   }

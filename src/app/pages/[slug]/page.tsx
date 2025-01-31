@@ -37,7 +37,6 @@ export async function generateStaticParams() {
       };
     });
 
-  console.log('pages::[slug]::page.tsx::generateStaticParams(): ', params);
   return params;
 }
 
