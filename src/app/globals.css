@@ -78,19 +78,23 @@ body {
 }
 
 .nbsection h1 {
-  @apply text-3xl;
+  @apply text-3xl pt-[1em] font-bold;
 }
 
 .nbsection h2 {
-  @apply text-2xl;
+  @apply text-2xl pb-[0.25em] pt-[0.5em] font-bold;
 }
 
 .nbsection h3 {
-  @apply text-xl;
+  @apply text-xl py-[0.5em] font-bold;
 }
 
 .nbsection h4 {
-  @apply text-lg;
+  @apply text-lg py-[0.25em] font-bold;
+}
+
+.nbsection h5, .nbsection h6 {
+  @apply font-bold;
 }
 
 .nbsection p {
@@ -98,7 +102,7 @@ body {
 }
 
 .nbsection ul, .nbsection ol {
-  @apply ml-[2em] my-[1em];
+  @apply ml-[2em];
 }
 
 .nbsection ul > li {
@@ -107,4 +111,28 @@ body {
 
 .nbsection ol > li {
   @apply list-decimal;
+}
+
+.nbsection pre {
+  @apply py-[1em];
+}
+
+.nbsection table {
+  @apply w-full border-collapse border border-slate-600 text-sm;
+}
+
+.nbsection table th {
+  @apply bg-gray-100 py-[1em] px-[0.5em] border-b border-b-slate-950;
+}
+
+.nbsection table tr {
+  @apply odd:bg-white even:bg-slate-50 hover:bg-slate-100;
+}
+
+.nbsection table tr td {
+  @apply p-[0.5em] border border-slate-600;
+}
+
+.nbsection a, a.link {
+  @apply transition-all duration-300 ease-in-out underline hover:text-slate-950 text-slate-600 dark:text-slate-200 dark:hover:text-slate-50 origin-center relative inline-block;
 }

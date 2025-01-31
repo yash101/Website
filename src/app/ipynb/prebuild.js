@@ -1,9 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { marked } from 'marked';
 import { findFilesRecursively, ensureDirectoryExists } from './fs_utils.js';
 import { optimizeNotebook } from './notebook_optimizer.js';
-import { prerender, prerenderMarkdown } from './prerenderer.js';
+import { Prerenderer } from './prerenderer.js';
 
 const NOTEBOOKS_PATH = path.join(process.cwd(), 'notebooks');
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
@@ -40,10 +39,10 @@ async function run() {
           hero
         } = await optimizeNotebook(nbInput);
 
-        const [renderedNotebook, renderedHero] = await Promise.all([
-          prerender(nbOutput),
-          prerenderMarkdown(hero)
-        ]);
+        const prerender = new Prerenderer();
+
+        const renderedNotebook = prerender.prerender(nbOutput);
+        const renderedHero = prerender.prerenderMarkdown(hero);
 
         index.notebooks.push({
           ...renderedNotebook.metadata.pageinfo,

@@ -43,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({
               <Link 
                 key={index}
                 href={link.href}
-                className="hover:text-slate-950 text-slate-700"
+                className="link text-slate-700"
               >
                 {link.label}
               </Link>
