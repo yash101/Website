@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node --loader ts-node/esm src/app/ipynb/prebuild.js"
+    "prebuild": "node --loader ts-node/esm src/app/ipynb/prebuild.js",
+    "ci-build": "npm run prebuild && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.4",

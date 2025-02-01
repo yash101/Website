@@ -24,6 +24,8 @@ export class Prerenderer {
       escapeXML: true,
       stream: false,
     });
+
+    this.attachments = [];
   }
 
   highlight(str, lang) {
@@ -127,5 +129,9 @@ ${mjxStyles}
       code: `<pre class="section-codeblock"><code class="hljs">${this.md.utils.escapeHtml(codeblock)}</code></pre>`,
       language,
     };
+  }
+
+  getAdditionalAttachments() {
+    return this.attachments || [];
   }
 }

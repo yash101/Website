@@ -45,7 +45,7 @@ export type NotebookPageInfo = {
 }
 
 export type NotebookCellOutput = {
-  output_type: 'error' | 'stream';
+  output_type: string;
   ename?: string;
   evalue?: string;
   text?: string[];

@@ -49,7 +49,6 @@ export async function optimizeNotebook(notebook) {
     delete cell.id;
     delete cell.execution_count;
     cell.source = (cell.source || [])
-//      .filter(line => line instanceof string)
       .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
       .join('\n') || '';
     

@@ -11,25 +11,57 @@ function replace(node: DOMNode, index: number, notebook: Notebook) {
   switch (node.name) {
     case 'img':
       let uri = node.attribs.src;
-      let width = Number(node.attribs.width) || 800;
-      let height = Number(node.attribs.height) || 500;
+
+      const defaultDimensions = {
+        width: 800,
+        height: 500,
+      };
+
+      const htmlRequestedDimensions = {
+        width: Number(node.attribs.width),
+        height: Number(node.attribs.height),
+      };
+
+      const metadataRequestedDimensions = {
+        width: null,
+        height: null,
+      };
+
+      // let width = Number(node.attribs.width) || 800;
+      // let height = Number(node.attribs.height) || 500;
 
       if (uri.includes('attachment:')) {
         const id = uri.substring('attachment:'.length);
         uri = `/assets/${id}`;
-        
+  
         const metadata: ImageMetadata | undefined =
           (notebook?.metadata?.img as Record<string, ImageMetadata>)[id];
 
         if (metadata) {
-          width = Number(metadata['width']) || width;
-          height = Number(metadata['height']) || height;          
+          metadataRequestedDimensions.width = Number(metadata['width']);
+          metadataRequestedDimensions.height = Number(metadata['height']);          
         }
       }
 
-      if (Number(width) > maxImageWidth) {
-        height = height * maxImageWidth / width;
-        width = maxImageWidth;
+      let finalDimensions = {
+        width: null,
+        height: null,
+      };
+
+      if (htmlRequestedDimensions.width > 0 && htmlRequestedDimensions.height > 0) {
+        finalDimensions = htmlRequestedDimensions;
+      } else if (metadataRequestedDimensions.width > 0 && metadataRequestedDimensions.height > 0) {
+        finalDimensions = metadataRequestedDimensions;
+      } else {
+        finalDimensions = defaultDimensions;
+      }
+
+      // TODO: should this be a site config variable for max image width?
+      if (finalDimensions.width > maxImageWidth) {
+        finalDimensions = {
+          width: maxImageWidth,
+          height: finalDimensions.height * maxImageWidth / finalDimensions.width,
+        };
       }
 
       return (
@@ -37,8 +69,8 @@ function replace(node: DOMNode, index: number, notebook: Notebook) {
           key={index}
           src={uri}
           alt={node.attribs.alt || ''}
-          width={Number(width)}
-          height={Number(height)}
+          width={finalDimensions.width}
+          height={finalDimensions.height}
         />
       );
 
