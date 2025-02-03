@@ -1,5 +1,5 @@
 export const site_title: string = 'Yash\'s Site';
-export const blog_title: string = 'Yash\'s Rants and Things';
+export const blog_title: string = 'Hello, World!';
 export const site_description: string = 'Yash\'s website - full of projects, thoughts, ideas and creativity!';
 
 export const maxImageWidth: number = 750;
