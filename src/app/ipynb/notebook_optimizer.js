@@ -22,7 +22,7 @@ export async function optimizeNotebook(notebook) {
   const heroCell = notebook.cells.shift();
 
   // actually process their data
-  const metadata = toml.parse((metaCell.source || []).join(''));
+  const metadata = toml.parse((metadata.output || metaCell.source || []).join(''));
   const herodata = (heroCell.source || []).join('');
 
   metadata.published = new Date(metadata.published);

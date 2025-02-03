@@ -38,7 +38,13 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
     const links = section.items.map(item => {
       return (
         <li key={item.href} className="my-[0.5em]">
-          <Link href={item.href} className="link text-slate-700 hover:text-slate-950 hover:dark:text-slate-100 dark:text-slate-50 underline block">{item.shortTitle}</Link>
+          <Link
+            href={item.href}
+            className="link text-slate-700 hover:text-slate-950 hover:dark:text-slate-100 dark:text-slate-50 underline block"
+            role="menuitem"
+          >
+            {item.shortTitle}
+          </Link>
         </li>
       );
     });
@@ -74,6 +80,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           'xl:w-[350px]',
           'xl:mr-[1em]',
           'print:hidden',
+          'z-999',
         ].join(' ')}
         id={open ? 'nav-content-open' : 'nav-content-closed'}
         style={navContentDefaultStyle}
@@ -104,6 +111,9 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           className='xl:hidden text-slate-800 dark:text-slate-100'
           size="icon"
           onClick={() => setOpen(!open)}
+          role="button"
+          aria-checked={open}
+          aria-label="Toggle menu"
         >
           {menuTriggerIcon}
         </Button>

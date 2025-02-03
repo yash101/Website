@@ -18,14 +18,14 @@ export default function BlogHero(props: BlogHeroProps) {
           <div className="text-1xl text-slate-700 mr-8"><User className="inline-block w-[16pt] h-[16pt]" /> {props.author}</div>
           <div className="text-1xl text-slate-700 mr-8"><Calendar className="inline-block w-[16pt] h-[16pt]" /> {props.published}</div>
         </section>
-        <h1 className="p-4 pb-0 text-4xl mb-2">{props.title}</h1>
-        <section className="p-4 nbsection">
+        <h1 className="mx-4 text-4xl mb-2">{props.title}</h1>
+        <section className="p-4 nbsection herosection">
           <JupyterHtmlSectionRenderer html={props.preview} notebook={null} />
         </section>
-        <section className="border-t-[1px] border-t-slate-950 p-4">
-          <p className="text-lg text-bold text-slate-950 dark:text-slate-50">Continue reading...</p>
+        <section className="border-t-[1px] border-t-slate-400 m-4 block">
+          <p className="text-lg text-bold text-slate-700 dark:text-slate-200">Read Article 📖👉🏼</p>
         </section>
       </article>
     </Link>
-  )
+  );
 }

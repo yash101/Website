@@ -138,3 +138,28 @@ body {
 .blog-hero > section {
   @apply py-0 first:py-4 last:py-4;
 }
+
+.herosection h1 {
+  @apply text-2xl py-[1em] first:py-0 font-normal;
+}
+
+.herosection h2 {
+  @apply text-xl pb-[0.25em] pt-[0.5em] first:py-0 font-normal;
+}
+
+.codeblock table.dataframe {
+  @apply border border-slate-600;
+}
+
+.codeblock table.dataframe th {
+  @apply bg-slate-300 text-slate-800;
+}
+
+.codeblock table.dataframe tr {
+  @apply even:bg-slate-100 odd:bg-slate-200 hover:bg-slate-300 hover:text-slate-800;
+}
+
+.codeblock table.dataframe th,
+.codeblock table.dataframe td {
+  @apply p-2;
+}

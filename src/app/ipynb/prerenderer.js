@@ -93,6 +93,8 @@ export class Prerenderer {
 mjx-container[jax="SVG"] > svg {
   display: inline;
   z-index: 0;
+  max-width: 100%;
+  overflow-x: auto;
 }
 ${mjxStyles}
 </style>
