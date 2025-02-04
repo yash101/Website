@@ -35,7 +35,7 @@ function replace(node: DOMNode, index: number, notebook: Notebook) {
         uri = `/assets/${id}`;
   
         const metadata: ImageMetadata | undefined =
-          (notebook?.metadata?.img as Record<string, ImageMetadata>)[id];
+          (notebook?.metadata?.img as Record<string, ImageMetadata>)?.[id];
 
         if (metadata) {
           metadataRequestedDimensions.width = Number(metadata['width']);

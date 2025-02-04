@@ -11,10 +11,11 @@
     "prebuild": "node --loader ts-node/esm src/app/ipynb/prebuild.js",
     "ci-build": "npm run prebuild && npm run build"
   },
-  "engines" : { 
-    "node" : ">=v22.13.0"
+  "engines": {
+    "node": ">=v22.13.0"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-navigation-menu": "^1.2.4",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",

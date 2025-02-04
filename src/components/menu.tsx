@@ -112,7 +112,6 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           size="icon"
           onClick={() => setOpen(!open)}
           role="button"
-          aria-checked={open}
           aria-label="Toggle menu"
         >
           {menuTriggerIcon}

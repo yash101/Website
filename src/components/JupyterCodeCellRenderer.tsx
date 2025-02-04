@@ -15,7 +15,7 @@ function parseDisplayOutputs(cell) {
       continue;
     }
 
-    let data = output.data;
+    const data = output.data;
     const altText = output.data['text/plain'] || '';
     let addedRichContent: boolean = false;
 
@@ -67,6 +67,7 @@ function parseDisplayOutputs(cell) {
             className='max-w-[100%]'
             src={renderable.data}
             alt={renderable.altText || ''}
+            key={`nboutput-${index}`}
           />
         );
       } else if (renderable.type === 'html') {

@@ -40,6 +40,9 @@ export async function optimizeNotebook(notebook) {
     ...metadata,
   };
 
+  extractAttachments(heroCell.attachments || [])
+    .forEach(attachment => attachments.push(attachment));
+
   // process and optimize each cell:
   // - concat lists of outputs into a single string
   // - remove fields we are unlikely to use

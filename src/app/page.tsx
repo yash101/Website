@@ -2,6 +2,7 @@ import BlogHero from "components/BlogHero";
 import { blog_title } from "site-config";
 import { readNotebooksIndex } from "./util/FsUtil";
 import { NotebookIndexEntry } from "./ipynb/notebook";
+import AccordionWidget from 'components/widgets/Accordion';
 
 function getPathForNotebook(index: NotebookIndexEntry) {
   if (index.file.match(/^ipynb_pp\/blogs.*/)) {
