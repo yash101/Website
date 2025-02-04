@@ -8,7 +8,7 @@ interface JupyterRawEmbedRendererProps {
 
 type RawCellType = {
   tool: string;
-  props: any;
+  props: object;
 }
 
 const JupyterRawEmbedRenderer: React.FC<JupyterRawEmbedRendererProps> = (props) => {

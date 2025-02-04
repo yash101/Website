@@ -14,7 +14,7 @@ interface AccordionWidgetProps {
   items?: AccordionItem[];
 }
 
-const AccordionWidget: React.FC<{ args: any }> = ({ args }) => {
+const AccordionWidget: React.FC<{ args: object }> = ({ args }) => {
   const props: AccordionWidgetProps = args as AccordionWidgetProps;
 
   return (
