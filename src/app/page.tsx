@@ -3,7 +3,7 @@ import { blog_title } from "site-config";
 import { readNotebooksIndex } from "./util/FsUtil";
 import { NotebookIndexEntry } from "./ipynb/notebook";
 import AccordionWidget from 'components/widgets/Accordion';
-import CodeRunner from "components/widgets/CodeRunner";
+import CodeRunner from "components/widgets/CodeRunner/CodeRunner";
 
 function getPathForNotebook(index: NotebookIndexEntry) {
   if (index.file.match(/^ipynb_pp\/blogs.*/)) {

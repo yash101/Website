@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "prebuild": "node --loader ts-node/esm src/app/ipynb/prebuild.js",
-    "ci-build": "npm install --force && npm run prebuild && npm run build"
+    "ci-build": "./ci.sh"
   },
   "engines": {
     "node": ">=v22.13.0"
@@ -28,6 +28,7 @@
     "lucide-react": "^0.473.0",
     "markdown-it": "^14.1.0",
     "markdown-it-emoji": "^3.0.0",
+    "monaco-editor": "^0.52.2",
     "next": "15.1.5",
     "probe-image-size": "^7.2.3",
     "react": "^19.0.0",

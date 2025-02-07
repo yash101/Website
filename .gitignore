@@ -47,5 +47,7 @@ next-env.d.ts
 /public/assets
 /public/ipynb_pp
 /public/ipynb_index.json
+/public/monaco
+/public/min-maps
 
 .ipynb_checkpoints/

@@ -1,7 +1,7 @@
 import { Notebook, NotebookCell } from "app/ipynb/notebook";
 import AccordionWidget from "./widgets/Accordion";
-import CodeRunner from "./widgets/CodeRunner";
 import { Suspense } from "react";
+import CodeRunner from "./widgets/CodeRunner/CodeRunner";
 
 interface JupyterRawEmbedRendererProps {
   cell: NotebookCell,

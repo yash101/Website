@@ -1,18 +1,8 @@
 'use client';
 
-/*
-Test code
-
-console.log('hello world');
-
-setInterval(() => {
-    console.log(new Date().toLocaleTimeString());
-}, 1000);
- */
-
 import { useEffect, useRef, useState } from "react";
-import MonacoEditor from '@monaco-editor/react';
-import { Play, RefreshCw, SquareX, Trash } from "lucide-react";
+import { Clipboard, Play, RefreshCw, SquareX, Trash } from "lucide-react";
+import LocalMonacoEditor from "./MonacoEditor";
 
 type CodeRunnerProps = {
   defaultSource?: string,
@@ -46,14 +36,6 @@ const console = {
   info: (...args) => write('stdout', ...args),
 };
 
-self.onmessage = event => {
-  try {
-    eval(event.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 `;
 
 const nLinesRC = runtimeCode.match(/(\r\n|\r|\n)/g).length;
@@ -73,7 +55,7 @@ const CodeRunner: React.FC<{
   const workerRef = useRef<Worker | null>(null);
   const editorRef = useRef(null);
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' || !window) {
       const lines = (source || '').match(/(\r\n|\r|\n)/g)?.length || 0;
       const contentHeight = ((lines + 1) * 18) + 40
       const desiredHeight = Math.max(
@@ -88,7 +70,7 @@ const CodeRunner: React.FC<{
   }, [ source, editorHeight ]);
 
   const runCode = () => {
-    if (typeof window === 'undefined')
+    if (typeof window === 'undefined' || !window)
       return;
 
     // Terminate any existing worker
@@ -116,6 +98,41 @@ const CodeRunner: React.FC<{
     workerRef.current = worker;
   };
 
+  const saveFile = async () => {
+    if (typeof window !== 'undefined' && 'showSaveFilePicker' in window) {
+      try {
+        const opts = {
+          types: [
+            {
+              description: 'JavaScript Files',
+              accept: { 'text/javascript': ['.js'] },
+            },
+          ],
+        };
+  
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handle = await (window as any).showSaveFilePicker(opts);
+        const writable = await handle.createWritable();
+        await writable.write(source);
+        await writable.close();
+      } catch (err) {
+        console.error("Save cancelled or failed:", err);
+      }
+    } else if (typeof window !== 'undefined') {
+      const blob = new Blob([source], { type: 'text/javascript' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'download.js';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const copyAll = async () => {
+    navigator.clipboard.writeText(source);
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined' && autorun === true) {
       runCode();
@@ -132,7 +149,7 @@ const CodeRunner: React.FC<{
         </section>
       )}
       <section className='code-editor'>
-        <MonacoEditor
+        <LocalMonacoEditor
           language='javascript'
           theme='vs-dark'
           value={source || ''}
@@ -140,11 +157,26 @@ const CodeRunner: React.FC<{
           onChange={newCode => setSource(newCode || '')}
           onMount={(editor, monaco) => {
             editorRef.current = editor;
+
             editor.addAction({
               id: "run-code",
               label: "Run Code",
-              keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+              keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter ],
               run: runCode,
+            });
+
+            editor.addAction({
+              id: 'save-file',
+              label: 'Save',
+              keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS ],
+              run: saveFile,
+            });
+
+            editor.addAction({
+              id: 'copy-all',
+              label: 'Copy All',
+              keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyC ],
+              run: copyAll,
             });
           }}
           options={{
@@ -169,8 +201,14 @@ const CodeRunner: React.FC<{
           <RefreshCw />
         </button>
         <button
-          onClick={() => setSource('')}
+          onClick={copyAll}
           className='p-2 my-2 ml-1 bg-slate-200 border-2 hover:bg-slate-300 hover:border-slate-300'
+        >
+          <Clipboard />
+        </button>
+        <button
+          onClick={() => setSource('')}
+          className='p-2 my-2 ml-1 bg-slate-200 border-2 hover:bg-red-500 hover:border-red-500 hover:text-slate-50'
         >
           <Trash />
         </button>
@@ -180,7 +218,7 @@ const CodeRunner: React.FC<{
               workerRef.current.terminate();
             }
           }}
-          className='p-2 my-2 ml-1 bg-slate-200 border-2 hover:bg-slate-300 hover:border-slate-300'
+          className='p-2 my-2 ml-1 bg-slate-200 border-2 hover:bg-red-500 hover:border-red-500 hover:text-slate-50'
         >
           <SquareX />
         </button>
