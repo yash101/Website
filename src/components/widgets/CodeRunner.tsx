@@ -120,7 +120,7 @@ const CodeRunner: React.FC<{
     if (typeof window !== 'undefined' && autorun === true) {
       runCode();
     }
-  }, [ autorun, runCode ]);
+  }, [ autorun ]);
 
   return (
     <section className='code-runner nbsection'>

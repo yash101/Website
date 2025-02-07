@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "prebuild": "node --loader ts-node/esm src/app/ipynb/prebuild.js",
-    "ci-build": "npm run prebuild && npm run build"
+    "ci-build": "npm install --force && npm run prebuild && npm run build"
   },
   "engines": {
     "node": ">=v22.13.0"
