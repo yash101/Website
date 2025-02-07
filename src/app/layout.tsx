@@ -36,6 +36,7 @@ export default async function RootLayout({
     {
       items: index
         .notebooks
+        .filter(notebook => notebook.published && new Date(notebook.published) < new Date())
         .filter(notebook => notebook.file.match(/^ipynb_pp\/pages\/.*.dnb$/))
         .map(notebook => ({
           href: `/pages/${notebook.slug}`,
@@ -46,6 +47,7 @@ export default async function RootLayout({
     {
       items: index
         .notebooks
+        .filter(notebook => notebook.published && new Date(notebook.published) < new Date())
         .filter(notebook => notebook.file.match(/^ipynb_pp\/blogs\/.*.dnb$/))
         .map(notebook => ({
           href: `/blog/${notebook.slug}`,

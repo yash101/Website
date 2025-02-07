@@ -163,3 +163,7 @@ body {
 .codeblock table.dataframe td {
   @apply p-2;
 }
+
+.nbsection .full-width-image {
+  width: 100%;
+}

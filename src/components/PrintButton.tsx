@@ -6,7 +6,10 @@ import { Printer } from "lucide-react";
 const PrintButton: React.FC = () => {
   return (
     <Button
-      onClick={() => window.print()}
+      onClick={() => {
+        window.scrollTo(0, 0);
+        window.print();
+      }}
       size="icon"
       title="Print Page"
       aria-label="Print Page"

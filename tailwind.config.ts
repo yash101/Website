@@ -81,4 +81,7 @@ export default {
   	}
   },
   plugins: [require("tailwindcss-animate")],
+	safelist: [
+		'full-width-image'
+	]
 } satisfies Config;

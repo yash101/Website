@@ -3,6 +3,7 @@ import { blog_title } from "site-config";
 import { readNotebooksIndex } from "./util/FsUtil";
 import { NotebookIndexEntry } from "./ipynb/notebook";
 import AccordionWidget from 'components/widgets/Accordion';
+import CodeRunner from "components/widgets/CodeRunner";
 
 function getPathForNotebook(index: NotebookIndexEntry) {
   if (index.file.match(/^ipynb_pp\/blogs.*/)) {
@@ -26,15 +27,17 @@ export default async function Home() {
       <section className="">{
         posts
           .notebooks
-          .map(notebook => (<BlogHero
+          .filter(notebook => notebook.published && new Date(notebook.published) < new Date())
+          .map(notebook => (
+            <BlogHero
               title={notebook.title}
               preview={notebook.renderedHero}
               key={notebook.file}
               href={getPathForNotebook(notebook)}
               author={notebook.author}
               published={new Date(notebook.published).toLocaleDateString()}
-            />)
-          )
+            />
+          ))
       }</section>
     </article>
   );

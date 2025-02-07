@@ -18,6 +18,7 @@ export default async function BlogHome() {
         posts
           .notebooks
           .filter(notebook => filepathMatchBlogs(notebook.file))
+          .filter(notebook => notebook.published && new Date(notebook.published) < new Date())
           .map(notebook => (<BlogHero
               title={notebook.title}
               preview={notebook.renderedHero}

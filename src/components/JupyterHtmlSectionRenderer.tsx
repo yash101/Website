@@ -71,6 +71,7 @@ function replace(node: DOMNode, index: number, notebook: Notebook) {
           alt={node.attribs.alt || ''}
           width={finalDimensions.width}
           height={finalDimensions.height}
+          className={node.attribs.class || ''}
         />
       );
 

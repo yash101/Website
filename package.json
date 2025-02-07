@@ -15,6 +15,7 @@
     "node": ">=v22.13.0"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-navigation-menu": "^1.2.4",
     "@radix-ui/react-separator": "^1.1.1",

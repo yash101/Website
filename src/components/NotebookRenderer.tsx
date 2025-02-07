@@ -17,6 +17,11 @@ const NotebookRenderer: React.FC<NotebookRendererProps> = async ({ notebook }) =
             <p>Author: <span itemProp="author">{notebook.metadata.pageinfo.author || 'unknown'}</span></p>
             <p>Published: <span itemProp="datePublished">{new Date(notebook.metadata.pageinfo.published).toLocaleDateString()}</span></p>
             <p>Updated: <span itemProp="datePublished">{new Date(notebook.metadata.pageinfo.lastModified).toLocaleDateString()}</span></p>
+            {
+              new Date(notebook.metadata.pageinfo.published) > new Date() && (
+                <p className='text-red-500'>This article has not been published yet.</p>
+              )
+            }
           </div>
           <div role="menu">
             <PrintButton />

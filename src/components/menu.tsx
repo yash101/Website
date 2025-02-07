@@ -25,6 +25,7 @@ interface MenuProps {
 const navContentDefaultStyle: React.CSSProperties = {
   transition: 'all 0.3s ease-in-out',
   overflowY: 'auto',
+  zIndex: 999999,
 };
 
 const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
@@ -80,7 +81,6 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           'xl:w-[350px]',
           'xl:mr-[1em]',
           'print:hidden',
-          'z-999',
         ].join(' ')}
         id={open ? 'nav-content-open' : 'nav-content-closed'}
         style={navContentDefaultStyle}
@@ -97,7 +97,6 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           'p-[1em]',
           'h-[4em]',
           'w-full',
-          'z-1000',
           'top-0',
           'border-b',
           'bg-slate-50',
@@ -105,6 +104,9 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           'dark:bg-slate-950',
           'dark:border-slate-800',
         ].join(' ')}
+        style={{
+          zIndex: 1000000,
+        }}
       >
         <Button
           id={open ? 'hamburger-menu-icon-open' : 'hamburger-menu-icon-closed'}
