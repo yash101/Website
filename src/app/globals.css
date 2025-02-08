@@ -175,3 +175,7 @@ body {
 .nbsection {
   @apply py-4 first:pt-0;
 }
+
+.nbsection code {
+  word-break: break-all;
+}
