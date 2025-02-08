@@ -76,11 +76,11 @@ body {
 }
 
 .nbsection h1 {
-  @apply text-3xl py-[1em] first:pt-0 first:pb-[0.25em] font-bold;
+  @apply text-3xl py-[1em] first:pt-0 pb-4 font-bold;
 }
 
 .nbsection h2 {
-  @apply text-2xl pb-[0.25em] pt-[0.5em] first:py-0 font-bold;
+  @apply text-2xl pb-4 pt-8 first:py-0 font-bold;
 }
 
 .nbsection h3 {
@@ -96,11 +96,11 @@ body {
 }
 
 .nbsection p {
-  @apply mb-[1em];
+  @apply my-2;
 }
 
 .nbsection ul, .nbsection ol {
-  @apply ml-[2em];
+  @apply ml-8 my-2;
 }
 
 .nbsection ul > li {
@@ -166,4 +166,12 @@ body {
 
 .nbsection .full-width-image {
   width: 100%;
+}
+
+.nbsection blockquote {
+  @apply ml-4 my-8 p-4 border-l-[16px] border-slate-600 hover:bg-slate-100;
+}
+
+.nbsection {
+  @apply py-4 first:pt-0;
 }

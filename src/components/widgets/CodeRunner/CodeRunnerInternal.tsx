@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Clipboard, Play, RefreshCw, SquareX, Trash } from "lucide-react";
 import LocalMonacoEditor from "./MonacoEditor";
+import ConvertAnsiToHtml from 'ansi-to-html';
+import { AnsiDisplay } from "components/AnsiDisplay";
 
 type CodeRunnerProps = {
   defaultSource?: string,
@@ -54,6 +56,12 @@ const CodeRunner: React.FC<{
   const [ editorHeight, setEditorHeight ] = useState(100);
   const workerRef = useRef<Worker | null>(null);
   const editorRef = useRef(null);
+  const ansiToHtml = new ConvertAnsiToHtml({
+    newline: true,
+    escapeXML: true,
+    stream: false,
+  });
+
   useEffect(() => {
     if (typeof window !== 'undefined' || !window) {
       const lines = (source || '').match(/(\r\n|\r|\n)/g)?.length || 0;
@@ -79,6 +87,8 @@ const CodeRunner: React.FC<{
       workerRef.current.terminate();
     }
 
+    console.log('Running code: ', runtimeCode + source);
+
     const worker = new Worker(URL.createObjectURL(new Blob([ runtimeCode + source ], { type: 'application/javascript', })));
     worker.onmessage = event => {
       setOutputs(previousState => {
@@ -87,6 +97,7 @@ const CodeRunner: React.FC<{
     };
 
     worker.onerror = event => {
+      console.log(event);
       setOutputs(previousState => {
         return [...previousState, {
           message: `Error: L${event.lineno - nLinesRC} - ${event.message}`,
@@ -140,7 +151,7 @@ const CodeRunner: React.FC<{
   }, [ autorun ]);
 
   return (
-    <section className='code-runner nbsection'>
+    <section className='code-runner codeblock'>
       {header !== false && (
         <section
           className='pb-4'
@@ -223,23 +234,16 @@ const CodeRunner: React.FC<{
           <SquareX />
         </button>
       </section>
-      <section className='border-b border-b-slate-200'><h6>Outputs</h6></section>
+      <section className='border-b border-b-slate-400 mb-2'><h6>Outputs</h6></section>
       <section className='code-output'>{
         outputs.map((output, index) => {
-          return <p
-            key={`log-${index}`}
-            className={[
-              'px-4',
-              'border-l-2 hover:border-l-4',
-              {
-                stderr: 'border-l-red-500',
-                stdout: 'border-l-slate-500',
-                warn: 'border-l-yellow-500',
-              }[output.pipe] || 'border-l-2 border-l-red-500'
-            ].join(' ')}
-            dangerouslySetInnerHTML={{ __html: (output.message || '') }}
-            style={{ marginBottom: 0, }}
-          />
+          return (
+            <AnsiDisplay
+              file={output.pipe}
+              text={ansiToHtml.toHtml(output.message)}
+              key={`output-${index}`}
+            />
+          )
         })
       }</section>
     </section>
