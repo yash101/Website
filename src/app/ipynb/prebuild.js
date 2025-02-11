@@ -26,6 +26,8 @@ async function run() {
       const nbOutputPath = path.join(
         OUTPUT_DIR_PATH, path.relative(NOTEBOOKS_PATH, nbInputPath.replace(/.ipynb$/, '.dnb')));
       const nbOutputDir = path.dirname(nbOutputPath);
+      console.log(`Building ${nbInputPath} => ${nbOutputPath}`);
+
       try {
           await ensureDirectoryExists(nbOutputDir);
 
@@ -65,6 +67,24 @@ async function run() {
     return b.published - a.published;
   });
   await fs.writeFile(path.join(PUBLIC_DIR, 'ipynb_index.json'), JSON.stringify(index));
+  await copyAttachmentsToObjects();
+}
+
+async function copyAttachmentsToObjects() {
+  const promises = (await findFilesRecursively(NOTEBOOKS_PATH) || [])
+    .filter(file => !file.match(/.ipynb$/) && !file.includes('.ipynb_checkpoints') && !file.startsWith('.'))
+    .map(async file => {
+      // Determine output paths
+      const destination = path.join(ASSETS_DIR_PATH, 'objects', path.relative(NOTEBOOKS_PATH, file));
+      const outputDir = path.dirname(destination);
+      await ensureDirectoryExists(outputDir);
+
+      console.log(`Copying ${file} => ${destination}`);
+
+      fs.copyFile(file, destination);
+    });
+
+  await Promise.all(promises);
 }
 
 async function writeAttachments(attachments) {

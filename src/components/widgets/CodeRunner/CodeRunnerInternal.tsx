@@ -10,6 +10,7 @@ type CodeRunnerProps = {
   defaultSource?: string,
   autorun?: boolean,
   header?: boolean,
+  sourceUrl?: string,
 }
 
 type CodeOutput = {
@@ -42,6 +43,10 @@ const console = {
 
 const nLinesRC = runtimeCode.match(/(\r\n|\r|\n)/g).length;
 const lpFpEq = (a, b) => Math.abs(a - b) < 2.0;
+const EMPTY_OUTPUT: CodeOutput = {
+  pipe: 'warn',
+  message: 'Click the Play button to run the code',
+};
 
 const CodeRunner: React.FC<{
   args?: object
@@ -49,10 +54,11 @@ const CodeRunner: React.FC<{
   const {
     defaultSource,
     autorun,
-    header
+    header,
+    sourceUrl,
   } = (props.args as CodeRunnerProps);
   const [ source, setSource ] = useState<string>(defaultSource || '');
-  const [ outputs, setOutputs ] = useState<CodeOutput[]>([]);
+  const [ outputs, setOutputs ] = useState<CodeOutput[]>([ EMPTY_OUTPUT ]);
   const [ editorHeight, setEditorHeight ] = useState(100);
   const workerRef = useRef<Worker | null>(null);
   const editorRef = useRef(null);
@@ -77,6 +83,36 @@ const CodeRunner: React.FC<{
     }  
   }, [ source, editorHeight ]);
 
+  useEffect(() => {
+    if (sourceUrl) {
+      fetch(sourceUrl)
+        .then(response => response.text())
+        .then(code => {
+          setSource(code);
+          if (autorun) {
+            runCode();
+          }
+        })
+        .catch(e => {
+          console.error('Fetch error ocurred: ', e);
+          setOutputs([ e.message, e.toString() ]);
+        });
+    }
+  }, [ sourceUrl ]);
+
+
+  const getOutputs = () => {
+    return outputs;
+  }
+
+  const clearOutputs = () => {
+    setOutputs([ EMPTY_OUTPUT ]);
+  }
+
+  const appendOutput = (output: CodeOutput) => {
+    setOutputs(current => [ ...current, output ]);
+  }
+
   const runCode = () => {
     if (typeof window === 'undefined' || !window)
       return;
@@ -87,9 +123,20 @@ const CodeRunner: React.FC<{
       workerRef.current.terminate();
     }
 
-    console.log('Running code: ', runtimeCode + source);
+    const w = JSON.stringify(window.location);
+    console.log(w);
+    const workerSource = new Blob([`
+      const location = ${w};
 
-    const worker = new Worker(URL.createObjectURL(new Blob([ runtimeCode + source ], { type: 'application/javascript', })));
+      ${runtimeCode}
+
+      ${source}
+    `], {
+      type: 'application/javascript',
+    });
+
+    const worker = new Worker(URL.createObjectURL(workerSource));
+    
     worker.onmessage = event => {
       setOutputs(previousState => {
         return [...previousState, event.data];
@@ -173,7 +220,9 @@ const CodeRunner: React.FC<{
               id: "run-code",
               label: "Run Code",
               keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter ],
-              run: runCode,
+              run: () => {
+                runCode();
+              },
             });
 
             editor.addAction({
@@ -189,6 +238,13 @@ const CodeRunner: React.FC<{
               keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyC ],
               run: copyAll,
             });
+
+            editor.addAction({
+              id: 'nothing',
+              label: 'Nothing',
+              keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyR ],
+              run: () => null,
+            });
           }}
           options={{
             scrollBeyondLastLine: false,
@@ -200,7 +256,7 @@ const CodeRunner: React.FC<{
       </section>
       <section className='flex justify-start'>
         <button
-          onClick={runCode}
+          onClick={() => { runCode(); }}
           className='p-2 my-2 bg-slate-200 border-2 hover:bg-slate-300 hover:border-slate-300'
         >
           <Play />

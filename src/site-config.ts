@@ -2,7 +2,7 @@ export const site_title: string = 'Yash\'s Site';
 export const blog_title: string = 'Hello, World!';
 export const site_description: string = 'Yash\'s website - full of projects, thoughts, ideas and creativity!';
 
-export const maxImageWidth: number = 750;
+export const maxImageWidth: number = 768;
 
 export const memoizeIndex: boolean = false;
 
@@ -12,7 +12,7 @@ export const markdownitConfig: object = {
 
   // Use '/' to close single tags (<br />).
   // This is only for full CommonMark compatibility.
-  xhtmlOut: false,
+  xhtmlOut: true,
 
   // Convert '\n' in paragraphs into <br>
   breaks: true,
