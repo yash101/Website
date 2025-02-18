@@ -1,0 +1,82 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "source": "<p>Search engines are ubiquitous. Google, Bing, Yahoo, you name it, all of these are internet-wide search engines. Even your favorite social media platforms have a search functionality. How do they work? How can we build our own? And how can we build a search engine which is cheap and easy to run?</p>\n<p>In this part of the multi-part series, we will implement data acquisition and cleanup.</p>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h1>Data Acquisition, Normalization, Cleaning and Tokenization</h1>\n<p>Search engines are ubiquitous. Google, Bing, Yahoo, you name it, all of these are internet-wide search engines. Even your favorite social media platforms have a search functionality. How do they work? How can we build our own? And how can we build a search engine which is cheap and easy to run?</p>\n<p>In this part of the multi-part series, we will implement data acquisition and cleanup.</p>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2>Chapters 📚</h2>\n<ol>\n<li><a href=\"/blog/search-engine\">Introduction to the Search Problem</a></li>\n<li><a href=\"/blog/search-engine-2\"><strong>Data acquisition, normalization and cleaning</strong></a></li>\n<li><a href=\"/blog/search-engine-3\">Reverse Index and Search</a></li>\n<li><a href=\"/blog/search-engine-4\">Workshop - Build a Search Engine</a></li>\n<li><a href=\"/blog/search-engine-5\">Workshop - Build a Search Engine (solution)</a></li>\n<li><a href=\"/blog/search-engine-6\">Token-frequency optimization and Zipf’s law</a></li>\n</ol>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2>Data Acquisition</h2>\n<p>Data acquisition is arguable the hardest part in building a search engine. In typical search engines, such as Google or Bing, data acquisiton is performed by a <strong>spider</strong>, which <strong>crawls</strong> the web, ingesting content which can be indexed. For this project, we will focus on keeping data acquition simple and use a prepared dataset instead.</p>\n<p>In this project, we will use the <a href=\"https://www.cs.cmu.edu/~enron/\">Enron Emails Dataset</a>. To read all our text and build our <strong>corpus</strong>, we simply need to recursively iterate through the directory of the Enron emails dataset and read the files in it. The files are formatted as emails (with headers), but we will ignore that for now unless that turns into an issue (keeping it simple first).</p>\n<pre><code class=\"language-javascript\">// These functions limit the simultaneous reading of files to prevent exhausting system resouce limits\nconst limit = limitFunction(100);\nasync function limitedReadFile(path) {\n  return limit(() =&gt; fs.readFile(path, 'utf8'));\n}\n\nasync function* readFilesRecursively(dir) {\n  const entries = await fs.readdir(dir, { withFileTypes: true });\n\n  for (const entry of entries) {\n    const fullPath = path.join(dir, entry.name);\n    if (await entry.isDirectory()) {\n      yield* readFilesRecursively(fullPath); // Recurse into subdirectory\n    } else if (entry.isFile()) {\n      const contents = await limitedReadFile(fullPath);\n      yield [fullPath, contents];\n    }\n  }\n}\n\n(async () =&gt; {\n  for await (const [ filepath, contents ] of readFilesRecursively(dirPath)) {\n    // DO something with the filepath and the contents of the file\n  }\n})();\n\n</code></pre>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h3>Data Cleanup and Preprocessing</h3>\n<p>Data is rarely clean. Common issues faced with search: weird characters, weird spacing, case folding, plenty of Unicode shenanigans (it’s a story for another day), different language formats, and so much more. In this article, we will use <strong>Unicode normalization</strong> and a few <strong>regular expressions</strong> to significantly clean up our data.</p>\n"
+    },
+    {
+      "cell_type": "raw",
+      "source": "(() => {\n    return {\n        tool: 'code',\n        props: {\n            defaultSource: `// https://unicode.org/reports/tr15/\nfunction preprocess(string) {\n  return string\n    .normalize('NFD')                       // Normalization form, canonical decomposition\n    // Remove: marks / diacritics, emoji modifiers, punctuation, ZWJ\n    .replace(/(\\\\p{M}|\\\\p{Emoji_Modifier}|\\\\p{P}|\\\\p{Sc}|\\\\p{Join_Control})/gu, '')\n    .replace(/(\\\\p{Emoji})/gu, ' $1 ')       // put spaces around emojis so we treat them as words\n    .replace(/\\\\p{White_Space}/gu, ' ')      // transform whitespace to spaces\n    .replace(/(\\\\p{Ll})(\\\\p{Lu})/gu, '$1 $2') // split camelCase\n    .replace(/(\\\\p{N})(\\\\p{L})/gu, '$1 $2')   // split number followed by word without space\n    .replace(/(\\\\p{L})(\\\\p{N})/gu, '$1 $2')   // split word followed by number without space\n    .replace(/\\\\s+/gu, ' ')                  // remove extra whitespace between\n    .toLowerCase();                         // make all text lowercase\n}\n\nconst input = 'résumé İSTANBUL ﬁancée 𝟙𝟚𝟛 ½ ¾ ¼ 👩‍🚀🏾🏳️‍🌈🚴🏽‍♂️✌🏿 search2023update multi-word—hyphenated excessive spaces FULLWIDTHＴＥＸＴ 𝒞𝒽𝑒𝓂𝒾𝒸𝒶𝓁 مَرْحَبًا 中文测试 💖✨Unicode✨💖 Hello👩‍💻World 2023年最新情報 परीक्षण προγραμματισμός доброе утро गणना123शब्द '\n\nconsole.log('Before: ', input);\nconsole.log('After: ', preprocess(input));\n`,\n            autorun: true,\n            header: false,\n        }\n    }\n})()"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h3>Next, Lets Tokenize our Cleaned Data</h3>\n<blockquote>\n<p>What is a <strong>Token</strong>? Tokens are chunks of text which we treat as a single unit - a word, for example. If a document is a Lego castle, each brick used to build that castle is a token.</p>\n</blockquote>\n<p>In this article, tokens will be characters separated by spaces. In lamen terms, a word.</p>\n"
+    },
+    {
+      "cell_type": "raw",
+      "source": "(() => {\n    return {\n        tool: 'code',\n        props: {\n            defaultSource: `const input = 'hello, world! lorem ipsum';\nconsole.log(JSON.stringify(tokenize(input)));\n\nfunction tokenize(string) {\n  return string\n    .split(' ')\n    .filter(str => str && str.length > 0);\n}\n`,\n            autorun: true,\n            header: false,\n        }\n    }\n})()"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h3>Putting it all Together</h3>\n"
+    },
+    {
+      "cell_type": "raw",
+      "source": "(() => {\n    return {\n        tool: 'code',\n        props: {\n            defaultSource: `const input = 'résumé İSTANBUL ﬁancée 𝟙𝟚𝟛 ½ ¾ ¼ 👩‍🚀🏾🏳️‍🌈🚴🏽‍♂️✌🏿 search2023update multi-word—hyphenated excessive spaces FULLWIDTHＴＥＸＴ 𝒞𝒽𝑒𝓂𝒾𝒸𝒶𝓁 مَرْحَبًا 中文测试 💖✨Unicode✨💖 Hello👩‍💻World 2023年最新情報 परीक्षण προγραμματισμός доброе утро गणना123शब्द '\n\nconsole.log('Before: ', input);\nconsole.log('Trans: ', preprocess(input));\nconsole.log('Word list:', tokenize(preprocess(input)));\n\nfunction preprocess(string) {\n  return string\n    .normalize('NFD')                       // Normalization form, canonical decomposition\n    // Remove: marks / diacritics, emoji modifiers, punctuation, ZWJ\n    .replace(/(\\\\p{M}|\\\\p{Emoji_Modifier}|\\\\p{P}|\\\\p{Sc}|\\\\p{Join_Control})/gu, '')\n    .replace(/(\\\\p{Emoji})/gu, ' $1 ')       // put spaces around emojis so we treat them as words\n    .replace(/\\\\p{White_Space}/gu, ' ')      // transform whitespace to spaces\n    .replace(/(\\\\p{Ll})(\\\\p{Lu})/gu, '$1 $2') // split camelCase\n    .replace(/(\\\\p{N})(\\\\p{L})/gu, '$1 $2')   // split number followed by word without space\n    .replace(/(\\\\p{L})(\\\\p{N})/gu, '$1 $2')   // split word followed by number without space\n    .replace(/\\\\s+/gu, ' ')                  // remove extra whitespace between\n    .toLowerCase();                         // make all text lowercase\n}\n\nfunction tokenize(string) {\n  return string\n    .split(' ')\n    .filter(str => str && str.length > 0);\n}`,\n            autorun: true,\n            header: false,\n        }\n    }\n})()"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2><a href=\"/blog/search-engine-3\">Next: We Implement a Reverse Index and Search it</a></h2>\n"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.13.1"
+    },
+    "img": {},
+    "pageinfo": {
+      "root": "deep-dive",
+      "name": "search-engines",
+      "page": 2,
+      "author": "yash101",
+      "title": "Search Engines - a Beginner-Friendly Deep Dive",
+      "subtitle": "Data acquisition, normalization, cleaning and tokenization",
+      "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+      "publishedOn": "2025-02-07T00:00:00.277Z",
+      "isPublished": true
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "additionalRawHtml": "\n<style type=\"text/css\">\nmjx-container[jax=\"SVG\"] > svg {\n  display: inline;\n  z-index: 0;\n  max-width: 100%;\n  overflow-x: auto;\n}\n\nmjx-container[jax=\"SVG\"] {\n  direction: ltr;\n}\n\nmjx-container[jax=\"SVG\"] > svg {\n  overflow: visible;\n  min-height: 1px;\n  min-width: 1px;\n}\n\nmjx-container[jax=\"SVG\"] > svg a {\n  fill: blue;\n  stroke: blue;\n}\n\nmjx-assistive-mml {\n  position: absolute !important;\n  top: 0px;\n  left: 0px;\n  clip: rect(1px, 1px, 1px, 1px);\n  padding: 1px 0px 0px 0px !important;\n  border: 0px !important;\n  display: block !important;\n  width: auto !important;\n  overflow: hidden !important;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\nmjx-assistive-mml[display=\"block\"] {\n  width: 100% !important;\n}\n\nmjx-container[jax=\"SVG\"][display=\"true\"] {\n  display: block;\n  text-align: center;\n  margin: 1em 0;\n}\n\nmjx-container[jax=\"SVG\"][display=\"true\"][width=\"full\"] {\n  display: flex;\n}\n\nmjx-container[jax=\"SVG\"][justify=\"left\"] {\n  text-align: left;\n}\n\nmjx-container[jax=\"SVG\"][justify=\"right\"] {\n  text-align: right;\n}\n\ng[data-mml-node=\"merror\"] > g {\n  fill: red;\n  stroke: red;\n}\n\ng[data-mml-node=\"merror\"] > rect[data-background] {\n  fill: yellow;\n  stroke: none;\n}\n\ng[data-mml-node=\"mtable\"] > line[data-line], svg[data-table] > g > line[data-line] {\n  stroke-width: 70px;\n  fill: none;\n}\n\ng[data-mml-node=\"mtable\"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {\n  stroke-width: 70px;\n  fill: none;\n}\n\ng[data-mml-node=\"mtable\"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {\n  stroke-dasharray: 140;\n}\n\ng[data-mml-node=\"mtable\"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {\n  stroke-linecap: round;\n  stroke-dasharray: 0,140;\n}\n\ng[data-mml-node=\"mtable\"] > g > svg {\n  overflow: visible;\n}\n\n[jax=\"SVG\"] mjx-tool {\n  display: inline-block;\n  position: relative;\n  width: 0;\n  height: 0;\n}\n\n[jax=\"SVG\"] mjx-tool > mjx-tip {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n\nmjx-tool > mjx-tip {\n  display: inline-block;\n  padding: .2em;\n  border: 1px solid #888;\n  font-size: 70%;\n  background-color: #F8F8F8;\n  color: black;\n  box-shadow: 2px 2px 5px #AAAAAA;\n}\n\ng[data-mml-node=\"maction\"][data-toggle] {\n  cursor: pointer;\n}\n\nmjx-status {\n  display: block;\n  position: fixed;\n  left: 1em;\n  bottom: 1em;\n  min-width: 25%;\n  padding: .2em .4em;\n  border: 1px solid #888;\n  font-size: 90%;\n  background-color: #F8F8F8;\n  color: black;\n}\n\nforeignObject[data-mjx-xml] {\n  font-family: initial;\n  line-height: normal;\n  overflow: visible;\n}\n\nmjx-container[jax=\"SVG\"] path[data-c], mjx-container[jax=\"SVG\"] use[data-c] {\n  stroke-width: 3;\n}\n\n</style>\n    "
+}

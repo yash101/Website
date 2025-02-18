@@ -1,0 +1,63 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "source": "<p>In high throughput systems, persistence can be a major bottleneck, not just NIC performance or serialization overhead.</p>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<img alt=\"AI-generated cool looking image\" src=\"attachment:1e9bc345-3848-4018-9935-b4afd791c200.png\" class=\"w-full\" />"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<p>In high-throughput data systems, the primary limiter isn’t always network bandwidth or CPU cycles—it’s often persistence. But what is <em>“persistence”</em>?</p>\n<p>Traditionally, most would consider <em>persistence</em> as disk storage or another type of non-voltatile storage. However, that is just one form of persistence.</p>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2><a href=\"https://en.wikipedia.org/wiki/Transmission_Control_Protocol\">TCP - Transmission Control Protocol</a></h2>\n<p>The internet is practically built on top of <em>TCP</em>. The reason why is simple. But why don’t we use UDP (User datagram protocol) more often? There is a tradeoff to be made between what you get and what you don’t get in both.</p>\n<p>TCP works through a three way handshake to synchronize both ends of the connection. Both ends of the connection must maintain local state to effectively communicate.</p>\n<!-- So let's map out the pros and cons of both:\n\n![TCP vs IP](attachment:341f28b1-74b5-46a0-8dde-df65727a6c73.png)\n\nTCP is **stateful**, meaning that both the sender and receiver need to maintain state to synchronize with each other. -->"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.13.1"
+    },
+    "img": {
+      "1e9bc345-3848-4018-9935-b4afd791c200.png": {
+        "width": 1787,
+        "height": 794
+      },
+      "341f28b1-74b5-46a0-8dde-df65727a6c73.png": {
+        "width": 465,
+        "height": 545
+      }
+    },
+    "pageinfo": {
+      "root": "blog",
+      "author": "yash101",
+      "name": "persistence-in-networks",
+      "page": 1,
+      "title": "Networks - Persistence",
+      "subtitle": "Persistence is often the major bottleneck in network performance",
+      "lastModifiedOn": "2025-01-29T20:56:17.277Z",
+      "publishedOn": "2030-01-29T20:56:17.277Z",
+      "isPublished": true
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "additionalRawHtml": "\n<style type=\"text/css\">\nmjx-container[jax=\"SVG\"] > svg {\n  display: inline;\n  z-index: 0;\n  max-width: 100%;\n  overflow-x: auto;\n}\n\nmjx-container[jax=\"SVG\"] {\n  direction: ltr;\n}\n\nmjx-container[jax=\"SVG\"] > svg {\n  overflow: visible;\n  min-height: 1px;\n  min-width: 1px;\n}\n\nmjx-container[jax=\"SVG\"] > svg a {\n  fill: blue;\n  stroke: blue;\n}\n\nmjx-assistive-mml {\n  position: absolute !important;\n  top: 0px;\n  left: 0px;\n  clip: rect(1px, 1px, 1px, 1px);\n  padding: 1px 0px 0px 0px !important;\n  border: 0px !important;\n  display: block !important;\n  width: auto !important;\n  overflow: hidden !important;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\nmjx-assistive-mml[display=\"block\"] {\n  width: 100% !important;\n}\n\nmjx-container[jax=\"SVG\"][display=\"true\"] {\n  display: block;\n  text-align: center;\n  margin: 1em 0;\n}\n\nmjx-container[jax=\"SVG\"][display=\"true\"][width=\"full\"] {\n  display: flex;\n}\n\nmjx-container[jax=\"SVG\"][justify=\"left\"] {\n  text-align: left;\n}\n\nmjx-container[jax=\"SVG\"][justify=\"right\"] {\n  text-align: right;\n}\n\ng[data-mml-node=\"merror\"] > g {\n  fill: red;\n  stroke: red;\n}\n\ng[data-mml-node=\"merror\"] > rect[data-background] {\n  fill: yellow;\n  stroke: none;\n}\n\ng[data-mml-node=\"mtable\"] > line[data-line], svg[data-table] > g > line[data-line] {\n  stroke-width: 70px;\n  fill: none;\n}\n\ng[data-mml-node=\"mtable\"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {\n  stroke-width: 70px;\n  fill: none;\n}\n\ng[data-mml-node=\"mtable\"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {\n  stroke-dasharray: 140;\n}\n\ng[data-mml-node=\"mtable\"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {\n  stroke-linecap: round;\n  stroke-dasharray: 0,140;\n}\n\ng[data-mml-node=\"mtable\"] > g > svg {\n  overflow: visible;\n}\n\n[jax=\"SVG\"] mjx-tool {\n  display: inline-block;\n  position: relative;\n  width: 0;\n  height: 0;\n}\n\n[jax=\"SVG\"] mjx-tool > mjx-tip {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n\nmjx-tool > mjx-tip {\n  display: inline-block;\n  padding: .2em;\n  border: 1px solid #888;\n  font-size: 70%;\n  background-color: #F8F8F8;\n  color: black;\n  box-shadow: 2px 2px 5px #AAAAAA;\n}\n\ng[data-mml-node=\"maction\"][data-toggle] {\n  cursor: pointer;\n}\n\nmjx-status {\n  display: block;\n  position: fixed;\n  left: 1em;\n  bottom: 1em;\n  min-width: 25%;\n  padding: .2em .4em;\n  border: 1px solid #888;\n  font-size: 90%;\n  background-color: #F8F8F8;\n  color: black;\n}\n\nforeignObject[data-mjx-xml] {\n  font-family: initial;\n  line-height: normal;\n  overflow: visible;\n}\n\nmjx-container[jax=\"SVG\"] path[data-c], mjx-container[jax=\"SVG\"] use[data-c] {\n  stroke-width: 3;\n}\n\n</style>\n    "
+}

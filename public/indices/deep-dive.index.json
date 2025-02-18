@@ -1,0 +1,111 @@
+{
+  "base": "deep-dive",
+  "config": {
+    "menu": "Deep Dives",
+    "type": "Blog",
+    "articlesInMenu": true,
+    "title": "Deep Dives by Yash"
+  },
+  "articles": [
+    {
+      "name": "networks",
+      "pages": [
+        {
+          "nbPath": "notebooks/blogs/networks.nb",
+          "pageNumber": 1,
+          "title": "Networks",
+          "published": false,
+          "publishedOn": "2030-01-29T20:56:17.277Z",
+          "lastModifiedOn": "2025-01-29T20:56:17.277Z",
+          "subtitle": "A gentle introduction and dive into the deep end",
+          "authors": "yash101",
+          "hero": "<p>The internet is all around us. How does it work? How do computers talk to each other?</p>\n"
+        }
+      ],
+      "hero": "<p>The internet is all around us. How does it work? How do computers talk to each other?</p>\n",
+      "lastModifiedOn": null,
+      "lastPublishedOn": null,
+      "firstPublishedOn": null
+    },
+    {
+      "name": "search-engines",
+      "pages": [
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine.nb",
+          "pageNumber": 1,
+          "title": "Search Engines - a Beginner-Friendly Deep Dive",
+          "published": true,
+          "publishedOn": "2025-02-07T00:00:00.277Z",
+          "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+          "subtitle": "Learn how search engines work and attempt to build your own!",
+          "authors": "yash101"
+        },
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine-2.nb",
+          "pageNumber": 2,
+          "title": "Search Engines - a Beginner-Friendly Deep Dive",
+          "published": true,
+          "publishedOn": "2025-02-07T00:00:00.277Z",
+          "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+          "subtitle": "Data acquisition, normalization, cleaning and tokenization",
+          "authors": "yash101"
+        },
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine-3.nb",
+          "pageNumber": 3,
+          "title": "Search Engines - a Beginner-Friendly Deep Dive",
+          "published": true,
+          "publishedOn": "2025-02-07T00:00:00.277Z",
+          "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+          "subtitle": "Indexing and searching, a naïve approach",
+          "authors": "yash101"
+        },
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine-4.nb",
+          "pageNumber": 4,
+          "title": "Search Engines - a Beginner-Friendly Deep Dive",
+          "published": true,
+          "publishedOn": "2025-02-07T00:00:00.277Z",
+          "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+          "subtitle": "Workshop 1 - Reverse Index",
+          "authors": "yash101"
+        },
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine-7.nb",
+          "pageNumber": 4,
+          "title": "Search Engines - a Beginner-Friendly Deep Dive",
+          "published": false,
+          "publishedOn": "2025-02-07T00:00:00.277Z",
+          "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+          "subtitle": "Workshop 1 - Reverse Index",
+          "authors": "yash101",
+          "hero": "<p>empty</p>\n"
+        },
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine-5.nb",
+          "pageNumber": 5,
+          "title": "Search Engines - a Beginner-Friendly Deep Dive",
+          "published": true,
+          "publishedOn": "2025-02-07T00:00:00.277Z",
+          "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+          "subtitle": "Workshop 1 - Reverse Index (Solution)",
+          "authors": "yash101"
+        },
+        {
+          "nbPath": "notebooks/blogs/search-engine/search-engine-6.nb",
+          "pageNumber": 6,
+          "title": "Building a Search Engine",
+          "published": true,
+          "publishedOn": "2025-02-09T20:56:17.277Z",
+          "lastModifiedOn": "2025-02-09T20:56:17.277Z",
+          "subtitle": "Term-frequency Optimization & Zipf's Law",
+          "authors": "yash101"
+        }
+      ],
+      "hero": "<p>Search engines are ubiquitous. Google, Bing, Yahoo, you name it, all of these are internet-wide search engines. Even your favorite social media platforms have a search functionality. How do they work? How can we build our own? And how can we build a search engine which is cheap and easy to run?</p>\n",
+      "lastModifiedOn": "2025-02-09T20:56:17.277Z",
+      "lastPublishedOn": "2025-02-09T20:56:17.277Z",
+      "firstPublishedOn": "2025-02-07T00:00:00.277Z"
+    }
+  ]
+}

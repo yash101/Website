@@ -1,0 +1,66 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "source": "<p>Search engines are ubiquitous. Google, Bing, Yahoo, you name it, all of these are internet-wide search engines. Even your favorite social media platforms have a search functionality. How do they work? How can we build our own? And how can we build a search engine which is cheap and easy to run?</p>\n<p>In the previous section, you built implemented an index and search functionality of a reverse index. In this section, you will find my solution.</p>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h1>Workshop 1 Solution - Implement a Reverse Index</h1>\n<p>Search engines are ubiquitous. Google, Bing, Yahoo, you name it, all of these are internet-wide search engines. Even your favorite social media platforms have a search functionality. How do they work? How can we build our own? And how can we build a search engine which is cheap and easy to run?</p>\n<p>In the previous section, you built implemented an index and search functionality of a reverse index. In this section, you will find my solution.</p>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2>Chapters 📚</h2>\n<ol>\n<li><a href=\"/blog/search-engine\">Introduction to the Search Problem</a></li>\n<li><a href=\"/blog/search-engine-2\">Data acquisition, normalization and cleaning</a></li>\n<li><a href=\"/blog/search-engine-3\">Reverse Index and Search</a></li>\n<li><a href=\"/blog/search-engine-4\">Workshop - Build a Search Engine</a></li>\n<li><a href=\"/blog/search-engine-5\"><strong>Workshop - Build a Search Engine (solution)</strong></a></li>\n<li><a href=\"/blog/search-engine-6\">Token-frequency optimization and Zipf’s law</a></li>\n</ol>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2>Workshop 🧐</h2>\n<p>Find the solution to the workshop below.</p>\n"
+    },
+    {
+      "cell_type": "raw",
+      "source": "(() => {\n    return {\n        tool: 'code',\n        props: {\n            defaultSource: `class SearchEngine {\n  constructor() {\n    this.idx = new Map();\n  }\n\n  preprocess(string) {\n    return string\n      .normalize('NFKC')                       // Normalization form, compatibility decomposition followed by canonical composition\n      .normalize('NFD')                        // Normalization form, canonical decomposition\n      .replace(/(\\\\p{M}|\\\\p{Emoji_Modifier}|\\\\p{P}\\\\p{Sc}\\\\p{Join_Control})/gu, '')  // Remove: marks / diacritics, emoji modifiers, punctuation\n      .replace(/(\\\\p{Emoji_Presentation}|\\\\p{Extended_Pictographic})/gu, ' $1 ')  // put spaces around emojis so we treat them as words\n      .replace(/\\\\p{White_Space}/gu, ' ')       // transform whitespace to spaces\n      .replace(/(\\\\p{Ll})(\\\\p{Lu})/gu, '$1 $2')  // split camelCase\n      .replace(/(\\\\p{N})(\\\\p{L})/gu, '$1 $2')    // split number followed by word without space\n      .replace(/(\\\\p{L})(\\\\p{N})/gu, '$1 $2')    // split word followed by number without space\n      // Replace special characters with spaces\n      .replace(/(\\\\.|\\\\\\\\|\\\\+|\\\\*|\\\\?|\\\\[|\\\\]|\\\\^|\\\\$|\\\\(|\\\\)|\\\\{|\\\\}|\\\\=|\\\\!|\\\\<|\\\\>|\\\\||\\\\:|\\\\-|\\\\/|,|_|#|\\`|'|\"|~|@|%|&)/g, ' ')\n      .replace(/\\\\s+/gu, ' ')                   // remove extra whitespace between\n      .toLowerCase();                          // make all text lowercase\n  }\n  \n  tokenize(string) {\n    return string\n      .split(' ')\n      .filter(str => str && str.length > 0);\n  }\n\n  query(searchQuery) {\n    if (!searchQuery || searchQuery === '') {\n      this.printResults(searchQuery, []);\n    }\n  \n    const tokens = new Set(this.tokenize(this.preprocess(searchQuery)));\n    const unrankedResults = new Map();\n\n    for (const token of tokens) {\n      const hits = this.idx.get(token) || [];\n      for (const hit of hits) {\n        const current = unrankedResults.get(hit) || 0;\n        unrankedResults.set(hit, current + 1);\n      }\n    }\n  \n    // Find the results, sort by highest hits first\n    const results = Array\n      .from(unrankedResults.entries())\n      .sort((a, b) => b[1] - a[1])\n    \n    this.printResults(searchQuery, results);\n  }\n\n  printResults(query, results) {\n    console.log('Query: ', query, ' results: ', results.length);\n    results = results.slice(0, Math.min(results.length, 5));\n    for (const result of results) {\n      console.log('Hits: ', result[1], ' document: ', result[0]);\n    }\n\n    console.log(' ');\n  }\n\n  index(text, uri) {\n    // Build a forward index from the document\n    const tokens = this.tokenize(this.preprocess(text));\n    const forwardIndex = new Set();\n    for (const token of tokens) {\n      forwardIndex.add(token);\n    }\n\n    // Update the reverse index with all of our tokens\n    for (const token of forwardIndex) {\n      const entry = this.idx.get(token);\n      if (entry) {\n        entry.push(uri);\n      } else {\n        this.idx.set(token, [ uri ]);\n      }\n    }\n  }\n\n  getIdx() {\n    return this.idx;\n  }\n}\n\n(() => {\n  const searchEngine = new SearchEngine();\n\n  // Fetch Aesop's fables\n  fetch('http://localhost:3000/objects/aesop-fables.json')\n    .then(response => response.json())\n    .then(corpus => {\n      for (const story of corpus) {\n        searchEngine.index(story.text, story.title);\n      }\n    })\n    .then(() => {\n      // Try searching\n      searchEngine.query('wolf');\n      searchEngine.query('cat');\n      searchEngine.query('dog jumped over wolf and fox');\n      searchEngine.query('cat at the mouse then the dog barked at the cat');\n    })\n    .catch(error => {\n      console.error('An error ocurred: ', error);\n    });\n})();\n`,\n            autorun: true,\n            header: false,\n        }\n    }\n})()"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2>Expected Output ✅</h2>\n<pre><code>Query:  wolf  results:  24\nHits:  2  document:  The Kid and the Wolf\nHits:  2  document:  The Wolf and the Lion\nHits:  1  document:  The Wolf And The Lamb\nHits:  1  document:  The Kingdom of the Lion\nHits:  1  document:  The Wolf and the Crane\n \nQuery:  cat  results:  6\nHits:  1  document:  The Cat and the Cock\nHits:  1  document:  The Cat and the Birds\nHits:  1  document:  The Mice in Council\nHits:  1  document:  The Cat and the Mice\nHits:  1  document:  The Eagle, the Cat, and the Wild Sow\n \nQuery:  dog jumped over wolf and fox  results:  298\nHits:  5  document:  The Fox and the Monkey\nHits:  5  document:  The Kid and the Wolf\nHits:  4  document:  The Lion, the Wolf, and the Fox\nHits:  4  document:  The Wolf and the Lion\nHits:  4  document:  The Fox and the Lion\n \nQuery:  cat at the mouse then the dog barked at the cat  results:  306\nHits:  4  document:  The Wolf and the Lion\nHits:  3  document:  The Cat and the Birds\nHits:  3  document:  The Mice in Council\nHits:  3  document:  The Cat and the Mice\nHits:  3  document:  The Eagle, the Cat, and the Wild Sow\n</code></pre>\n"
+    },
+    {
+      "cell_type": "markdown",
+      "source": "<h2>Next: Upcoming</h2>\n"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.13.1"
+    },
+    "img": {},
+    "pageinfo": {
+      "root": "deep-dive",
+      "name": "search-engines",
+      "page": 5,
+      "author": "yash101",
+      "isPublished": true,
+      "title": "Search Engines - a Beginner-Friendly Deep Dive",
+      "subtitle": "Workshop 1 - Reverse Index (Solution)",
+      "lastModifiedOn": "2025-02-07T20:56:17.277Z",
+      "publishedOn": "2025-02-07T00:00:00.277Z"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "additionalRawHtml": "\n<style type=\"text/css\">\nmjx-container[jax=\"SVG\"] > svg {\n  display: inline;\n  z-index: 0;\n  max-width: 100%;\n  overflow-x: auto;\n}\n\nmjx-container[jax=\"SVG\"] {\n  direction: ltr;\n}\n\nmjx-container[jax=\"SVG\"] > svg {\n  overflow: visible;\n  min-height: 1px;\n  min-width: 1px;\n}\n\nmjx-container[jax=\"SVG\"] > svg a {\n  fill: blue;\n  stroke: blue;\n}\n\nmjx-assistive-mml {\n  position: absolute !important;\n  top: 0px;\n  left: 0px;\n  clip: rect(1px, 1px, 1px, 1px);\n  padding: 1px 0px 0px 0px !important;\n  border: 0px !important;\n  display: block !important;\n  width: auto !important;\n  overflow: hidden !important;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\nmjx-assistive-mml[display=\"block\"] {\n  width: 100% !important;\n}\n\nmjx-container[jax=\"SVG\"][display=\"true\"] {\n  display: block;\n  text-align: center;\n  margin: 1em 0;\n}\n\nmjx-container[jax=\"SVG\"][display=\"true\"][width=\"full\"] {\n  display: flex;\n}\n\nmjx-container[jax=\"SVG\"][justify=\"left\"] {\n  text-align: left;\n}\n\nmjx-container[jax=\"SVG\"][justify=\"right\"] {\n  text-align: right;\n}\n\ng[data-mml-node=\"merror\"] > g {\n  fill: red;\n  stroke: red;\n}\n\ng[data-mml-node=\"merror\"] > rect[data-background] {\n  fill: yellow;\n  stroke: none;\n}\n\ng[data-mml-node=\"mtable\"] > line[data-line], svg[data-table] > g > line[data-line] {\n  stroke-width: 70px;\n  fill: none;\n}\n\ng[data-mml-node=\"mtable\"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {\n  stroke-width: 70px;\n  fill: none;\n}\n\ng[data-mml-node=\"mtable\"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {\n  stroke-dasharray: 140;\n}\n\ng[data-mml-node=\"mtable\"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {\n  stroke-linecap: round;\n  stroke-dasharray: 0,140;\n}\n\ng[data-mml-node=\"mtable\"] > g > svg {\n  overflow: visible;\n}\n\n[jax=\"SVG\"] mjx-tool {\n  display: inline-block;\n  position: relative;\n  width: 0;\n  height: 0;\n}\n\n[jax=\"SVG\"] mjx-tool > mjx-tip {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n\nmjx-tool > mjx-tip {\n  display: inline-block;\n  padding: .2em;\n  border: 1px solid #888;\n  font-size: 70%;\n  background-color: #F8F8F8;\n  color: black;\n  box-shadow: 2px 2px 5px #AAAAAA;\n}\n\ng[data-mml-node=\"maction\"][data-toggle] {\n  cursor: pointer;\n}\n\nmjx-status {\n  display: block;\n  position: fixed;\n  left: 1em;\n  bottom: 1em;\n  min-width: 25%;\n  padding: .2em .4em;\n  border: 1px solid #888;\n  font-size: 90%;\n  background-color: #F8F8F8;\n  color: black;\n}\n\nforeignObject[data-mjx-xml] {\n  font-family: initial;\n  line-height: normal;\n  overflow: visible;\n}\n\nmjx-container[jax=\"SVG\"] path[data-c], mjx-container[jax=\"SVG\"] use[data-c] {\n  stroke-width: 3;\n}\n\n</style>\n    "
+}

@@ -1,0 +1,68 @@
+{
+  "base": "blog",
+  "config": {
+    "menu": "Blog",
+    "type": "Blog",
+    "articlesInMenu": true,
+    "title": "Foo + Bar"
+  },
+  "articles": [
+    {
+      "name": "test-notebook",
+      "pages": [
+        {
+          "nbPath": "notebooks/test-notebook.nb",
+          "pageNumber": 1,
+          "title": "short title",
+          "published": true,
+          "publishedOn": "2025-02-09T20:56:17.277Z",
+          "lastModifiedOn": "2025-02-09T20:56:17.277Z",
+          "subtitle": "some more details, in title format",
+          "authors": []
+        }
+      ],
+      "hero": "<p>hello world</p>\n",
+      "lastModifiedOn": "2025-02-09T20:56:17.277Z",
+      "lastPublishedOn": "2025-02-09T20:56:17.277Z",
+      "firstPublishedOn": "2025-02-09T20:56:17.277Z"
+    },
+    {
+      "name": "art-of-reading-documentation",
+      "pages": [
+        {
+          "nbPath": "notebooks/blogs/art-of-reading-documentation.nb",
+          "pageNumber": 1,
+          "title": "The Art of Reading Docs",
+          "published": true,
+          "publishedOn": "2050-01-29T20:56:17.277Z",
+          "lastModifiedOn": "2025-01-29T20:56:17.277Z",
+          "subtitle": "How to read docs? Learn from my two-step approach",
+          "authors": "yash101"
+        }
+      ],
+      "hero": "<p>How do you read docs? I have no clue.</p>\n<p>Read my two-step approach to reading docs.</p>\n",
+      "lastModifiedOn": "2025-01-29T20:56:17.277Z",
+      "lastPublishedOn": "2050-01-29T20:56:17.277Z",
+      "firstPublishedOn": "2050-01-29T20:56:17.277Z"
+    },
+    {
+      "name": "persistence-in-networks",
+      "pages": [
+        {
+          "nbPath": "notebooks/blogs/persistence-in-networks.nb",
+          "pageNumber": 1,
+          "title": "Networks - Persistence",
+          "published": true,
+          "publishedOn": "2030-01-29T20:56:17.277Z",
+          "lastModifiedOn": "2025-01-29T20:56:17.277Z",
+          "subtitle": "Persistence is often the major bottleneck in network performance",
+          "authors": "yash101"
+        }
+      ],
+      "hero": "<p>In high throughput systems, persistence can be a major bottleneck, not just NIC performance or serialization overhead.</p>\n",
+      "lastModifiedOn": "2025-01-29T20:56:17.277Z",
+      "lastPublishedOn": "2030-01-29T20:56:17.277Z",
+      "firstPublishedOn": "2030-01-29T20:56:17.277Z"
+    }
+  ]
+}

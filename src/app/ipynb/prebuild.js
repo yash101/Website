@@ -29,7 +29,7 @@ async function run() {
       console.log(`Building ${nbInputPath} => ${nbOutputPath}`);
 
       try {
-          await ensureDirectoryExists(nbOutputDir);
+        await ensureDirectoryExists(nbOutputDir);
 
         // Preprocess the jupyter notebook
         const nbInputFile = await fs.readFile(nbInputPath, 'utf8');

@@ -1,0 +1,22 @@
+{
+  "roots": {
+    "pages": {
+      "menu": "Pages",
+      "type": "Pages",
+      "articlesInMenu": true,
+      "title": "Pages"
+    },
+    "deep-dive": {
+      "menu": "Deep Dives",
+      "type": "Blog",
+      "articlesInMenu": true,
+      "title": "Deep Dives by Yash"
+    },
+    "blog": {
+      "menu": "Blog",
+      "type": "Blog",
+      "articlesInMenu": true,
+      "title": "Foo + Bar"
+    }
+  }
+}

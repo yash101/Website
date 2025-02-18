@@ -1,0 +1,30 @@
+{
+  "base": "pages",
+  "config": {
+    "menu": "Pages",
+    "type": "Pages",
+    "articlesInMenu": true,
+    "title": "Pages"
+  },
+  "articles": [
+    {
+      "name": "about-me",
+      "pages": [
+        {
+          "nbPath": "notebooks/pages/about-me.nb",
+          "pageNumber": 6,
+          "title": "About Me",
+          "published": true,
+          "publishedOn": "2025-02-03T04:57:57.694Z",
+          "lastModifiedOn": "2025-02-03T04:57:57.694Z",
+          "subtitle": "Hi, I'm Yash!",
+          "authors": "yash101"
+        }
+      ],
+      "hero": "<p>Hi, I’m Yash!</p>\n",
+      "lastModifiedOn": "2025-02-03T04:57:57.694Z",
+      "lastPublishedOn": "2025-02-03T04:57:57.694Z",
+      "firstPublishedOn": "2025-02-03T04:57:57.694Z"
+    }
+  ]
+}
