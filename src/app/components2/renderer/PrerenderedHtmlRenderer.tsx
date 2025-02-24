@@ -1,11 +1,10 @@
-import { ImageMetadata, Notebook } from "app/ipynb/notebook";
 import parse, { DOMNode, domToReact } from "html-react-parser";
 import Image from 'next/image';
 import Link from 'next/link';
 import { SiteArticle } from "notebook/types";
 import { maxImageWidth } from "site-config";
 
-function replace(node: DOMNode, index: number, notebook: SiteArticle) {
+function replace(node: DOMNode, index: number, notebook: Notebook) {
   if (node.type !== 'tag')
     return undefined;
 

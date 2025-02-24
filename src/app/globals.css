@@ -39,7 +39,7 @@ body {
     --sidebar-primary-foreground: hsl(0, 0%, 98%);
     --sidebar-accent: hsl(240, 4.8%, 95.9%);
     --sidebar-accent-foreground: hsl(240, 5.9%, 10%);
-    --sidebar-border: hsl(220, 13%, 91%);
+    --sidebar-border: #303943;
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
     --topnav-background: #ECEEF1;
     --topnav-foreground: #303943;
@@ -47,7 +47,7 @@ body {
     --topnav-primary-foreground: hsl(0, 0%, 98%);
     --topnav-accent: hsl(240, 4.8%, 95.9%);
     --topnav-accent-foreground: hsl(240, 5.9%, 10%);
-    --topnav-border: hsl(220, 13%, 91%);
+    --topnav-border: #303943;
     --topnav-ring: hsl(217.2, 91.2%, 59.8%);
   }
   .dark {

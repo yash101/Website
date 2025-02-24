@@ -1,8 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+console.log('hdfkjsfdhglkfsdg');
+
+
 import { ensureDirectoryExists, findFiles } from "./FileSystemUtils.js";
-import { Prerenderer } from "./Prerenderer.js";
+import { Prerenderer } from "./Prerenderer.ts";
 import { Indexer } from './Indexer.js';
 
 const NOTEBOOKS_PATH = path.join(process.cwd(), 'notebooks');

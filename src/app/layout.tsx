@@ -11,6 +11,7 @@ import { site_description, site_title } from 'site-config';
 import { PUBLIC_PATH } from './util/Constants';
 import { AppSidebar } from '@/components/app-sidebar';
 import { getSidebarContent } from './util/IndexUtils';
+import { TopNavItems } from './NavLinks';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const sidebarContent = await getSidebarContent();
+
   return (
     <html lang="en">
       <body
@@ -43,8 +45,7 @@ export default async function RootLayout({
         >
           <Menu
             sidebar={sidebarContent}
-            topnav={null}
-            footernav={null}
+            topnav={<TopNavItems />}
           />
           <div id="content-main">
             {children}

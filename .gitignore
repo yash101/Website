@@ -52,5 +52,6 @@ build files
 /public/indices
 /public/objects
 /public/index.json
+/public/notebooks
 
 .ipynb_checkpoints/

@@ -2,13 +2,12 @@
 
 import { SquareMinus, SquarePlus, TableOfContents } from "lucide-react";
 import Link from "next/link";
-import { SitePage } from "notebook/types";
 import { useState } from "react";
 import { Link as LinkIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-
+import { SIPage } from "notebook/types";
 interface MultiPageLinkListProps {
-  pages: SitePage[];
+  pages: SIPage[];
   baseuri: string;
 }
 

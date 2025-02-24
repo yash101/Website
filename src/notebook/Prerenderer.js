@@ -1,102 +1,77 @@
 import toml from 'toml';
 import probe from 'probe-image-size';
 import { createMathjaxInstance, mathjax } from '@mdit/plugin-mathjax';
-import { markdownitConfig, mathjaxConfig } from '../site-config.ts';
+import { markdownitConfig, mathjaxConfig } from '../site-config.js';
 import markdownit from 'markdown-it';
 import { full as emoji } from 'markdown-it-emoji';
 import hljs from 'highlight.js';
 import ConvertAnsiToHtml from 'ansi-to-html';
-
 export class Prerenderer {
-  constructor(notebook) {
-    this.notebook = notebook;
-    this.attachments = [];
-
-    this.mathjax = createMathjaxInstance({
-      ...mathjaxConfig,
-    });
-
-    this.markdownIt = markdownit({
-      ...markdownitConfig,
-      highlight: (str, lang) => {
-        const language = lang || '';
-        return this.syntaxHighlightCode(str, language).value
-      },
-    })
-      .use(emoji)
-      .use(mathjax, this.mathjax);
-    
-    this.convertAnsiToHtml = new ConvertAnsiToHtml({
-      newline: true,
-      escapeXML: true,
-      stream: false,
-    });
-  }
-
-  async prerender() {
-    if (!this.notebook) {
-      this.notebook = {};
+    constructor(notebook) {
+        this.notebook = notebook;
+        this.attachments = [];
+        this.mathjax = createMathjaxInstance(Object.assign({}, mathjaxConfig));
+        this.markdownIt = markdownit(Object.assign(Object.assign({}, markdownitConfig), { highlight: (str, lang) => {
+                const language = lang || '';
+                return this.syntaxHighlightCode(str, language).code;
+            } }))
+            .use(emoji)
+            .use(mathjax, this.mathjax);
+        this.convertAnsiToHtml = new ConvertAnsiToHtml({
+            newline: true,
+            escapeXML: true,
+            stream: false,
+        });
     }
-
-    this.notebook.cells = this.notebook.cells || [];
-    this.notebook.metadata = this.notebook.metadata || {};
-    this.notebook.metadata.img = {};
-
-    if (this.notebook.cells.length < 2) {
-      throw new Error('Compilation failed - Notebook is missing metadata and hero sections');
-    }
-
-    if (this.notebook.nbformat !== 4) {
-      throw new Error('Compilation failed - Notebook nbformat version not supported, wanted 4, got ', this.notebook.metadata.nbformat);
-    }
-
-    const metadataCell = this.notebook.cells.shift();
-    const metadata = await this.getMetadataFromFirstCell(metadataCell);
-    metadata.publishedOn = new Date(metadata.publishedOn || '');
-    metadata.lastModifiedOn = new Date(metadata.lastModifiedOn || '');
-
-    this.notebook.metadata.pageinfo = {
-      ...(this.notebook.metadata.pageinfo || {}),
-      ...metadata
-    };
-
-    this.metadata = this.notebook.metadata.pageinfo;
-
-    for (const cell of this.notebook.cells) {
-      cell.source = (cell.source || [])
-        .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
-        .join('\n') || '';
-
-      for (const attachment of this.extractAttachments(cell.attachments || {})) {
-        this.attachments.push(attachment);
-        const { name, data, metadata } = attachment;
-
-        if (metadata) {
-          this.notebook.metadata.img[name] = {
-            width: metadata.width,
-            height: metadata.height,
-          };
+    async prerender() {
+        var _a;
+        this.notebook.cells = this.notebook.cells || [];
+        this.notebook.metadata = this.notebook.metadata || {};
+        this.notebook.metadata.img = {};
+        if (this.notebook.cells.length < 2) {
+            throw new Error('Compilation failed - Notebook is missing metadata and hero sections');
         }
-      }
-
-      const renderers = {
-        raw: cell => this.rawRenderer(cell),
-        markdown: cell => this.mdRenderer(cell),
-        code: cell => this.codeRenderer(cell),
-      };
-
-      // prerender the cell
-      renderers[cell.cell_type || 'raw'](cell);
-
-      // GC unnecessary data
-      delete cell.id;
-      delete cell.execution_count;
-      delete cell.attachments;
-      delete cell.metadata;
-    }
-
-    const mjxStyles = this.mathjax.outputStyle();
-    this.notebook.additionalRawHtml = `
+        if (this.notebook.nbformat !== 4) {
+            throw new Error('Compilation failed - Notebook nbformat version not supported, wanted 4, got ', this.notebook.metadata.nbformat);
+        }
+        delete this.notebook.nbformat;
+        delete this.notebook.nbformat_minor;
+        const metadataCell = this.notebook.cells.shift();
+        const metadata = await this.getMetadataFromFirstCell(metadataCell);
+        metadata.publishedOn = new Date(metadata.publishedOn || '');
+        metadata.lastModifiedOn = new Date(metadata.lastModifiedOn || '');
+        this.notebook.metadata.pageinfo = Object.assign(Object.assign({}, (((_a = this.notebook.metadata) === null || _a === void 0 ? void 0 : _a.pageinfo) || {})), metadata);
+        this.metadata = this.notebook.metadata.pageinfo;
+        for (const cell of this.notebook.cells) {
+            cell.source = (cell.source || [])
+                .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+                .join('\n') || '';
+            for (const attachment of this.extractAttachments(cell.attachments || {})) {
+                this.attachments.push(attachment);
+                const { name, metadata } = attachment;
+                if (metadata) {
+                    this.notebook.metadata.img[name] = {
+                        width: metadata.width,
+                        height: metadata.height,
+                    };
+                }
+            }
+            const renderers = {
+                raw: cell => this.rawRenderer(cell),
+                markdown: cell => this.mdRenderer(cell),
+                code: cell => this.codeRenderer(cell),
+            };
+            // prerender the cell
+            renderers[cell.cell_type || 'raw'](cell);
+            // GC unnecessary data
+            delete cell.id;
+            delete cell.execution_count;
+            delete cell.attachments;
+            delete cell.metadata;
+        }
+        // TODO: experiment if moving custom CSS rules to after {mjxStyles} improves the rendering
+        const mjxStyles = this.mathjax.outputStyle();
+        this.notebook.additionalRawHtml = `
 <style type="text/css">
 mjx-container[jax="SVG"] > svg {
   display: inline;
@@ -107,100 +82,98 @@ mjx-container[jax="SVG"] > svg {
 ${mjxStyles}
 </style>
     `;
-  }
-
-  async getMetadataFromFirstCell(cell) {
-    // Normalize line endings
-    const text = (cell.output || cell.source || [])
-      .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
-      .join('\n');
-
-    try {
-      return JSON.parse(text);
-    } catch (e) {
-      try {
-        return toml.parse(text);
-      } catch (e) {
-        throw new Error('Compilation failed - unknown format of metadata cell');
-      }
+        // **** Disable these lines if you want to keep the kernel and language info in the metadata ****
+        // GC unnecessary data
+        delete this.notebook.metadata.kernelspec;
+        delete this.notebook.metadata.language_info;
     }
-  }
-
-  * extractAttachments(attachments) {
-    for (const [ name, attachment ] of Object.entries(attachments)) {
-      const mime = Object.keys(attachment)[0];
-      const data = Buffer.from(attachment[mime], 'base64');
-      const metadata = probe.sync(data);
-
-      yield { name, data, metadata };
+    async getMetadataFromFirstCell(cell) {
+        // Normalize line endings
+        const text = (cell.output || cell.source || [])
+            .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+            .join('\n');
+        try {
+            return JSON.parse(text);
+        }
+        catch (e) {
+            try {
+                return toml.parse(text);
+            }
+            catch (e) {
+                throw new Error('Compilation failed - unknown format of metadata cell');
+            }
+        }
     }
-  }
-
-  rawRenderer(cell) {
-  }
-
-  mdRenderer(cell) {
-    cell.source = this.markdownIt.render(cell.source);
-  }
-
-  codeRenderer(cell) {
-    let language = '';
-    try {
-      language = this.metadata.language_info.name || this.notebook.metadata.kernelspec.name || '';
-    } catch (__) { }
-
-    const rendered = this.syntaxHighlightCode(cell.source || '', language);
-    cell.source = rendered.code;
-    cell.metadata = {
-      ...(cell.metadata || {}),
-      language: rendered.language,
-    };
-    cell.outputs = cell.outputs || [];
-
-    for (const output of cell.outputs) {
-      if (output.output_type === 'error') {
-        output.traceback = (output.traceback || [])
-          .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
-          .map(line => this.convertAnsiToHtml.toHtml(line));
-      } else if (output.output_type === 'stream') {
-        output.text = (output.text || [])
-          .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
-          .map(line => this.convertAnsiToHtml.toHtml(line));
-      }
+    *extractAttachments(attachments) {
+        for (const [name, attachment] of Object.entries(attachments)) {
+            const mime = Object.keys(attachment)[0];
+            const data = Buffer.from(attachment[mime], 'base64');
+            const metadata = probe.sync(data);
+            yield { name, data, metadata };
+        }
     }
-  }
-
-  syntaxHighlightCode(str, lang) {
-    try {
-      const language = lang && hljs.getLanguage(lang) ? lang : null;
-      if (language) {
-        const highlighted = hljs.highlight(str, {
-          language: lang,
-          ignoreIllegals: true
-        });
-
+    rawRenderer(cell) {
+        return;
+    }
+    mdRenderer(cell) {
+        cell.source = this.markdownIt.render(cell.source);
+    }
+    codeRenderer(cell) {
+        let language = '';
+        try {
+            // @ts-ignore
+            language = this.notebook.metadata.lang ||
+                this.metadata['language_info'].name ||
+                this.notebook.metadata['kernelspec']['name'] || '';
+        }
+        catch (__) { }
+        if (!this.notebook.metadata.lang) {
+            this.notebook.metadata.lang = language;
+        }
+        const rendered = this.syntaxHighlightCode(cell.source || '', language);
+        cell.source = rendered.code;
+        cell.metadata = Object.assign(Object.assign({}, (cell.metadata || {})), { language: rendered.language });
+        cell.outputs = cell.outputs || [];
+        for (const output of cell.outputs) {
+            if (output.output_type === 'error') {
+                output.traceback = (output.traceback || [])
+                    .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+                    .map(line => this.convertAnsiToHtml.toHtml(line));
+            }
+            else if (output.output_type === 'stream') {
+                output.text = (output.text || [])
+                    .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
+                    .map(line => this.convertAnsiToHtml.toHtml(line));
+            }
+        }
+    }
+    syntaxHighlightCode(str, lang) {
+        try {
+            const language = lang && hljs.getLanguage(lang) ? lang : null;
+            if (language) {
+                const highlighted = hljs.highlight(str, {
+                    language: lang,
+                    ignoreIllegals: true
+                });
+                return {
+                    code: `<pre><code class="hljs">${highlighted.value}</code></pre>`,
+                    language
+                };
+            }
+        }
+        catch (__) { }
         return {
-          code: `<pre><code class="hljs">${highlighted.value}</code></pre>`,
-          language
+            code: `<pre><code class="hljs">${this.markdownIt.utils.escapeHtml(str)}</code></pre>`,
+            language: lang || ''
         };
-      }
-    } catch (__) { }
-
-    return {
-      code: `<pre><code class="hljs">${this.markdownIt.utils.escapeHtml(str)}</code></pre>`,
-      language: lang || ''
-    };
-  }
-
-  getNotebook() {
-    return this.notebook;
-  }
-
-  getAttachments() {
-    return this.attachments;
-  }
-
-  getHeroSection() {
-    return (this.notebook.cells[0] || {}).source || '';
-  }
+    }
+    getNotebook() {
+        return this.notebook;
+    }
+    getAttachments() {
+        return this.attachments;
+    }
+    getHeroSection() {
+        return (this.notebook.cells[0] || {}).source || '';
+    }
 }

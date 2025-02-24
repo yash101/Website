@@ -21,8 +21,7 @@ export type NavSection = {
 
 interface MenuProps {
   sidebar: SidebarContent;
-  topnav: React.FC;
-  footernav: React.FC;
+  topnav: React.ReactNode;
 }
 
 const navContentDefaultStyle: React.CSSProperties = {
@@ -34,7 +33,6 @@ const navContentDefaultStyle: React.CSSProperties = {
 const Menu: React.FunctionComponent<MenuProps> = ({
   sidebar,
   topnav,
-  footernav
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -44,7 +42,6 @@ const Menu: React.FunctionComponent<MenuProps> = ({
 
   const renderedSections = sidebar.roots.map((root, index) => {
     const {
-      name,
       href,
       title,
       children
@@ -54,7 +51,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({
       return (
         <li
           key={'navchild-' + cindex}
-          className='link text-ellipsis'
+          className='text-ellipsis block'
         >
           <Link
             href={child.href}
@@ -77,7 +74,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({
           href ?
             <Link
               href={href}
-              className='link'
+              className='link block'
             >
               <div className='link'>{title}</div>
             </Link> :
@@ -109,7 +106,9 @@ const Menu: React.FunctionComponent<MenuProps> = ({
           'xl:static',
           'xl:w-[350px]',
           'xl:mr-[1em]',
-          'print:hidden'
+          'print:hidden',
+          'border',
+          'border-r-sidebar-border'
         ].join(' ')}
         id={open ? 'nav-content-open' : 'nav-content-closed'}
         style={navContentDefaultStyle}
@@ -120,6 +119,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({
       <header
         className={[
           'fixed',
+          'print:static',
           'flex',
           'justify-between',
           'items-center',
@@ -127,7 +127,8 @@ const Menu: React.FunctionComponent<MenuProps> = ({
           'h-[4em]',
           'w-full',
           'top-0',
-          'border-b',
+          'border',
+          'border-b-topnav-border',
           'bg-topnav'
         ].join(' ')}
         style={{
