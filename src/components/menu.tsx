@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import './menu.css'
 import Link from "next/link";
 import { site_title } from "site-config";
+import { SidebarContent } from "app/util/IndexUtils";
 
 export type NavItem = {
   href: string;
@@ -19,7 +20,9 @@ export type NavSection = {
 }
 
 interface MenuProps {
-  sections: NavSection[];
+  sidebar: SidebarContent;
+  topnav: React.FC;
+  footernav: React.FC;
 }
 
 const navContentDefaultStyle: React.CSSProperties = {
@@ -28,37 +31,63 @@ const navContentDefaultStyle: React.CSSProperties = {
   zIndex: 999999,
 };
 
-const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
+const Menu: React.FunctionComponent<MenuProps> = ({
+  sidebar,
+  topnav,
+  footernav
+}) => {
   const [open, setOpen] = useState(false);
 
   const menuTriggerIcon = open ?
     <X width="32pt" height="32pt" /> :
     <MenuIcon width="32pt" height="32pt" />;
 
-  const renderedSections = sections.map(section => {
-    const links = section.items.map(item => {
+  const renderedSections = sidebar.roots.map((root, index) => {
+    const {
+      name,
+      href,
+      title,
+      children
+    } = root;
+
+    const childNodes = children.map((child, cindex) => {
       return (
-        <li key={item.href} className="my-[0.5em]">
+        <li
+          key={'navchild-' + cindex}
+          className='link text-ellipsis'
+        >
           <Link
-            href={item.href}
-            className="link text-slate-700 hover:text-slate-950 hover:dark:text-slate-100 dark:text-slate-50 underline block"
-            role="menuitem"
+            href={child.href}
+            className='link'
           >
-            {item.shortTitle}
+            {child.title}
           </Link>
         </li>
       );
     });
 
-    const header = <h2 className="text-4xl">{section.sectionHeader}</h2>
-    const optionalLink = section.sectionLink ?
-      <Link className="link" href={section.sectionLink}>{header}</Link> : header;
-
     return (
-      <section key={section.sectionHeader} className="my-[1em]">
-        {optionalLink}
-        <ul className="text-lg">{links}</ul>
-        <hr className="mt-[1em]" />
+      <section
+        key={'section-' + index}
+        className='pb-4'
+      >
+        <header
+          className='text-primary-foreground text-2xl'
+        >{
+          href ?
+            <Link
+              href={href}
+              className='link'
+            >
+              <div className='link'>{title}</div>
+            </Link> :
+            <h2>{title}</h2>
+        }</header>
+        <nav>
+          <ul>
+            {childNodes}
+          </ul>
+        </nav>
       </section>
     );
   });
@@ -71,7 +100,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           open ? 'block' : 'hidden',
           'fixed',
           'overflow-auto',
-          'bg-slate-100',
+          'bg-sidebar',
           'bottom-0',
           'w-[100%]',
           'p-[1em]',
@@ -80,7 +109,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           'xl:static',
           'xl:w-[350px]',
           'xl:mr-[1em]',
-          'print:hidden',
+          'print:hidden'
         ].join(' ')}
         id={open ? 'nav-content-open' : 'nav-content-closed'}
         style={navContentDefaultStyle}
@@ -99,10 +128,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
           'w-full',
           'top-0',
           'border-b',
-          'bg-slate-50',
-          'border-slate-600',
-          'dark:bg-slate-950',
-          'dark:border-slate-800',
+          'bg-topnav'
         ].join(' ')}
         style={{
           zIndex: 1000000,
@@ -110,17 +136,18 @@ const Menu: React.FunctionComponent<MenuProps> = ({ sections }) => {
       >
         <Button
           id={open ? 'hamburger-menu-icon-open' : 'hamburger-menu-icon-closed'}
-          className='xl:hidden text-slate-800 dark:text-slate-100'
+          className='xl:hidden'
           size="icon"
           onClick={() => setOpen(!open)}
           role="button"
           aria-label="Toggle menu"
+          variant='outline'
         >
           {menuTriggerIcon}
         </Button>
-        <Link href='/'>
-          <div className="transition-all duration-300 ease-in-out hover:underline hover:scale-105 text-4xl text-slate-800 dark:text-slate-100">{site_title}</div>
-        </Link>
+        <>
+          { topnav }
+        </>
       </header>
     </>
   );

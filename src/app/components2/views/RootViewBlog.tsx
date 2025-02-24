@@ -8,7 +8,6 @@ import { useState } from 'react';
 import BlogHeroLink from './BlogHeroLink';
 
 interface RootViewBlogProps {
-  // TODO: Define props type here
   index: SecondaryIndex;
 }
 
@@ -28,7 +27,9 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
   const [ sortOrder, setSortOrder ] = useState(SortOrder.Descending);
 
   const title = index.config.title || '';
-  const articles = index.articles.sort((a, b) => {
+  const articles = index.articles
+    .filter(article => article.pages.find(page => page.published))
+    .sort((a, b) => {
     let ca = null;
     let cb = null;
     
@@ -47,6 +48,8 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
         break;
     }
 
+    console.log('ca: ', ca, '; cb: ', cb);
+
     return (sortOrder === SortOrder.Ascending) ? ca - cb : cb - ca;
   });
 
@@ -59,44 +62,45 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
       >
         <h1>{title}</h1>
       </header>
-      <hr className='my-4' />
-      <section // Sorter
-        className=''
-      >
-        <div role='menubar' className='flex justify-end'>
-        <Select
-          defaultValue='lmo'
-          onValueChange={value => setSortBy(value as SortBy)}
-        >
-          <SelectTrigger className='w-[180px] bg-slate-100 p-4 hover:border-slate-950'>
-            <SelectValue placeholder='Sort By:' />
-          </SelectTrigger>
-          <SelectContent className='w-[180px] bg-slate-100 p-4'>
-            {
-              [
-                [ SortBy.LastModifiedOn, 'Last Modified' ],
-                [ SortBy.LastPublishedOn, 'Last Page Published' ],
-                [ SortBy.FirstPublishedOn, 'First Page Published' ]
-              ]
-                .map(([ value, label ]) => (
-                  <SelectItem
-                    value={value}
-                    key={value}
-                    className='hover:bg-slate-200 p-2 border-0'
-                  >{label}
-                  </SelectItem>
-                ))
-            }
-          </SelectContent>
-        </Select>
-        <Button
-          className='bg-slate-100 ml-4 border hover:border-slate-950'
-          onClick={() => setSortOrder(sortOrder === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending)}
-        >
-          {sortOrder === SortOrder.Ascending ? <ArrowUpWideNarrow /> : <ArrowDownWideNarrow />}
-        </Button>
-        </div>
-      </section>
+      {
+        articles.length > 1 && <>
+          <hr className='my-4' />
+          <section // Sorting hat
+            className=''
+          >
+            <div role='menubar' className='flex justify-end space-x-1'>
+            <Select
+              defaultValue={sortBy}
+              onValueChange={value => setSortBy(value as SortBy)}
+            >
+              <SelectTrigger className='w-[180px] hover:bg-accent'>
+                <SelectValue placeholder='Sort By:' />
+              </SelectTrigger>
+              <SelectContent className='w-[180px]'>{
+                [
+                  [ SortBy.LastModifiedOn, 'Last Modified' ],
+                  [ SortBy.LastPublishedOn, 'Last Page Published' ],
+                  [ SortBy.FirstPublishedOn, 'First Page Published' ]
+                ]
+                  .map(([ value, label ]) => (
+                    <SelectItem
+                      value={value}
+                      key={value}
+                    >{label}
+                    </SelectItem>
+                  ))
+              }</SelectContent>
+            </Select>
+            <Button
+              variant='outline'
+              onClick={() => setSortOrder(sortOrder === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending)}
+            >
+              {sortOrder === SortOrder.Ascending ? <ArrowUpWideNarrow /> : <ArrowDownWideNarrow />}
+            </Button>
+            </div>
+          </section>
+        </>
+      }
       <section // Articles
         className='mt-4'
       >
@@ -110,11 +114,16 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
           ))
         }
       </section>
-      <section // Pagination
-        className='mt-4'
-      >
-        {/* TODO */null}
-      </section>
+      {
+        // TODO: Pagination
+        articles.length > 10 && <>
+          <section // Pagination
+            className='mt-4'
+          >
+            {/* TODO */null}
+          </section>
+        </>
+      }
     </article>
   )
 }

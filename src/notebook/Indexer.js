@@ -37,6 +37,7 @@ export class Indexer {
       const publishedOn = pageinfo.publishedOn || new Date();
       const lastModifiedOn = pageinfo.lastModifiedOn || new Date();
       const subtitle = pageinfo.subtitle || '';
+      const id = root + '.' + name;
       let authors = pageinfo.authors || pageinfo.author || [];
 
       if (authors instanceof String) {
@@ -61,6 +62,7 @@ export class Indexer {
       if (!article) {
         article = {
           name,
+          id,
           pages: [],
         };
         articles.push(article);

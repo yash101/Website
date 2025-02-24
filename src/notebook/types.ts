@@ -66,3 +66,8 @@ export type NotebookCell = {
   source: string;
   outputs: CodeCellOutput[];
 }
+
+export type Notebook = {
+  cells: NotebookCell[];
+  metadata: object;
+}
