@@ -1,7 +1,6 @@
-import fs from 'fs/promises';
 import path from 'path';
-import { PUBLIC_PATH } from './Constants';
-import { SIFormat } from 'notebook/types';
+import { PIFormat, SIFormat } from 'notebook/types';
+import { readJsonFile } from './FsUtil';
 
 export interface SidebarItem {
   name?: string;
@@ -14,22 +13,8 @@ export interface SidebarContent {
   roots: SidebarItem[];
 }
 
-export async function readJson(path: string): Promise<object | null> {
-  return await fs
-    .readFile(path, 'utf8')
-    .then(JSON.parse)
-    .catch(err => {
-      console.error(`Error reading JSON file at ${path}: ${err}`);
-      return null;
-    });
-}
-
-export function getPathInPublic(...paths: string[]): string {
-  return path.join(PUBLIC_PATH, ...paths);
-}
-
 export async function getSidebarContent(): Promise<SidebarContent> {
-  const mainRoot = await readJson(getPathInPublic('index.json'));
+  const mainRoot = await readJsonFile<PIFormat>('index.json');
 
   if (!mainRoot) {
     return {
@@ -40,7 +25,7 @@ export async function getSidebarContent(): Promise<SidebarContent> {
   const children = await Promise.all(Object.entries(mainRoot)
     .map(async ([root, filename]) => {
       const index: SIFormat =
-        await readJson(getPathInPublic('indices', filename)) as SIFormat;
+        await readJsonFile<SIFormat>(path.join('indices', filename));
 
       if (!index) {
         return null;

@@ -37,7 +37,9 @@ const BlogHeroLink: React.FC<BlogHeroLinkProps> = ({ article, root }) => {
             'hover:shadow-xl',
           ].join(' ')}
         >
-          <h1 className='font-bold text-2xl px-2'>{ pages[0].title }</h1>
+          <Link href={`/${root}/${article.name}`}>
+            <h1 className='font-bold text-2xl px-2 focus:underline hover:underline'>{ pages[0].title }</h1>
+          </Link>
           <section className="py-4 px-2 flex flex-row space-x-4">
             <div className="text-1xl text-slate-700">{
               Array

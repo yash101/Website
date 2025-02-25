@@ -2,9 +2,10 @@ import fs from 'fs/promises';
 import path from "path";
 
 import { PUBLIC_PATH } from "app/util/Constants";
-import { SIFormat } from 'notebook/types';
+import { PIFormat, SIFormat } from 'notebook/types';
 
 import RootViewBlog from 'app/components/views/RootViewBlog';
+import { readJsonFile } from 'app/util/FsUtil';
 
 interface RootPageProps {
   params: Promise<{
@@ -20,10 +21,8 @@ const RootPage: React.FC<RootPageProps> = async ({ params }) => {
 };
 
 export async function generateStaticParams() {
-  const posts = await fs.readFile(path.join(PUBLIC_PATH, '/index.json'), 'utf8').then(JSON.parse);
-  const ret = Object
-    .keys(posts)
-    .map(root => ({ root }));
+  const roots: PIFormat = await readJsonFile<PIFormat>('index.json');
+  const ret = Object.keys(roots).map(root => ({ root }));
 
   return ret;
 }

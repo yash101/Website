@@ -26,7 +26,9 @@ const IntraPagePagination: React.FC<IntraPagePaginationProps> = ({
         'active:text-popover-foreground',
         'h-full',
         'items-center',
-        'border'
+        'border',
+        'transition-all',
+        'transition-all-300',
       ].join(' ')}
       href={href}
     >

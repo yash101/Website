@@ -1,7 +1,6 @@
-import { SIArticle } from "notebook/types";
+import { SIArticle, SIPage } from "notebook/types";
 
-export function getPreviousAndNextPage(article: SIArticle, currentPage: number) {
-  const pages = article.pages;
+export function getPreviousAndNextPage(pages: SIPage[], currentPage: number) {
   const currentIndex = pages.findIndex(
     page => String(page.pageNumber) === String(currentPage));
 

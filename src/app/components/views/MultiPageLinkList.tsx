@@ -1,6 +1,6 @@
 'use client';
 
-import { SquareMinus, SquarePlus, TableOfContents } from "lucide-react";
+import { SquareMinus, SquarePlus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Link as LinkIcon } from "lucide-react";
@@ -34,45 +34,36 @@ const MultiPageLinkList: React.FC<MultiPageLinkListProps> = ({
           'text-left'
         ].join(' ')}
       >
-        <div
-          className='flex flex-row justify-between'
-        >
+        <div className='flex flex-row justify-between'>
           <p>📖 Jump to page</p>
           { !isOpen ? <SquarePlus /> : <SquareMinus />}
         </div>
       </button>
+      { isOpen && <Separator /> }
       {
-        isOpen && <Separator />
-      }
-      {
-        isOpen && <nav
-        >
-          <ul>
-            {
-              pages.map((page, index) => (
-                <li
-                  key={'page-' + index}
-                >
-                  <Link
-                    href={`${baseuri}/${page.pageNumber}`}
-                    className={[
-                      'link',
-                      'py-2',
-                      'px-[2em]',
-                      'block',
-                      'hover:bg-popover',
-                      'hover:text-popover-foreground',
-                      'active:bg-popover',
-                      'hover:text-popover-foreground',
-                      'block',
-                      'w-full',
-                      'rounded-lg',
-                    ].join(' ')}
-                  ><LinkIcon className='inline-block' size={'12pt'} /> {page.subtitle}</Link>
-                </li>
-              ))
-            }
-          </ul>
+        isOpen && <nav>
+          <ul>{
+            pages.map((page, index) => (
+              <li key={'page-' + index}>
+                <Link
+                  href={`${baseuri}/${page.pageNumber}`}
+                  className={[
+                    'link',
+                    'py-2',
+                    'px-[2em]',
+                    'block',
+                    'hover:bg-popover',
+                    'hover:text-popover-foreground',
+                    'active:bg-popover',
+                    'hover:text-popover-foreground',
+                    'block',
+                    'w-full',
+                    'rounded-lg',
+                  ].join(' ')}
+                ><LinkIcon className='inline-block' size={'12pt'} /> {page.subtitle}</Link>
+              </li>
+            ))
+          }</ul>
         </nav>
       }
     </section>

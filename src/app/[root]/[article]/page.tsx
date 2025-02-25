@@ -13,6 +13,8 @@ import PrerenderedHtmlRenderer from 'app/components/renderer/PrerenderedHtmlRend
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
+import Head from 'next/head';
+import { site_title } from 'site-config';
 
 interface ArticleBasePageProps {
   params: Promise<{
@@ -29,11 +31,17 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
     const article = index.articles.find(a => a.name === params.article);
     const page: PPPage = await readJsonFile<PPPage>(article.pages[0].nbPath);
 
+    const publishedPages = article.pages.filter(p => p.published);
     const authors = Array.isArray(article.pages[0].authors) ?
       article.pages[0].authors.join(', ') : article.pages[0].authors;
+    
 
     return (
       <article className='space-y-4 ml-2 py-4'>
+        <Head>
+          <title>{article.pages[0].title} - {site_title}</title>
+          <meta name='description' content={article.pages[0].subtitle} />
+        </Head>
         <ArticlePageHeader
           title={article.pages[0].title || 'untitled'}
           subtitle={article.pages[0].subtitle || 'untitled'}
@@ -49,7 +57,7 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
         {
           article.pages.length > 1 && (
             <TableOfContents
-              links={article.pages.map(page => ({
+              links={publishedPages.map(page => ({
                 href: `/${params.root}/${params.article}/${page.pageNumber}`,
                 text: page.subtitle,
                 pageNumber: page.pageNumber,

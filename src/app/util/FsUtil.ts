@@ -1,7 +1,9 @@
 import fs from 'fs/promises';
-import { PPPage } from 'notebook/types';
-import { getPathInPublic } from './IndexUtils';
+import path from 'path';
+
 import { notFound } from 'next/navigation';
+
+import { PUBLIC_PATH } from './Constants';
 
 // Utility function for file reading
 export async function readJsonFile<T>(filepath: string): Promise<T> {
@@ -11,4 +13,8 @@ export async function readJsonFile<T>(filepath: string): Promise<T> {
     console.error(`Error reading file ${filepath}:`, error);
     notFound();
   }
+}
+
+export function getPathInPublic(...paths: string[]): string {
+  return path.join(PUBLIC_PATH, ...paths);
 }

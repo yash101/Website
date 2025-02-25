@@ -1,6 +1,7 @@
 import path from "path";
 
 import { Metadata } from 'next'
+import Head from "next/head";
 import { notFound } from "next/navigation";
 import { ErrorBoundary } from 'react-error-boundary';
 import { MoveLeft, MoveRight } from 'lucide-react';
@@ -16,6 +17,7 @@ import PrerenderedHtmlRenderer from 'app/components/renderer/PrerenderedHtmlRend
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
+import { site_title } from "site-config";
 
 /**
  * Generates metadata for an article page.
@@ -84,7 +86,6 @@ interface ArticlePageProps {
 
 const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   const params = await props.params;
-
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
 
@@ -103,10 +104,15 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
     page.metadata.pageinfo['authors'].join(', ') :
     page.metadata.pageinfo.authors as string;
   
-  const pagination = getPreviousAndNextPage(article, params.pageno);
+  const publishedPages = article.pages.filter(page => page.published);
+  const pagination = getPreviousAndNextPage(publishedPages, params.pageno);
 
   return (
     <article className='space-y-4 mx-2 py-4'>
+      <Head>
+        <title>{pageIndex.subtitle} - {site_title}</title>
+        <meta name='description' content={pageIndex.subtitle} />
+      </Head>
       <ArticlePageHeader
         title={pageIndex.title}
         subtitle={pageIndex.subtitle}
@@ -120,7 +126,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
       </section>
       <Separator />
       <TableOfContents
-        links={article.pages.map((page, index) => ({
+        links={publishedPages.map(page => ({
           href: `/${params.root}/${params.article}/${page.pageNumber}`,
           text: page.subtitle,
           pageNumber: page.pageNumber,
