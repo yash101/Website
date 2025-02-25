@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { PUBLIC_PATH } from './Constants';
-import { SecondaryIndex, SiteStructureFormat } from 'notebook/types';
+import { SIFormat } from 'notebook/types';
 
 export interface SidebarItem {
   name?: string;
@@ -39,18 +39,18 @@ export async function getSidebarContent(): Promise<SidebarContent> {
 
   const children = await Promise.all(Object.entries(mainRoot)
     .map(async ([root, filename]) => {
-      const index: SecondaryIndex =
-        await readJson(getPathInPublic('indices', filename)) as SecondaryIndex;
+      const index: SIFormat =
+        await readJson(getPathInPublic('indices', filename)) as SIFormat;
 
       if (!index) {
         return null;
       }
 
       const content: SidebarItem = {
-        name: index.config.menu || '',
-        title: index.config.title,
+        name: index.config.menuTitle || '',
+        title: index.config.pageTitle,
         href: `/${root}`,
-        children: (index.config.articlesInMenu === true) ? index.articles
+        children: (index.config.displayArticlesInMenu === true) ? index.articles
           .filter(article => {
             return article.pages.filter(page => page.published).length > 0;
           })

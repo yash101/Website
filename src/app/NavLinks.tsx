@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site_title } from "site-config";
 
-const TopNavItems: React.FC = async () => (
+export const TopNavItems: React.FC = async () => (
   <>
     <Link
       href='/'
@@ -10,8 +10,6 @@ const TopNavItems: React.FC = async () => (
   </>
 );
 
-const FooterLinks: React.FC = async () => (
+export const FooterLinks: React.FC = async () => (
   <></>
 );
-
-export { TopNavItems, FooterLinks };

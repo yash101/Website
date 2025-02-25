@@ -1,22 +1,22 @@
 {
   "roots": {
     "pages": {
-      "menu": "Pages",
-      "type": "Pages",
-      "articlesInMenu": true,
-      "title": "Pages"
+      "menuTitle": "Pages",
+      "rootType": "Pages",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Pages"
     },
     "deep-dive": {
-      "menu": "Deep Dives",
-      "type": "Blog",
-      "articlesInMenu": true,
-      "title": "Deep Dives by Yash"
+      "menuTitle": "Deep Dives",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Deep Dives by Yash"
     },
     "blog": {
-      "menu": "Blog",
-      "type": "Blog",
-      "articlesInMenu": true,
-      "title": "Foo + Bar"
+      "menuTitle": "Blog",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Foo + Bar"
     }
   }
 }

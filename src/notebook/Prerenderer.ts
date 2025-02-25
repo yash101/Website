@@ -7,6 +7,7 @@ import { full as emoji } from 'markdown-it-emoji';
 import hljs from 'highlight.js';
 import ConvertAnsiToHtml from 'ansi-to-html';
 import { NotebookUnderTransformation, NUTAttachment } from './types-internal.js';
+import { PageInfo } from './types.js';
 
 export class Prerenderer {
   notebook: NotebookUnderTransformation;
@@ -67,7 +68,7 @@ export class Prerenderer {
       ...metadata
     };
 
-    this.metadata = this.notebook.metadata.pageinfo as object;
+    this.metadata = this.notebook.metadata.pageinfo as PageInfo;
 
     for (const cell of this.notebook.cells) {
       cell.source = (cell.source as string[] || [])

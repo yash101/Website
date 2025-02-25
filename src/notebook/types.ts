@@ -10,6 +10,19 @@ export type SiteRootConfig = {
   displayArticlesInMenu?: boolean;
 }
 
+export type PageInfo = {
+  root: string;
+  name: string;
+  page: number;
+  title: string;
+  subtitle: string;
+  isPublished: boolean;
+  author: string | string[];
+  lastModifiedOn: string | Date;
+  publishedOn: string | Date;
+  [entry: string]: unknown;
+}
+
 // ***** Rendered page types *****
 
 // *** Primary index (public/index.json) ***

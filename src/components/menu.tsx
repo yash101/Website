@@ -37,8 +37,8 @@ const Menu: React.FunctionComponent<MenuProps> = ({
   const [open, setOpen] = useState(false);
 
   const menuTriggerIcon = open ?
-    <X width="32pt" height="32pt" /> :
-    <MenuIcon width="32pt" height="32pt" />;
+    <X size='32pt' /> :
+    <MenuIcon size='32pt' />;
 
   const renderedSections = sidebar.roots.map((root, index) => {
     const {
@@ -123,7 +123,8 @@ const Menu: React.FunctionComponent<MenuProps> = ({
           'flex',
           'justify-between',
           'items-center',
-          'p-[1em]',
+          'py-2',
+          'px-4',
           'h-[4em]',
           'w-full',
           'top-0',
@@ -137,7 +138,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({
       >
         <Button
           id={open ? 'hamburger-menu-icon-open' : 'hamburger-menu-icon-closed'}
-          className='xl:hidden'
+          className='xl:hidden p-0'
           size="icon"
           onClick={() => setOpen(!open)}
           role="button"

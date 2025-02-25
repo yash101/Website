@@ -1,10 +1,10 @@
 import parse, { DOMNode, domToReact } from "html-react-parser";
 import Image from 'next/image';
 import Link from 'next/link';
-import { SiteArticle } from "notebook/types";
+import { PPImageMetadata, PPMetadata, PPPage } from "notebook/types";
 import { maxImageWidth } from "site-config";
 
-function replace(node: DOMNode, index: number, notebook: Notebook) {
+function replace(node: DOMNode, index: number, notebook: PPPage) {
   if (node.type !== 'tag')
     return undefined;
 
@@ -32,14 +32,13 @@ function replace(node: DOMNode, index: number, notebook: Notebook) {
 
       if (uri.includes('attachment:')) {
         const id = uri.substring('attachment:'.length);
-        uri = `/assets/${id}`;
+        uri = `/assets/attachments/${id}`;
   
-        const metadata: ImageMetadata | undefined =
-          (notebook?.metadata?.img as Record<string, ImageMetadata>)?.[id];
+        const metadata: PPImageMetadata | undefined = notebook.metadata.img[id];
 
         if (metadata) {
-          metadataRequestedDimensions.width = Number(metadata['width']);
-          metadataRequestedDimensions.height = Number(metadata['height']);          
+          metadataRequestedDimensions.width = Number(metadata.width);
+          metadataRequestedDimensions.height = Number(metadata.height);          
         }
       }
 
@@ -88,7 +87,7 @@ function replace(node: DOMNode, index: number, notebook: Notebook) {
 
 interface PrerenderedHtmlRendererProps {
   html: string;
-  notebook: SiteArticle;
+  notebook: PPPage;
 }
 
 /**
