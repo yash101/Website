@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Clipboard, Play, RefreshCw, SquareX, Trash } from "lucide-react";
 import LocalMonacoEditor from "./MonacoEditor";
 import ConvertAnsiToHtml from 'ansi-to-html';
-import { AnsiDisplay } from "components/AnsiDisplay";
+import { AnsiDisplay } from "components/utils/AnsiDisplay";
 
 type CodeRunnerProps = {
   defaultSource?: string,
@@ -124,7 +124,6 @@ const CodeRunner: React.FC<{
     }
 
     const w = JSON.stringify(window.location);
-    console.log(w);
     const workerSource = new Blob([`
       const location = ${w};
 

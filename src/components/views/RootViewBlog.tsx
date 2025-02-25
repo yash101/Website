@@ -3,12 +3,12 @@
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowDownWideNarrow, ArrowUpWideNarrow } from 'lucide-react';
-import { SecondaryIndex } from 'notebook/types';
+import { SIFormat } from 'notebook/types';
 import { useState } from 'react';
 import BlogHeroLink from './BlogHeroLink';
 
 interface RootViewBlogProps {
-  index: SecondaryIndex;
+  index: SIFormat;
 }
 
 enum SortBy {
@@ -26,7 +26,7 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
   const [ sortBy, setSortBy ] = useState(SortBy.LastModifiedOn);
   const [ sortOrder, setSortOrder ] = useState(SortOrder.Descending);
 
-  const title = index.config.title || '';
+  const title = index.config.pageTitle || '';
   const articles = index.articles
     .filter(article => article.pages.find(page => page.published))
     .sort((a, b) => {
@@ -47,8 +47,6 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
         cb = b.lastModifiedOn;
         break;
     }
-
-    console.log('ca: ', ca, '; cb: ', cb);
 
     return (sortOrder === SortOrder.Ascending) ? ca - cb : cb - ca;
   });

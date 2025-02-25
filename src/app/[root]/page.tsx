@@ -1,7 +1,8 @@
 import fs from 'fs/promises';
 import path from "path";
 import { PUBLIC_PATH } from "app/util/Constants";
-import RootViewBlog from 'app/components2/views/RootViewBlog';
+import RootViewBlog from 'components/views/RootViewBlog';
+import { SIFormat } from 'notebook/types';
 
 interface RootPageProps {
   params: Promise<{
@@ -11,9 +12,7 @@ interface RootPageProps {
 
 const RootPage: React.FC<RootPageProps> = async ({ params }) => {
   const { root } = (await params);
-  const rootIndex = await fs.readFile(path.join(PUBLIC_PATH, 'indices', `${root}.index.json`), 'utf8').then(JSON.parse);
-
-  const rootTitle: string = rootIndex['title'] || '';
+  const rootIndex: SIFormat = await fs.readFile(path.join(PUBLIC_PATH, 'indices', `${root}.index.json`), 'utf8').then(JSON.parse);
 
   return (<RootViewBlog index={rootIndex} />);
 };

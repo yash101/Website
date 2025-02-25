@@ -49,7 +49,7 @@ export async function getSidebarContent(): Promise<SidebarContent> {
       const content: SidebarItem = {
         name: index.config.menuTitle || '',
         title: index.config.pageTitle,
-        href: `/${root}`,
+        href: index.config.linkInMenu ? `/${root}` : null,
         children: (index.config.displayArticlesInMenu === true) ? index.articles
           .filter(article => {
             return article.pages.filter(page => page.published).length > 0;

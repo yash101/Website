@@ -3,8 +3,8 @@ import path from 'path';
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Footer from "components/footer";
-import Menu, { NavSection } from "components/Menu";
+import Footer from "components/views/footer";
+import Menu, { NavSection } from "components/views/Menu";
 import { NotebookIndex } from "./ipynb/notebook";
 import "./globals.css";
 import { site_description, site_title } from 'site-config';

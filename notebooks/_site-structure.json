@@ -4,15 +4,18 @@
       "menuTitle": "Pages",
       "rootType": "Pages",
       "displayArticlesInMenu": true,
-      "pageTitle": "Pages"
+      "pageTitle": "Pages",
+      "linkInMenu": false
     },
     "deep-dive": {
+      "linkInMenu": true,
       "menuTitle": "Deep Dives",
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "Deep Dives by Yash"
     },
     "blog": {
+      "linkInMenu": true,
       "menuTitle": "Blog",
       "rootType": "Blog",
       "displayArticlesInMenu": true,

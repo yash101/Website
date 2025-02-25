@@ -73,5 +73,13 @@ export const AnsiDisplay: React.FC<AnsiDisplayProps> = ({ text, file }) => {
   }
 
   // the html text is sanitized and escaped in `prerender.js` when it renders the ANSI text to HTML
-  return (<pre className={styles[file].join(' ')} dangerouslySetInnerHTML={{ __html: text }} />);
-}
+  return (
+    <pre className={
+        styles[file].join(' ')
+      }
+      dangerouslySetInnerHTML={{
+        __html: text
+      }}
+      style={{ paddingTop: 0, paddingBottom: 0 }}
+    />);
+};

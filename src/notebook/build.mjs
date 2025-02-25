@@ -1,9 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-console.log('hdfkjsfdhglkfsdg');
-
-
 import { ensureDirectoryExists, findFiles } from "./FileSystemUtils.js";
 import { Prerenderer } from "./Prerenderer.ts";
 import { Indexer } from './Indexer.js';

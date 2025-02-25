@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { MenuIcon, X } from "lucide-react";
 import React, { useState } from "react";
-import './menu.css'
 import Link from "next/link";
-import { site_title } from "site-config";
 import { SidebarContent } from "app/util/IndexUtils";
 
 export type NavItem = {

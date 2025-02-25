@@ -8,6 +8,7 @@ export type SiteRootConfig = {
   pageTitle: string;
   menuTitle: string;
   displayArticlesInMenu?: boolean;
+  linkInMenu: boolean;
 }
 
 export type PageInfo = {
