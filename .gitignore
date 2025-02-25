@@ -43,10 +43,8 @@ next-env.d.ts
 # Drawio
 *.bkp
 
-build files
+# build files
 /public/assets
-/public/ipynb_pp
-/public/ipynb_index.json
 /public/monaco
 /public/min-maps
 /public/indices
