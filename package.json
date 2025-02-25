@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node --loader ts-node/esm src/app/ipynb/prebuild.js",
+    "prebuild": "tsx src/notebook/build.mjs",
     "ci-build": "./ci.sh"
   },
   "engines": {

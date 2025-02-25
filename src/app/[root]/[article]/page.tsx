@@ -1,17 +1,18 @@
 import path from 'path';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { MoveRight } from 'lucide-react';
 
 import { Separator } from '@/components/ui/separator';
-import PrerenderedHtmlRenderer from 'components/renderer/PrerenderedHtmlRenderer';
-import TableOfContents from 'components/utils/TableOfContents';
-import ArticleMainPageRenderer from 'components/views/ArticleMainPageRenderer';
-import ArticlePageHeader from 'components/views/ArticlePageHeader';
 
 import { PIFormat, PPPage, SIFormat } from 'notebook/types';
 import { readJsonFile } from 'app/util/FsUtil';
-import IntraPagePagination from 'components/utils/IntraPagePagination';
-import { MoveRight } from 'lucide-react';
+
+import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
+import PrerenderedHtmlRenderer from 'app/components/renderer/PrerenderedHtmlRenderer';
+import TableOfContents from 'app/components/utils/TableOfContents';
+import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRenderer';
+import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 
 interface ArticleBasePageProps {
   params: Promise<{
@@ -48,10 +49,12 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
         {
           article.pages.length > 1 && (
             <TableOfContents
-              links={article.pages.map((page, index) => ({
+              links={article.pages.map(page => ({
                 href: `/${params.root}/${params.article}/${page.pageNumber}`,
                 text: page.subtitle,
+                pageNumber: page.pageNumber,
               }))}
+              currentPageNumber={article.pages[0].pageNumber}
             />
           )
         }

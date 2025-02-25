@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Clipboard, Play, RefreshCw, SquareX, Trash } from "lucide-react";
-import LocalMonacoEditor from "./MonacoEditor";
 import ConvertAnsiToHtml from 'ansi-to-html';
-import { AnsiDisplay } from "components/utils/AnsiDisplay";
+
+import LocalMonacoEditor from "./MonacoEditor";
+import { AnsiDisplay } from "app/components/utils/AnsiDisplay";
 
 type CodeRunnerProps = {
   defaultSource?: string,

@@ -52,7 +52,7 @@ export class Prerenderer {
     }
 
     if (this.notebook.nbformat !== 4) {
-      throw new Error('Compilation failed - Notebook nbformat version not supported, wanted 4, got ', this.notebook.metadata.nbformat);
+      throw new Error('Compilation failed - Notebook nbformat version not supported, wanted 4, got ' + this.notebook.metadata.nbformat);
     }
 
     delete this.notebook.nbformat;
@@ -164,7 +164,6 @@ ${mjxStyles}
   codeRenderer(cell) {
     let language = '';
     try {
-      // @ts-ignore
       language = this.notebook.metadata.lang ||
         this.metadata['language_info'].name ||
         this.notebook.metadata['kernelspec']['name'] || '';

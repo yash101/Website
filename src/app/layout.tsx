@@ -1,17 +1,14 @@
-import fs from 'fs/promises';
-import path from 'path';
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Footer from "components/views/footer";
-import Menu, { NavSection } from "components/views/Menu";
-import { NotebookIndex } from "./ipynb/notebook";
-import "./globals.css";
+
 import { site_description, site_title } from 'site-config';
-import { PUBLIC_PATH } from './util/Constants';
-import { AppSidebar } from '@/components/app-sidebar';
 import { getSidebarContent } from './util/IndexUtils';
 import { TopNavItems } from './NavLinks';
+
+import Menu from './components/views/Menu';
+import Footer from './components/views/footer';
+
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

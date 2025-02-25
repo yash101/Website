@@ -1,7 +1,9 @@
-import AccordionWidget from "components/embeds/Accordion";
-import CodeRunner from "components/embeds/CodeRunner/CodeRunner";
-import { PPPage, PPSection } from "notebook/types";
 import { Suspense } from "react";
+
+import { PPPage, PPSection } from "notebook/types";
+
+import AccordionWidget from "../embeds/Accordion";
+import CodeRunner from "../embeds/CodeRunner/CodeRunner";
 
 type EmbedProps = {
   tool: string;

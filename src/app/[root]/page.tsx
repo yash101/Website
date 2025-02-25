@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
 import path from "path";
+
 import { PUBLIC_PATH } from "app/util/Constants";
-import RootViewBlog from 'components/views/RootViewBlog';
 import { SIFormat } from 'notebook/types';
+
+import RootViewBlog from 'app/components/views/RootViewBlog';
 
 interface RootPageProps {
   params: Promise<{

@@ -1,19 +1,21 @@
-import { Metadata } from 'next'
 import path from "path";
-import { PIFormat, PPPage, SIFormat } from "notebook/types";
-import { Separator } from "@/components/ui/separator";
-import PrerenderedHtmlRenderer from "components/renderer/PrerenderedHtmlRenderer";
-import ArticleSubpageRenderer from "components/views/ArticleSubpageRenderer";
-import TableOfContents from "components/utils/TableOfContents";
+
+import { Metadata } from 'next'
 import { notFound } from "next/navigation";
 import { ErrorBoundary } from 'react-error-boundary';
-import { readJsonFile } from 'app/util/FsUtil';
-import ArticlePageHeader from 'components/views/ArticlePageHeader';
-import Link from 'next/link';
-import { getPreviousAndNextPage } from 'app/util/PaginationUtil';
-import { buttonVariants } from '@/components/ui/button';
-import IntraPagePagination from 'components/utils/IntraPagePagination';
 import { MoveLeft, MoveRight } from 'lucide-react';
+
+import { Separator } from "@/components/ui/separator";
+
+import { PIFormat, PPPage, SIFormat } from "notebook/types";
+import { readJsonFile } from 'app/util/FsUtil';
+import { getPreviousAndNextPage } from 'app/util/PaginationUtil';
+
+import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
+import PrerenderedHtmlRenderer from 'app/components/renderer/PrerenderedHtmlRenderer';
+import TableOfContents from 'app/components/utils/TableOfContents';
+import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer';
+import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 
 /**
  * Generates metadata for an article page.
@@ -96,14 +98,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   }
 
   const page = await readJsonFile<PPPage>(pageIndex.nbPath);
-  console.log(page.metadata.pageinfo.lastPublishedOn);
   
   const authors: string = Array.isArray(page.metadata.pageinfo['authors']) ?
     page.metadata.pageinfo['authors'].join(', ') :
     page.metadata.pageinfo.authors as string;
   
   const pagination = getPreviousAndNextPage(article, params.pageno);
-  console.log('paginaiton: ', pagination);
 
   return (
     <article className='space-y-4 mx-2 py-4'>
