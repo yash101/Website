@@ -32,11 +32,19 @@ const IntraPagePagination: React.FC<IntraPagePaginationProps> = ({
       ].join(' ')}
       href={href}
     >
-      {icon}
+      <div
+        className={[
+          'w-[36px]',
+          'flex',
+          iconPosition !== 'right' ? 'flex-row' : 'flex-row-reverse'
+        ].join(' ')}
+      >
+        {icon}
+      </div>
       <Separator orientation='vertical' />
-      <div>{text}</div>
-      { pretext && <Separator orientation='vertical' /> }
-      { pretext && <div>{pretext}</div> }
+      <div className="flex-grow">{text}</div>
+      { pretext && <Separator className='hidden md:block' orientation='vertical' /> }
+      { pretext && <div className='hidden md:block'>{pretext}</div> }
     </Link>
   )
 };

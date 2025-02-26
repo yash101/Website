@@ -121,10 +121,10 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         lastModifiedOn={page.metadata.pageinfo.lastModifiedOn as string}
       />
       <Separator />
-      <section>
+      {/* <section>
         <PrerenderedHtmlRenderer html={article.hero} notebook={null} />
       </section>
-      <Separator />
+      <Separator /> */}
       <TableOfContents
         links={publishedPages.map(page => ({
           href: `/${params.root}/${params.article}/${page.pageNumber}`,
@@ -144,8 +144,9 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         </ErrorBoundary>
       </section>
 
-      <section className='flex justify-between'>
-        <div className='md:w-[48%]'>
+
+      <section className='flex flex-col md:flex-row justify-between gap-4'>
+        <div className='flex-1'>
           {pagination.prev && (
             <IntraPagePagination
               href={`/${params.root}/${params.article}/${pagination.prev.pageNumber}`}
@@ -156,7 +157,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
             />
           )}
         </div>
-        <div className='mg:w-[48%] text-right'>
+        <div className='flex-1 text-right'>
           {pagination.next && (
             <IntraPagePagination
               href={`/${params.root}/${params.article}/${pagination.next.pageNumber}`}

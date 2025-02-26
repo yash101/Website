@@ -1,10 +1,13 @@
 import { Calendar, User, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+
+import { SIArticle, SIPage } from "notebook/types";
+
 import MultiPageLinkList from "./MultiPageLinkList";
 import PrerenderedHtmlRenderer from "../renderer/PrerenderedHtmlRenderer";
-import { SIArticle, SIPage } from "notebook/types";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 interface BlogHeroLinkProps {
   article: SIArticle;

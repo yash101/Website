@@ -15,6 +15,7 @@
     "node": ">=v22.13.0"
   },
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.17.6",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-collapsible": "^1.1.3",

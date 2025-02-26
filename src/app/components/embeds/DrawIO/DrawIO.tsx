@@ -1,5 +1,6 @@
 'use client';
 
+import ErrorView from "app/components/utils/Error";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DrawIOURL } from "site-config";
 
@@ -35,6 +36,7 @@ const DrawIO: React.FC<{
     noSaveBtn: '1',
     noExitBtn: '1',
     saveAndExit: '0',
+    offline: '1'
   });
 
   // Handle messages from drawio
@@ -66,7 +68,7 @@ const DrawIO: React.FC<{
         setError(e as Error);
       }
     };
-    fetchData();
+    setTimeout(fetchData, 1000);
   }, [xmlUri]);
 
   // Setup message listener
@@ -77,7 +79,11 @@ const DrawIO: React.FC<{
     };
   }, [handleMessage]);
 
-  return (
+  if (error) {
+    return ErrorView({ error });
+  }
+
+  return xmlData !== null ? (
     <iframe
       ref={iframeRef}
       src={`${baseUrl}?${params}`}
@@ -90,7 +96,7 @@ const DrawIO: React.FC<{
       style={{ height: height }}
       allowFullScreen
     />
-  );
-}
+  ) : (<p>Loading drawio diagram...</p>);
+};
 
 export default DrawIO;

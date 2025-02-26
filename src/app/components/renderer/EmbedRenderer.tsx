@@ -5,6 +5,7 @@ import { PPPage, PPSection } from "notebook/types";
 import AccordionWidget from "../embeds/Accordion";
 import CodeRunner from "../embeds/CodeRunner/CodeRunner";
 import DrawIO from "../embeds/DrawIO/DrawIO";
+import ExcalidrawEmbed from "../embeds/Excalidraw/Excalidraw";
 
 type EmbedProps = {
   tool: string;
@@ -42,10 +43,15 @@ const EmbedRenderer: React.FC<EmbedRendererProps> = (props) => {
       <Suspense>
         <DrawIO args={embedData.props} />
       </Suspense>
+    ),
+    'excalidraw': (
+      <Suspense>
+        <ExcalidrawEmbed args={embedData.props} />
+      </Suspense>
     )
   }
 
-  return tools[embedData.tool.toLowerCase()] || null;
+  return tools[embedData.tool.toLowerCase()] || <p>Unknown embed type {embedData.tool}</p>;
 }
 
 export default EmbedRenderer;
