@@ -1,13 +1,14 @@
-import fs from 'fs/promises';
-import path from 'path';
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Footer from "components/footer";
-import Menu, { NavSection } from "components/menu";
-import { NotebookIndex } from "./ipynb/notebook";
-import "./globals.css";
+
 import { site_description, site_title } from 'site-config';
+import { getSidebarContent } from './util/IndexUtils';
+import { TopNavItems } from './NavLinks';
+
+import Menu from './components/views/Menu';
+import Footer from './components/views/footer';
+
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,34 +30,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const indexFile = await fs.readFile(path.join(process.cwd(), 'public', 'ipynb_index.json'), 'utf8');
-  const index: NotebookIndex = JSON.parse(indexFile) as NotebookIndex;
-  
-  const navSections: NavSection[] = [
-    {
-      items: index
-        .notebooks
-        .filter(notebook => notebook.published && new Date(notebook.published) < new Date())
-        .filter(notebook => notebook.file.match(/^ipynb_pp\/pages\/.*.dnb$/))
-        .map(notebook => ({
-          href: `/pages/${notebook.slug}`,
-          shortTitle: notebook['shortTitle'] as string || notebook.title,
-        })),
-      sectionHeader: 'Pages'
-    },
-    {
-      items: index
-        .notebooks
-        .filter(notebook => notebook.published && new Date(notebook.published) < new Date())
-        .filter(notebook => notebook.file.match(/^ipynb_pp\/blogs\/.*.dnb$/))
-        .map(notebook => ({
-          href: `/blog/${notebook.slug}`,
-          shortTitle: notebook['shortTitle'] as string || notebook.title,
-        })),
-      sectionHeader: 'Blog',
-      sectionLink: '/blog'
-    },
-  ];
+  const sidebarContent = await getSidebarContent();
 
   return (
     <html lang="en">
@@ -66,7 +40,10 @@ export default async function RootLayout({
         <div
           className="flex flex-row flex-wrap xl:justify-start justify-center justify-items-center w-screen mt-[4em]"
         >
-          <Menu sections={navSections} />
+          <Menu
+            sidebar={sidebarContent}
+            topnav={<TopNavItems />}
+          />
           <div id="content-main">
             {children}
           </div>
