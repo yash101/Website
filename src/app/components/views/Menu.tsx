@@ -47,14 +47,8 @@ const Menu: React.FunctionComponent<MenuProps> = ({
 
     const childNodes = children.map((child, cindex) => {
       return (
-        <li
-          key={'navchild-' + cindex}
-          className='text-ellipsis block'
-        >
-          <Link
-            href={child.href}
-            className='link'
-          >
+        <li key={'navchild-' + cindex} className='text-ellipsis block'>
+          <Link href={child.href} className='link'>
             {child.title}
           </Link>
         </li>
@@ -66,14 +60,9 @@ const Menu: React.FunctionComponent<MenuProps> = ({
         key={'section-' + index}
         className='pb-4'
       >
-        <header
-          className='text-primary-foreground text-2xl'
-        >{
+        <header className='text-primary-foreground text-2xl'>{
           href ?
-            <Link
-              href={href}
-              className='link block'
-            >
+            <Link href={href} className='link block'>
               <div className='link'>{title}</div>
             </Link> :
             <h2>{title}</h2>

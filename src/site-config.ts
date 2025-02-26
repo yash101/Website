@@ -86,3 +86,5 @@ export const mathjaxConfig: object = {
    */
   svg: null,
 }
+
+export const DrawIOURL: string = 'https://drawio.devya.sh';

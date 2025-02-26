@@ -1,6 +1,7 @@
 import { PPPage, PPSection } from "notebook/types";
 import PrerenderedHtmlRenderer from "./PrerenderedHtmlRenderer";
 import EmbedRenderer from "./EmbedRenderer";
+import CodeSectionRenderer from "./CodeSectionRenderer";
 
 interface SectionRendererProps {
   page: PPPage;
@@ -31,7 +32,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
     case 'markdown':
       return <PrerenderedHtmlRenderer html={section.source || ''} notebook={page} />;
     case 'code':
-      return null;
+      return <CodeSectionRenderer section={section} page={page} />;
   }
 }
 

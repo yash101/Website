@@ -48,9 +48,9 @@ export async function getSidebarContent(): Promise<SidebarContent> {
       };
 
       return content;
-    }));
+    }))
 
   return {
-    roots: children,
+    roots: children.filter(child => child.children.length > 0),
   };
 }

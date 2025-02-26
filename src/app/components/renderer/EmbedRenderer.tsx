@@ -4,6 +4,7 @@ import { PPPage, PPSection } from "notebook/types";
 
 import AccordionWidget from "../embeds/Accordion";
 import CodeRunner from "../embeds/CodeRunner/CodeRunner";
+import DrawIO from "../embeds/DrawIO/DrawIO";
 
 type EmbedProps = {
   tool: string;
@@ -37,6 +38,11 @@ const EmbedRenderer: React.FC<EmbedRendererProps> = (props) => {
         <CodeRunner args={embedData.props} />
       </Suspense>
     ),
+    'drawio': (
+      <Suspense>
+        <DrawIO args={embedData.props} />
+      </Suspense>
+    )
   }
 
   return tools[embedData.tool.toLowerCase()] || null;
