@@ -37,7 +37,7 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
     
 
     return (
-      <article className='space-y-4 ml-2 py-4'>
+      <article className='space-y-4 mx-2 py-4'>
         <Head>
           <title>{article.pages[0].title} - {site_title}</title>
           <meta name='description' content={article.pages[0].subtitle} />
@@ -50,10 +50,10 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
           lastModifiedOn={article.lastModifiedOn}
         />
         <Separator />
-        <section>
+        {/* <section>
           <PrerenderedHtmlRenderer html={article.hero} notebook={null} />
         </section>
-        <Separator />
+        <Separator /> */}
         {
           article.pages.length > 1 && (
             <TableOfContents
@@ -74,9 +74,11 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
             pageno={article.pages[0].pageNumber}
           />
         </section>
-        <section className='flex justify-between'>
-        <div className='md:w-[48%]'><div></div></div>
-        <div className='mg:w-[48%] text-right'>
+        <section className='flex justify-between gap-4'>
+        <div>
+          <div></div>
+        </div>
+        <div className='text-right'>
           {article.pages.length > 1 && (
             <IntraPagePagination
               href={`/${params.root}/${params.article}/${article.pages[1].pageNumber}`}

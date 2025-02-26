@@ -20,6 +20,13 @@
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "Foo + Bar"
+    },
+    "for-dummies": {
+      "linkInMenu": true,
+      "menuTitle": "For Dummies",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "... For Dummies"
     }
   }
 }

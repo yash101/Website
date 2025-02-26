@@ -1,4 +1,5 @@
 import path from 'path';
+
 import { PIFormat, SIFormat } from 'notebook/types';
 import { readJsonFile } from './FsUtil';
 
@@ -33,7 +34,7 @@ export async function getSidebarContent(): Promise<SidebarContent> {
 
       const content: SidebarItem = {
         name: index.config.menuTitle || '',
-        title: index.config.pageTitle,
+        title: index.config.menuTitle || 'Untitled',
         href: index.config.linkInMenu ? `/${root}` : null,
         children: (index.config.displayArticlesInMenu === true) ? index.articles
           .filter(article => {
