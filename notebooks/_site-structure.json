@@ -27,6 +27,13 @@
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "... For Dummies"
+    },
+    "learning": {
+      "linkInMenu": true,
+      "menuTitle": "Freshly Baked",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Fresh outta the oven..."
     }
   }
 }
