@@ -48,7 +48,6 @@ next-env.d.ts
 /public/monaco
 /public/min-maps
 /public/indices
-/public/objects
 /public/index.json
 /public/notebooks
 
