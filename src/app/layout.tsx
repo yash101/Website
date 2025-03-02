@@ -34,19 +34,21 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div
-          className="flex flex-row flex-wrap xl:justify-start justify-center justify-items-center w-screen mt-[4em]"
+          className={[
+            'flex',
+            'flex-row',
+            'flex-wrap',
+            'xl:justify-start',
+            'justify-center',
+            'justify-items-center',
+            'w-screen',
+            'mt-[4em]'
+          ].join(' ')}
         >
-          <Menu
-            sidebar={sidebarContent}
-            topnav={<TopNavItems />}
-          />
-          <div id="content-main">
-            {children}
-          </div>
+          <Menu sidebar={sidebarContent} topnav={<TopNavItems />}/>
+          <div id="content-main">{children}</div>
         </div>
         <Footer links={[ {href: "/pages/about-me", label: "About Me"} ]} logoSrc="/icon.png" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />

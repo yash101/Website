@@ -8,7 +8,7 @@ export default async function Home() {
         <h1 className="text-5xl font-bold mb-4">{blog_title}</h1>
       </section>
       <Separator />
-      <section className=""><h1>Hello, world!</h1></section>
+      <section><h1>Hello, world!</h1></section>
     </article>
   );
 }
