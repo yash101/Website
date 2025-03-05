@@ -65,8 +65,8 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
         <title>{index.config.pageTitle} - {site_title}</title>
         <meta name='description' content={index.config.pageTitle} />
       </Head>
-      <header className='text-5xl font-bold mb-4'>
-        <h1>{title}</h1>
+      <header className='mb-4'>
+        <h1 className='heading-largest'>{title}</h1>
       </header>
       {
         articles.length > 1 && <>

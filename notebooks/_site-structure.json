@@ -34,6 +34,13 @@
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "Fresh outta the oven..."
+    },
+    "imported": {
+      "linkInMenu": true,
+      "menuTitle": "Imported Archive",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Imported Archive"
     }
   }
 }

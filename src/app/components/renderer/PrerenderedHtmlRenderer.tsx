@@ -1,76 +1,44 @@
-import parse, { DOMNode, domToReact } from "html-react-parser";
-import Image from 'next/image';
+import parse, { DOMNode, domToReact, Element } from "html-react-parser";
 import Link from 'next/link';
-import { PPImageMetadata, PPMetadata, PPPage } from "notebook/types";
-import { maxImageWidth } from "site-config";
+import { PPPage } from "notebook/types";
+import ImageComponent from "./components/ImageComponent";
+import TabsComponent from "./components/TabsComponent";
+import slugify from 'slugify';
+import SectionContents, { SectionContentItem } from "./components/SectionContents";
 
-function replace(node: DOMNode, index: number, notebook: PPPage) {
+function replace(node: DOMNode, index: number, notebook: PPPage, tocItems: SectionContentItem[]) {
   if (node.type !== 'tag')
     return undefined;
 
+  // Handle headings (h1-h6)
+  if (Array.isArray(tocItems) && /^h[1-6]$/.test(node.name)) {
+    const level = parseInt(node.name.substring(1), 10);
+    const text = domToReact(node.children as DOMNode[]) as string;
+    
+    // Create a slug ID for the heading
+    const id = slugify(text.toString(), { lower: true, strict: true });
+    
+    // Add to TOC items
+    tocItems.push({ id, text: text.toString(), level });
+    
+    // Return heading with ID attribute for linking
+    return (
+      <Link
+        id={id}
+        href={`#${id}`}
+        className='scroll-m-[4em]'
+      >
+        { domToReact([node as DOMNode]) }
+      </Link>
+    );
+  }
+
   switch (node.name) {
     case 'img':
-      let uri = node.attribs.src;
-
-      const defaultDimensions = {
-        width: 800,
-        height: 500,
-      };
-
-      const htmlRequestedDimensions = {
-        width: Number(node.attribs.width),
-        height: Number(node.attribs.height),
-      };
-
-      const metadataRequestedDimensions = {
-        width: null,
-        height: null,
-      };
-
-      // let width = Number(node.attribs.width) || 800;
-      // let height = Number(node.attribs.height) || 500;
-
-      if (uri.includes('attachment:')) {
-        const id = uri.substring('attachment:'.length);
-        uri = `/assets/attachments/${id}`;
-  
-        const metadata: PPImageMetadata | undefined = notebook.metadata.img[id];
-
-        if (metadata) {
-          metadataRequestedDimensions.width = Number(metadata.width);
-          metadataRequestedDimensions.height = Number(metadata.height);          
-        }
-      }
-
-      let finalDimensions = {
-        width: null,
-        height: null,
-      };
-
-      if (htmlRequestedDimensions.width > 0 && htmlRequestedDimensions.height > 0) {
-        finalDimensions = htmlRequestedDimensions;
-      } else if (metadataRequestedDimensions.width > 0 && metadataRequestedDimensions.height > 0) {
-        finalDimensions = metadataRequestedDimensions;
-      } else {
-        finalDimensions = defaultDimensions;
-      }
-
-      // TODO: should this be a site config variable for max image width?
-      if (finalDimensions.width > maxImageWidth) {
-        finalDimensions = {
-          width: maxImageWidth,
-          height: finalDimensions.height * maxImageWidth / finalDimensions.width,
-        };
-      }
-
       return (
-        <Image
-          key={index}
-          src={uri}
-          alt={node.attribs.alt || ''}
-          width={finalDimensions.width}
-          height={finalDimensions.height}
-          className={node.attribs.class || ''}
+        <ImageComponent
+          attributes={node.attribs}
+          metadata={notebook.metadata.img || null}
         />
       );
 
@@ -80,6 +48,13 @@ function replace(node: DOMNode, index: number, notebook: PPPage) {
           {domToReact(node.children as DOMNode[])}
         </Link>
       );
+
+    case 'div':
+      if (node.attribs.class?.includes('tabs-tabs-wrapper')) {
+        return (<TabsComponent node={node} />);
+      }
+      return undefined;
+
     default:
       return undefined;
   }
@@ -88,24 +63,22 @@ function replace(node: DOMNode, index: number, notebook: PPPage) {
 interface PrerenderedHtmlRendererProps {
   html: string;
   notebook: PPPage;
+  tocContext?: SectionContents;
 }
 
-/**
- * Renders the html from a notebook markdown/html section as react code.
- * 
- * XSS / security note: HTML is directly rendered without cleanup. The assumption is made that the site author controls the HTML is displayed.
- * 
- * If displaying user content, ensure to sanitize the HTML first.
- * 
- * @param param0 
- * @returns 
- */
-const PrerenderedHtmlRenderer: React.FunctionComponent<PrerenderedHtmlRendererProps> = ({ html, notebook }) => {
-  return parse(html, {
+const PrerenderedHtmlRenderer: React.FunctionComponent<PrerenderedHtmlRendererProps> = ({
+  html,
+  notebook,
+  tocContext,
+}) => {
+  // Parse the HTML and collect headings
+  const content = parse(html, {
     replace: (node, index) => {
-      return replace(node, index, notebook);
+      return replace(node, index, notebook, tocContext?.items);
     }
   });
+
+  return content;
 };
 
 export default PrerenderedHtmlRenderer;

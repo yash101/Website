@@ -198,7 +198,7 @@ const CodeRunner: React.FC<{
   }, [ autorun ]);
 
   return (
-    <section className='code-runner codeblock'>
+    <section className='code-runner codeblock not-prose'>
       {header !== false && (
         <section
           className='pb-4'

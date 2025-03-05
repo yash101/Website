@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-export async function* findFiles(dir) {
+export async function* findFiles(dir: string): AsyncGenerator<string> {
   const queue = [ dir ];
   while (queue.length !== 0) {
     const directory = queue.shift();
@@ -9,7 +9,7 @@ export async function* findFiles(dir) {
       .readdir(directory, { withFileTypes: true })
       .catch(e => console.error('Failed to read directory', directory, e));
 
-    for (const entry of entries) {
+    for (const entry of (entries || [])) {
       if (entry.isDirectory()) {
         queue.push(path.join(directory, entry.name));
       } else if (entry.isFile()) {
@@ -19,7 +19,7 @@ export async function* findFiles(dir) {
   }
 }
 
-export async function ensureDirectoryExists(dir) {
+export async function ensureDirectoryExists(dir: string): Promise<void> {
   try {
     await fs.mkdir(dir, { recursive: true });
   } catch (error) {
