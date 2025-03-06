@@ -63,6 +63,7 @@ function parseDisplayOutputs(cell) {
     .map((renderable, index) => {
       if (renderable.type === 'image') {
         return (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             className='max-w-[100%]'
             src={renderable.data}

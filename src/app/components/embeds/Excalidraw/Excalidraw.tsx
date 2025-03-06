@@ -1,15 +1,15 @@
 'use client';
 
-import { ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types/types";
+import { ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types";
 import ErrorView from "app/components/utils/Error";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-const Excalidraw = dynamic(
-  async () => (await import('@excalidraw/excalidraw')).Excalidraw,
-  { ssr: false }
-);
+// const Excalidraw = dynamic(
+//   async () => (await import('@excalidraw/excalidraw')).Excalidraw,
+//   { ssr: false }
+// );
 
 interface ExcalidrawEmbedProps {
   diagramUrl?: string;
@@ -28,7 +28,7 @@ const ExcalidrawEmbed: React.FC<{
 
   const [ initialData, setInitialData ] = useState<ExcalidrawInitialDataState>(null);
   const [ excalidrawApi, setExcalidrawApi ] = useState<ExcalidrawImperativeAPI>(null);
-  const [ error, setError ] = useState<Error | null>(null);
+  const [ error, setError ] = useState<Error | null>(new Error('Excalidraw does not work yet.'));
 
   useEffect(() => {
     if (!diagramUrl) {
@@ -60,10 +60,10 @@ const ExcalidrawEmbed: React.FC<{
 
   return initialData ? (
     <ErrorBoundary fallbackRender={error => (<ErrorView error={error.error as Error} />)}>
-      <Excalidraw
+      {/* <Excalidraw
         initialData={initialData}
         excalidrawAPI={setExcalidrawApi}
-      />
+      /> */}
     </ErrorBoundary>
   ) : (
     <p>Excalidraw is still loading...</p>
