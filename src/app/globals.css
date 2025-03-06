@@ -107,32 +107,12 @@ body {
   @apply bg-background text-card-foreground w-screen max-w-4xl;
 }
 
-.nbsection h1 {
-  @apply text-3xl py-[1em] first:pt-0 pb-4 font-bold;
+.nbsection {
+  @apply prose-sm md:prose-lg dark:prose-invert max-w-none first:pt-0;
 }
 
-.nbsection h2 {
-  @apply text-2xl pb-4 pt-8 first:py-0 font-bold;
-}
-
-.nbsection h3 {
-  @apply text-xl py-[0.5em] font-bold;
-}
-
-.nbsection h4 {
-  @apply text-lg py-[0.25em] font-bold;
-}
-
-.nbsection h5, .nbsection h6 {
-  @apply font-bold;
-}
-
-.nbsection p {
-  @apply my-2;
-}
-
-.nbsection ul, .nbsection ol {
-  @apply ml-8 my-2;
+.nbsection li {
+  @apply my-0;
 }
 
 .nbsection ul > li {
@@ -143,41 +123,16 @@ body {
   @apply list-decimal;
 }
 
-.nbsection pre {
-  @apply py-[1em];
+.nbsection .full-width-image {
+  width: 100%;
 }
 
-.nbsection table {
-  @apply w-full border-collapse border border-slate-600 text-sm;
+.nbsection code {
+  word-break: break-all;
 }
 
-.nbsection table th {
-  @apply bg-gray-100 py-[1em] px-[0.5em] border-b border-b-slate-950;
-}
-
-.nbsection table tr {
-  @apply odd:bg-white even:bg-slate-50 hover:bg-slate-100;
-}
-
-.nbsection table tr td {
-  @apply p-[0.5em] border border-slate-600;
-}
-
-.nbsection a, .link {
-  @apply transition-all duration-300 ease-in-out origin-center relative inline-block text-primary-foreground
-    hover:text-accent-foreground hover:underline active:text-accent-foreground active:underline;
-}
-
-.blog-hero > section {
-  @apply py-0 first:py-4 last:py-4;
-}
-
-.herosection h1 {
-  @apply text-2xl py-[1em] first:py-0 font-normal;
-}
-
-.herosection h2 {
-  @apply text-xl pb-[0.25em] pt-[0.5em] first:py-0 font-normal;
+blockquote {
+  @apply ml-2 border-l-4 border-primary;
 }
 
 .codeblock table.dataframe {
@@ -197,18 +152,6 @@ body {
   @apply p-2;
 }
 
-.nbsection .full-width-image {
-  width: 100%;
-}
-
-.nbsection blockquote {
-  @apply ml-4 my-8 p-4 border-l-[16px] border-slate-600 hover:bg-slate-100;
-}
-
-.nbsection {
-  @apply py-4 first:pt-0;
-}
-
-.nbsection code {
-  word-break: break-all;
+.heading-largest {
+  @apply text-3xl font-bold md:text-5xl;
 }

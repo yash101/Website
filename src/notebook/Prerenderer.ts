@@ -1,10 +1,16 @@
 import toml from 'toml';
 import probe from 'probe-image-size';
-import { createMathjaxInstance, mathjax, MathjaxInstance } from '@mdit/plugin-mathjax';
-import { markdownitConfig, mathjaxConfig } from '../site-config.js';
-import markdownit from 'markdown-it';
-import { full as emoji } from 'markdown-it-emoji';
 import hljs from 'highlight.js';
+
+import markdownit from 'markdown-it';
+import { createMathjaxInstance, mathjax, MathjaxInstance } from '@mdit/plugin-mathjax';
+import { tab } from '@mdit/plugin-tab';
+import { dl } from '@mdit/plugin-dl';
+import { full as emoji } from 'markdown-it-emoji';
+import { alert } from '@mdit/plugin-alert';
+import { container } from '@mdit/plugin-container';
+
+import { markdownitConfig, mathjaxConfig } from '../site-config.js';
 import ConvertAnsiToHtml from 'ansi-to-html';
 import { NotebookUnderTransformation, NUTAttachment } from './types-internal.js';
 import { PageInfo } from './types.js';
@@ -33,7 +39,15 @@ export class Prerenderer {
       },
     })
       .use(emoji)
-      .use(mathjax, this.mathjax);
+      .use(mathjax, this.mathjax)
+      .use(tab, {
+        name: 'tabs',
+      })
+      .use(dl)
+      .use(alert)
+      .use(container, {
+        name: 'warning',
+      });
     
     this.convertAnsiToHtml = new ConvertAnsiToHtml({
       newline: true,
@@ -204,7 +218,7 @@ ${mjxStyles}
         });
 
         return {
-          code: `<pre><code class="hljs">${highlighted.value}</code></pre>`,
+          code: `<pre><code class="hljs text-sm">${highlighted.value}</code></pre>`,
           language
         };
       }

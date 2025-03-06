@@ -13,7 +13,6 @@ import { readJsonFile } from 'app/util/FsUtil';
 import { getPreviousAndNextPage } from 'app/util/PaginationUtil';
 
 import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
-import PrerenderedHtmlRenderer from 'app/components/renderer/PrerenderedHtmlRenderer';
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
@@ -121,10 +120,6 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         lastModifiedOn={page.metadata.pageinfo.lastModifiedOn as string}
       />
       <Separator />
-      {/* <section>
-        <PrerenderedHtmlRenderer html={article.hero} notebook={null} />
-      </section>
-      <Separator /> */}
       <TableOfContents
         links={publishedPages.map(page => ({
           href: `/${params.root}/${params.article}/${page.pageNumber}`,
@@ -143,7 +138,6 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
           />
         </ErrorBoundary>
       </section>
-
 
       <section className='flex flex-col md:flex-row justify-between gap-4'>
         <div className='flex-1'>

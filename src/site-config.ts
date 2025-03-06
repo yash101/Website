@@ -88,3 +88,4 @@ export const mathjaxConfig: object = {
 }
 
 export const DrawIOURL: string = 'https://drawio.devya.sh';
+export const forceUnpublishedAsPublished: boolean = false;

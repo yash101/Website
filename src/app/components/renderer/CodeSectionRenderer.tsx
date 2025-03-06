@@ -63,6 +63,7 @@ function parseDisplayOutputs(cell) {
     .map((renderable, index) => {
       if (renderable.type === 'image') {
         return (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             className='max-w-[100%]'
             src={renderable.data}
@@ -105,15 +106,9 @@ export const CodeSectionRenderer: React.FC<CodeSectionRendererProps> = ({ sectio
       });
     });
 
-  // // TODO?
-  // (cell.outputs || [])
-  //   .filter(output => output.output_type === 'display_data')
-  //   .forEach(output => {
-  //   });
-
   return (
-    <div>
-      <section className='code' dangerouslySetInnerHTML={{ __html: cell.source }}></section>
+    <div className='not-prose'>
+      <section className='code text-sm' dangerouslySetInnerHTML={{ __html: cell.source }}></section>
       {
         (consoleOutputs.length > 0) && (
           <section className='execute-output p-4'>

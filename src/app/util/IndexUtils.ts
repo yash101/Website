@@ -2,6 +2,7 @@ import path from 'path';
 
 import { PIFormat, SIFormat } from 'notebook/types';
 import { readJsonFile } from './FsUtil';
+import { isPagePublished } from './Util';
 
 export interface SidebarItem {
   name?: string;
@@ -38,7 +39,7 @@ export async function getSidebarContent(): Promise<SidebarContent> {
         href: index.config.linkInMenu ? `/${root}` : null,
         children: (index.config.displayArticlesInMenu === true) ? index.articles
           .filter(article => {
-            return article.pages.filter(page => page.published).length > 0;
+            return article.pages.filter(isPagePublished).length > 0;
           })
           .map(article => ({
             name: article.name,

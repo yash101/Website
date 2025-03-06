@@ -1,10 +1,9 @@
 /*
-Index characteristics
+  Index characteristics
 
-* Multiple roots (blog, pages, etc.)
-* Pages all have metadata
-* Page metadata contains "root", "name", "page" and other fields
-
+  * Multiple roots (blog, pages, etc.)
+  * Pages all have metadata
+  * Page metadata contains "root", "name", "page" and other fields
  */
 
 export class Indexer {

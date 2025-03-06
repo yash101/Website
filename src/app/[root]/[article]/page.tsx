@@ -9,7 +9,6 @@ import { PIFormat, PPPage, SIFormat } from 'notebook/types';
 import { readJsonFile } from 'app/util/FsUtil';
 
 import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
-import PrerenderedHtmlRenderer from 'app/components/renderer/PrerenderedHtmlRenderer';
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
@@ -50,10 +49,6 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
           lastModifiedOn={article.lastModifiedOn}
         />
         <Separator />
-        {/* <section>
-          <PrerenderedHtmlRenderer html={article.hero} notebook={null} />
-        </section>
-        <Separator /> */}
         {
           article.pages.length > 1 && (
             <TableOfContents

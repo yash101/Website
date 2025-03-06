@@ -1,9 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { ensureDirectoryExists, findFiles } from "./FileSystemUtils.js";
+import { ensureDirectoryExists, findFiles } from "./FileSystemUtils.ts";
 import { Prerenderer } from "./Prerenderer.ts";
-import { Indexer } from './Indexer.js';
+import { Indexer } from './Indexer.mjs';
 
 const NOTEBOOKS_PATH = path.join(process.cwd(), 'notebooks');
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
@@ -13,7 +13,7 @@ const ATTACHMENTS_DIR_PATH = path.join(ASSETS_DIR_PATH, 'attachments');
 const OBJECTS_DIR_PATH = path.join(ASSETS_DIR_PATH, 'objects');
 const INDICES_DIR_PATH = path.join(PUBLIC_DIR, 'indices');
 
-const DEBUG_INDENT_JSON = 2;
+const DEBUG_INDENT_JSON = 0;
 
 async function processNotebook(filepath, indexer) {
   // guard clauses for the files we should process here
@@ -24,7 +24,7 @@ async function processNotebook(filepath, indexer) {
   // Determine output paths
   const nbOutputPath = path.join(OUTPUT_DIR_PATH,
     path.relative(NOTEBOOKS_PATH, filepath.replace(/.ipynb$/, '.nb')));
-  console.log(`Building ${filepath} => ${nbOutputPath}`);
+  console.log(`🔨build ${filepath}`);
 
   try {
     await ensureDirectoryExists(path.dirname(nbOutputPath));
@@ -70,7 +70,7 @@ async function copyResource(source) {
 
   const destination = path.join(OBJECTS_DIR_PATH, path.relative(NOTEBOOKS_PATH, source));
   await ensureDirectoryExists(path.dirname(destination));
-  console.log(`Copying ${source} => ${destination}`);
+  console.log(`🗃️ cp ${source} => ${path.relative(PUBLIC_DIR, destination)}`);
 
   await fs.copyFile(source, destination);
 }
