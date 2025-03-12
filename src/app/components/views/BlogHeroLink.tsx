@@ -1,13 +1,13 @@
-import { Calendar, User, Link as LinkIcon } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { Calendar, User, Link as LinkIcon } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-import { SIArticle, SIPage } from "notebook/types";
+import { SIArticle, SIPage } from 'notebook/types';
 
-import MultiPageLinkList from "./MultiPageLinkList";
-import PrerenderedHtmlRenderer from "../renderer/PrerenderedHtmlRenderer";
+import MultiPageLinkList from './MultiPageLinkList';
+import PrerenderedHtmlRenderer from '../renderer/PrerenderedHtmlRenderer';
 
 interface BlogHeroLinkProps {
   article: SIArticle;
@@ -23,9 +23,7 @@ const BlogHeroLink: React.FC<BlogHeroLinkProps> = ({ article, root }) => {
   const firstPublishedOn: string = new Date(article.firstPublishedOn).toLocaleDateString();
 
   return (
-    <article
-      className={[].join(' ')}
-    >
+    <article>
       <header>
         <div
           className={[
@@ -41,28 +39,23 @@ const BlogHeroLink: React.FC<BlogHeroLinkProps> = ({ article, root }) => {
           ].join(' ')}
         >
           <Link href={`/${root}/${article.name}`}>
-            <h1 className='font-bold text-2xl px-2 focus:underline hover:underline'>{ pages[0].title }</h1>
+            <p className='font-bold text-2xl px-2 focus:underline hover:underline'>{ pages[0].title }</p>
           </Link>
-          <section className="py-4 px-2 flex flex-row space-x-4">
-            <div className="text-1xl text-slate-700">{
-              Array
-                .from(authorList)
+          <section className='py-4 px-2 flex flex-row space-x-4'>
+            <div className='text-1xl text-slate-700'>{
+              Array.from(authorList)
                 .map((author, index) => (
                   <div key={index}>
-                    <User className="inline-block size-[12pt]" /> {author}
+                    <User className='inline-block size-[12pt]' /> {author}
                   </div>
                 ))
             }</div>
-            <div className="text-1xl text-slate-700">
+            <div className='text-1xl text-slate-700'>
               <HoverCard>
-                <HoverCardTrigger
-                  className='hover:bg-popover hover:text-popover-foreground'
-                >
-                  <span><Calendar className="inline-block size-[12pt]" /> {lastModifiedOn}</span>
+                <HoverCardTrigger className='hover:bg-popover hover:text-popover-foreground'>
+                  <span><Calendar className='inline-block size-[12pt]' /> {lastModifiedOn}</span>
                 </HoverCardTrigger>
-                <HoverCardContent
-                  className='bg-popover text-popover-foreground p-4'
-                >{
+                <HoverCardContent className='bg-popover text-popover-foreground p-4'>{
                   [
                     ['Last Modified', lastModifiedOn],
                     ['Last Published', lastPublishedOn],
@@ -76,17 +69,10 @@ const BlogHeroLink: React.FC<BlogHeroLinkProps> = ({ article, root }) => {
               </HoverCard>
             </div>
           </section>
-          <section
-            className='p-2'
-          >
-            <PrerenderedHtmlRenderer
-              html={article.hero}
-              notebook={null}
-            />
+          <section className='p-2 prose-sm md:prose-lg'>
+            <PrerenderedHtmlRenderer html={article.hero} notebook={null} />
           </section>
-          <Link
-            href={`/${root}/${article.name}`}
-          >
+          <Link href={`/${root}/${article.name}`}>
             <section
               className={[
                 'hover:bg-popover',
@@ -103,14 +89,10 @@ const BlogHeroLink: React.FC<BlogHeroLinkProps> = ({ article, root }) => {
           </Link>
           {
             multiplePages && (
-              <MultiPageLinkList
-                pages={pages}
-                baseuri={`/${root}/${article.name}`}
-              />
+              <MultiPageLinkList pages={pages} baseuri={`/${root}/${article.name}`} />
             )
           }
         </div>
-
       </header>
     </article>
   );

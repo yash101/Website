@@ -103,6 +103,23 @@ body {
   }
 }
 
+a:hover, a:active, a:focus {
+  text-decoration: underline;
+}
+
+dl {
+  @apply p-4 bg-card text-card-foreground rounded-lg;
+}
+
+dt {
+  @apply font-bold first:mt-0;
+}
+
+
+dt::after {
+  content: ':';
+}
+
 #content-main {
   @apply bg-background text-card-foreground w-screen max-w-4xl;
 }
@@ -121,6 +138,10 @@ body {
 
 .nbsection ol > li {
   @apply list-decimal;
+}
+
+li > ul, li > ol {
+  @apply ml-4 my-0;
 }
 
 .nbsection .full-width-image {

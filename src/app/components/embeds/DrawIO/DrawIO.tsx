@@ -3,6 +3,7 @@
 import ErrorView from "app/components/utils/Error";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DrawIOURL } from "site-config";
+import * as ReactDOM from 'react-dom';
 
 interface DrawIOProps {
   height?: string | number;
@@ -15,6 +16,8 @@ const baseUrl = DrawIOURL;
 const DrawIO: React.FC<{
   args?: object
 }> = ({ args }) => {
+  ReactDOM.preconnect(baseUrl, { crossOrigin: 'anonymous' });
+
   const {
     height,
     xml,

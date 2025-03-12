@@ -16,6 +16,7 @@ export type NUTCell = {
   outputs?: PPSectionOutput[];
   attachments?: Record<string, Record<string, string>>;
   execution_count?: unknown;
+  hidden?: boolean;
 }
 
 export type NUTAttachment = {

@@ -17,6 +17,9 @@ import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 import { site_title } from "site-config";
+import CanonicalRenderer from "app/util/CanonicalRenderer";
+import { Author } from "next/dist/lib/metadata/types/metadata-types";
+import { singletonOrArrayToArray } from "app/util/Util";
 
 /**
  * Generates metadata for an article page.
@@ -67,11 +70,24 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
   const params = await props.params;
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
+  const page = article.pages.find(p => String(p.pageNumber) === String(params.pageno));
+  const isFirstPage: boolean = String(page.pageNumber) === String(article.pages[0].pageNumber);
   
   return {
-    title: article?.pages[0].title,
-    description: article?.pages[0].subtitle,
-    // Add other metadata as needed
+    title: {
+      absolute: `${page.subtitle} | ${page.title} | ${site_title}`,
+    },
+    description: page['description'] as string || page.subtitle,
+    generator: 'JupyNext',
+    applicationName: 'JupyNext',
+    referrer: 'origin-when-cross-origin',
+    keywords: page['keywords'] as string || '',
+    authors: (singletonOrArrayToArray(page.authors).map(author => ({ name: author }))),
+    creator: singletonOrArrayToArray(page.authors || []).join(', '),
+    publisher: '',
+    alternates: {
+      canonical: isFirstPage ? `/${params.root}/${params.article}` : null,
+    },
   };
 }
 
@@ -105,13 +121,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   
   const publishedPages = article.pages.filter(page => page.published);
   const pagination = getPreviousAndNextPage(publishedPages, params.pageno);
+  const canonical = String(pageIndex.pageNumber) === String(article.pages[0].pageNumber)
+    ? `/${params.root}/${params.article}` : null;
 
   return (
     <article className='space-y-4 mx-2 py-4'>
-      <Head>
-        <title>{pageIndex.subtitle} - {site_title}</title>
-        <meta name='description' content={pageIndex.subtitle} />
-      </Head>
+      <CanonicalRenderer url={canonical} />
       <ArticlePageHeader
         title={pageIndex.title}
         subtitle={pageIndex.subtitle}

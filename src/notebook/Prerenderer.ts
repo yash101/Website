@@ -85,7 +85,12 @@ export class Prerenderer {
     this.metadata = this.notebook.metadata.pageinfo as PageInfo;
 
     for (const cell of this.notebook.cells) {
-      cell.source = (cell.source as string[] || [])
+      cell.source = Array.isArray(cell.source) ? cell.source : [cell.source || ''];
+
+      const magics = this.magic(cell);
+      cell.hidden = magics.props.hidden || false;
+      
+      cell.source = cell.source 
         .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
         .join('\n') || '';
 
@@ -111,14 +116,22 @@ export class Prerenderer {
       };
 
       // prerender the cell
-      renderers[cell.cell_type || 'raw'](cell);
-
-      // GC unnecessary data
-      delete cell.id;
-      delete cell.execution_count;
-      delete cell.attachments;
-      delete cell.metadata;
+      renderers[cell.cell_type || 'markdown'](cell);
     }
+
+    // GC loop (hidden cells & unnecessary data)
+    this.notebook.cells = this.notebook.cells
+      .filter(cell => !cell.hidden)
+      .map(cell => {
+        // GC unnecessary data
+        delete cell.id;
+        delete cell.execution_count;
+        delete cell.attachments;
+        delete cell.metadata;
+        delete cell.hidden;
+
+        return cell;
+      });
 
     // TODO: experiment if moving custom CSS rules to after {mjxStyles} improves the rendering
     const mjxStyles = this.mathjax.outputStyle();
@@ -152,7 +165,11 @@ ${mjxStyles}
       try {
         return toml.parse(text);
       } catch (e) {
-        throw new Error('Compilation failed - unknown format of metadata cell');
+        try {
+          return new Function(`return ${text}`)();
+        } catch (e) {
+          throw new Error('Compilation failed - unknown format of metadata cell - ' + e.message);
+        }
       }
     }
   }
@@ -240,5 +257,27 @@ ${mjxStyles}
 
   getHeroSection() {
     return (this.notebook.cells[0] || {}).source || '';
+  }
+
+  magic(cell) {
+    // extract magics
+    const magics = new Set();
+    for (const line of cell.source) {
+      // Match '#%... ' or '//%...'
+      if (line.match(/^(#%|\/\/%)/)) {
+        magics.add(line.replace(/^(#%|\/\/%)/, '').trim());
+        console.log('MAGIC:', line);
+        cell.source.shift();
+      } else {
+        break;
+      }
+    }
+
+    return {
+      rawMagic: magics,
+      props: {
+        hidden: magics.has('hidden') || magics.has('delete'),
+      },
+    };
   }
 }

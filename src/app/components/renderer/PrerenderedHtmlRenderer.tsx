@@ -23,11 +23,7 @@ function replace(node: DOMNode, index: number, notebook: PPPage, tocItems: Secti
     
     // Return heading with ID attribute for linking
     return (
-      <Link
-        id={id}
-        href={`#${id}`}
-        className='scroll-m-[4em]'
-      >
+      <Link id={id} href={`#${id}`} className='scroll-m-[4em]'>
         { domToReact([node as DOMNode]) }
       </Link>
     );

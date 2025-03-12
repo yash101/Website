@@ -14,6 +14,7 @@ import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRendere
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 import Head from 'next/head';
 import { site_title } from 'site-config';
+import { singletonOrArrayToArray } from 'app/util/Util';
 
 interface ArticleBasePageProps {
   params: Promise<{
@@ -118,11 +119,20 @@ export async function generateMetadata(props: ArticleBasePageProps): Promise<Met
   const params = await props.params;
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
+  const firstPage = article.pages[0];
   
   return {
-    title: article?.pages[0].title,
-    description: article?.pages[0].subtitle,
-    // Add other metadata as needed
+    title: {
+      absolute: `${firstPage.title} | ${site_title}`,
+    },
+    description: firstPage['description'] as string || firstPage.subtitle,
+    generator: 'JupyNext',
+    applicationName: 'JupyNext',
+    referrer: 'origin-when-cross-origin',
+    keywords: firstPage['keywords'] as string || '',
+    authors: (singletonOrArrayToArray(firstPage.authors || []).map(author => ({ name: author }))),
+    creator: singletonOrArrayToArray(firstPage.authors || []).join(', '),
+    publisher: '',
   };
 }
 
