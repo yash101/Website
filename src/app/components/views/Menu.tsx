@@ -5,7 +5,7 @@ import { MenuIcon, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { SidebarContent } from "app/util/IndexUtils";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export type NavItem = {
   href: string;
@@ -35,11 +35,10 @@ const Menu: React.FunctionComponent<MenuProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     setOpen(false);
-  }, [pathname, searchParams])
+  }, [pathname])
 
   const menuTriggerIcon = open ?
     <X size='32pt' /> :
