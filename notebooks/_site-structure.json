@@ -37,7 +37,7 @@
     },
     "imported": {
       "linkInMenu": true,
-      "menuTitle": "Imported Archive",
+      "menuTitle": "Archive",
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "Imported Archive"
