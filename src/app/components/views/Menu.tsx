@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { MenuIcon, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { SidebarContent } from "app/util/IndexUtils";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export type NavItem = {
   href: string;
@@ -33,6 +34,12 @@ const Menu: React.FunctionComponent<MenuProps> = ({
   topnav,
 }) => {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname, searchParams])
 
   const menuTriggerIcon = open ?
     <X size='32pt' /> :
@@ -56,10 +63,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({
     });
 
     return (
-      <section
-        key={'section-' + index}
-        className='pb-4'
-      >
+      <section key={'section-' + index} className='pb-4'>
         <header className='text-primary-foreground text-2xl'>{
           href ?
             <Link href={href} className='link block'>
@@ -68,9 +72,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({
             <h2>{title}</h2>
         }</header>
         <nav>
-          <ul>
-            {childNodes}
-          </ul>
+          <ul>{childNodes}</ul>
         </nav>
       </section>
     );

@@ -108,7 +108,7 @@ export const CodeSectionRenderer: React.FC<CodeSectionRendererProps> = ({ sectio
 
   return (
     <div className='not-prose'>
-      <section className='code text-sm' dangerouslySetInnerHTML={{ __html: cell.source }}></section>
+      { cell.source && <section className='code text-sm' dangerouslySetInnerHTML={{ __html: cell.source }}></section> }
       {
         (consoleOutputs.length > 0) && (
           <section className='execute-output p-4'>

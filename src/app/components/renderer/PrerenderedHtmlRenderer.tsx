@@ -11,22 +11,38 @@ function replace(node: DOMNode, index: number, notebook: PPPage, tocItems: Secti
     return undefined;
 
   // Handle headings (h1-h6)
-  if (Array.isArray(tocItems) && /^h[1-6]$/.test(node.name)) {
+  if (/^h[1-6]$/.test(node.name)) {
     const level = parseInt(node.name.substring(1), 10);
     const text = domToReact(node.children as DOMNode[]) as string;
     
     // Create a slug ID for the heading
     const id = slugify(text.toString(), { lower: true, strict: true });
     
-    // Add to TOC items
-    tocItems.push({ id, text: text.toString(), level });
-    
+    if (Array.isArray(tocItems)) {
+      // Add to TOC items
+      tocItems.push({
+        id,
+        text: text.toString(),
+        level
+      });
+    }
+
     // Return heading with ID attribute for linking
     return (
-      <Link id={id} href={`#${id}`} className='scroll-m-[4em]'>
-        { domToReact([node as DOMNode]) }
-      </Link>
+      <div id={id} className="relative group scroll-m-24 ml-8">
+        <span className="absolute -left-8 top-1/2 transform -translate-y-1/2 opacity-30 group-hover:opacity-100">
+          <Link href={`#${id}`} className="text-gray-500 hover:text-gray-700 text-4xl">#</Link>
+        </span>
+        {domToReact([node as DOMNode])}
+      </div>
     );
+    
+    
+    // return (</div>
+    //   <Link id={id} href={`#${id}`} className='scroll-m-[4em]'>
+    //     { domToReact([node as DOMNode]) }
+    //   </Link>
+    // );
   }
 
   switch (node.name) {
@@ -39,6 +55,10 @@ function replace(node: DOMNode, index: number, notebook: PPPage, tocItems: Secti
       );
 
     case 'a':
+      let href = node.attribs.href;
+      if (href.startsWith('attachment:')) {
+        href = href.replace('attachment:', '/assets/attachments/');
+      }
       return (
         <Link href={node.attribs.href}>
           {domToReact(node.children as DOMNode[])}

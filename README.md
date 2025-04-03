@@ -123,6 +123,8 @@ Articles are a collection of Jupyter notebooks, each having the same `root` and 
 }
 ```
 
+This is an excerpt of what I use on my own website.
+
 * Each `root` is a base in the URL of the website.
   * Example, articles in the root `pages` would be `/pages/{article_name}/{page_number}`
   * Example, articles in the root `deep-dives` would be `/deep-dives/{article_name}/{page_number}`
@@ -134,10 +136,7 @@ Articles are a collection of Jupyter notebooks, each having the same `root` and 
   * `Pages`: currently implemented as a `404 error`
 * `displayArticlesInMenu`: whether to list articles under the `root` in the sidebar or menu
 
-This is an excerpt of what I use on my own website.
-
 Website link: [devya.sh](https://devya.sh); GitHub: [yash101:Website](https://github.com/yash101/Website)
-
 
 ## 🧙‍♂️ Magic Commands
 

@@ -41,6 +41,13 @@
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "Imported Archive"
+    },
+    "food": {
+      "linkInMenu": true,
+      "menuTitle": "Cullinary Lab",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Yash's Cullinary Lab"
     }
   }
 }

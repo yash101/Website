@@ -199,13 +199,7 @@ const CodeRunner: React.FC<{
 
   return (
     <section className='code-runner codeblock not-prose'>
-      {header !== false && (
-        <section
-          className='pb-4'
-        >
-          <h2>Try Out Some Code!</h2>
-        </section>
-      )}
+      { header !== false && <section className='pb-4'><h2>Try Out Some Code!</h2></section> }
       <section className='code-editor'>
         <LocalMonacoEditor
           language='javascript'
@@ -291,17 +285,9 @@ const CodeRunner: React.FC<{
         </button>
       </section>
       <section className='border-b border-b-slate-400 mb-2'><h6>Outputs</h6></section>
-      <section className='code-output'>{
-        outputs.map((output, index) => {
-          return (
-            <AnsiDisplay
-              file={output.pipe}
-              text={ansiToHtml.toHtml(output.message)}
-              key={`output-${index}`}
-            />
-          )
-        })
-      }</section>
+      <section className='code-output'>
+        { outputs.map((output, index) => <AnsiDisplay file={output.pipe} text={ansiToHtml.toHtml(output.message)} key={`output-${index}`} />) }
+      </section>
     </section>
   );
 };

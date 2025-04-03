@@ -103,8 +103,13 @@ body {
   }
 }
 
-a:hover, a:active, a:focus {
+.nbsection a {
+  @apply transition-transform duration-200 ease-out;
   text-decoration: underline;
+}
+
+.nbsection a:hover, .nbsection a:focus, .nbsection a:active {
+  @apply scale-125;
 }
 
 dl {
@@ -142,6 +147,10 @@ dt::after {
 
 li > ul, li > ol {
   @apply ml-4 my-0;
+}
+
+.nbsection li > p {
+  @apply first:mt-0 last:mb-0;
 }
 
 .nbsection .full-width-image {

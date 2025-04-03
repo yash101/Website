@@ -86,10 +86,8 @@ export class Prerenderer {
 
     for (const cell of this.notebook.cells) {
       cell.source = Array.isArray(cell.source) ? cell.source : [cell.source || ''];
+      cell.props = this.magic(cell).props;
 
-      const magics = this.magic(cell);
-      cell.hidden = magics.props.hidden || false;
-      
       cell.source = cell.source 
         .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
         .join('\n') || '';
@@ -121,14 +119,13 @@ export class Prerenderer {
 
     // GC loop (hidden cells & unnecessary data)
     this.notebook.cells = this.notebook.cells
-      .filter(cell => !cell.hidden)
+      .filter(cell => !cell.props?.hidden)
       .map(cell => {
         // GC unnecessary data
         delete cell.id;
         delete cell.execution_count;
         delete cell.attachments;
         delete cell.metadata;
-        delete cell.hidden;
 
         return cell;
       });
@@ -193,23 +190,29 @@ ${mjxStyles}
   }
 
   codeRenderer(cell) {
-    let language = '';
-    try {
-      language = this.notebook.metadata.lang ||
-        this.metadata['language_info'].name ||
-        this.notebook.metadata['kernelspec']['name'] || '';
-    } catch (__) { }
+    if (cell.props?.hidecode !== true) {
+      let language = '';
+      try {
+        language = this.notebook.metadata.lang ||
+          this.metadata['language_info'].name ||
+          this.notebook.metadata['kernelspec']['name'] || '';
+      } catch (__) { }
 
-    if (!this.notebook.metadata.lang) {
-      this.notebook.metadata.lang = language;
+      if (!this.notebook.metadata.lang) {
+        this.notebook.metadata.lang = language;
+      }
+
+      const rendered = this.syntaxHighlightCode(cell.source || '', language);
+      cell.source = rendered.code;
+
+      cell.metadata = {
+        ...(cell.metadata || {}),
+        language: rendered.language,
+      };
+    } else {
+      cell.source = null;
     }
 
-    const rendered = this.syntaxHighlightCode(cell.source || '', language);
-    cell.source = rendered.code;
-    cell.metadata = {
-      ...(cell.metadata || {}),
-      language: rendered.language,
-    };
     cell.outputs = cell.outputs || [];
 
     for (const output of cell.outputs) {
@@ -266,7 +269,6 @@ ${mjxStyles}
       // Match '#%... ' or '//%...'
       if (line.match(/^(#%|\/\/%)/)) {
         magics.add(line.replace(/^(#%|\/\/%)/, '').trim());
-        console.log('MAGIC:', line);
         cell.source.shift();
       } else {
         break;
@@ -277,6 +279,7 @@ ${mjxStyles}
       rawMagic: magics,
       props: {
         hidden: magics.has('hidden') || magics.has('delete'),
+        hidecode: magics.has('hidecode'),
       },
     };
   }

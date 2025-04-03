@@ -162,7 +162,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
               text={`${pagination.prev.subtitle}`}
               icon={<MoveLeft />}
               iconPosition='left'
-              pretext='Previous'
+              pretext='Prev'
             />
           )}
         </div>

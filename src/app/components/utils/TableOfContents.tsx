@@ -19,9 +19,11 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ links, currentPageNum
           <li className='list-decimal' key={'item-' + index}>
             <Link className='link' href={link.href}>
               <span
-                className={
-                  String(link.pageNumber) === String(currentPageNumber) && link.pageNumber !== undefined ? 'font-bold' : ''
-                }
+                className={[
+                  String(link.pageNumber) === String(currentPageNumber) && link.pageNumber !== undefined ? 'font-bold' : '',
+                  'before:content-["📄"] before:mr-2',
+                  'hover:underline'
+                ].join(' ')}
               >
                 {link.text}
               </span>
