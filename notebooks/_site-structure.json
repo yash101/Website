@@ -28,6 +28,13 @@
       "displayArticlesInMenu": true,
       "pageTitle": "... For Dummies"
     },
+    "docs": {
+      "linkInMenu": true,
+      "menuTitle": "Bechemel Docs",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Documentation"
+    },
     "learning": {
       "linkInMenu": true,
       "menuTitle": "Freshly Baked",
