@@ -214,6 +214,9 @@ ${mjxStyles}
     }
 
     cell.outputs = cell.outputs || [];
+    if (cell.props?.hideoutput === true) {
+      cell.outputs = [];
+    }
 
     for (const output of cell.outputs) {
       if (output.output_type === 'error') {
@@ -280,6 +283,7 @@ ${mjxStyles}
       props: {
         hidden: magics.has('hidden') || magics.has('delete'),
         hidecode: magics.has('hidecode'),
+        hideoutput: magics.has('hideoutput'),
       },
     };
   }

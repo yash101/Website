@@ -12,6 +12,7 @@ const Renderer: React.FC<RendererProps> = ({
   page,
   toc
 }) => {
+  page.cells.shift();
   return (
     <section className='nbsection'>
       {page.cells.map((section, index) => (

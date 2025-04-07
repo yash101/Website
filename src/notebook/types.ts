@@ -60,6 +60,7 @@ export type SIPage = {
   lastModifiedOn: Date;       // date the page was last modified
   subtitle?: string;          // subtitle of the page
   authors: string[];          // authors of the page
+  metadata: Record<string, string | number | null>; // metadata of the page
 }
 
 // ***** Prerendered page types *****

@@ -38,10 +38,6 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
 
     return (
       <article className='space-y-4 mx-2 py-4'>
-        <Head>
-          <title>{article.pages[0].title} - {site_title}</title>
-          <meta name='description' content={article.pages[0].subtitle} />
-        </Head>
         <ArticlePageHeader
           title={article.pages[0].title || 'untitled'}
           subtitle={article.pages[0].subtitle || 'untitled'}
@@ -120,8 +116,9 @@ export async function generateMetadata(props: ArticleBasePageProps): Promise<Met
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
   const firstPage = article.pages[0];
+  const page: PPPage = await readJsonFile<PPPage>(firstPage.nbPath);
   
-  return {
+  const metadata: Metadata = {
     title: {
       absolute: `${firstPage.title} | ${site_title}`,
     },
@@ -133,7 +130,18 @@ export async function generateMetadata(props: ArticleBasePageProps): Promise<Met
     authors: (singletonOrArrayToArray(firstPage.authors || []).map(author => ({ name: author }))),
     creator: singletonOrArrayToArray(firstPage.authors || []).join(', '),
     publisher: '',
+    openGraph: {},
   };
+
+  if (page.metadata.pageinfo['opengraph-image']) {
+    metadata.openGraph.images = Array.isArray(page.metadata.pageinfo['opengraph-image'])
+      ? page.metadata.pageinfo['opengraph-image']
+      : [page.metadata.pageinfo['opengraph-image']]
+      .filter(Boolean)
+      .map(img => String(img));
+  }
+
+  return metadata;
 }
 
 export default ArticleBasePage;

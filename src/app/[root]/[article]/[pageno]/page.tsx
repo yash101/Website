@@ -72,8 +72,9 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
   const article = index.articles.find(a => a.name === params.article);
   const page = article.pages.find(p => String(p.pageNumber) === String(params.pageno));
   const isFirstPage: boolean = String(page.pageNumber) === String(article.pages[0].pageNumber);
+  const pageContent: PPPage = await readJsonFile<PPPage>(page.nbPath);
   
-  return {
+  const metadata: Metadata = {
     title: {
       absolute: `${page.subtitle} | ${page.title} | ${site_title}`,
     },
@@ -88,7 +89,18 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
     alternates: {
       canonical: isFirstPage ? `/${params.root}/${params.article}` : null,
     },
+    openGraph: {},
   };
+
+  if (pageContent.metadata.pageinfo['opengraph-image']) {
+    metadata.openGraph.images = Array.isArray(pageContent.metadata.pageinfo['opengraph-image'])
+      ? pageContent.metadata.pageinfo['opengraph-image']
+      : [pageContent.metadata.pageinfo['opengraph-image']]
+      .filter(Boolean)
+      .map(img => String(img));
+  }
+
+  return metadata;
 }
 
 interface ArticlePageProps {
@@ -135,14 +147,15 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         lastModifiedOn={page.metadata.pageinfo.lastModifiedOn as string}
       />
       <Separator />
-      <TableOfContents
-        links={publishedPages.map(page => ({
-          href: `/${params.root}/${params.article}/${page.pageNumber}`,
-          text: page.subtitle,
-          pageNumber: page.pageNumber,
-        }))}
-        currentPageNumber={params.pageno}
-      />
+      { publishedPages.length > 1 && <TableOfContents
+          links={publishedPages.map(page => ({
+            href: `/${params.root}/${params.article}/${page.pageNumber}`,
+            text: page.subtitle,
+            pageNumber: page.pageNumber,
+          }))}
+          currentPageNumber={params.pageno}
+        />
+      }
       <section>
         <ErrorBoundary fallback={<div>Error loading content</div>}>
           <ArticleSubpageRenderer

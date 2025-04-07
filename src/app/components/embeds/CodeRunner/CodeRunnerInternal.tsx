@@ -115,12 +115,13 @@ const CodeRunner: React.FC<{
   }
 
   const runCode = () => {
-    if (typeof window === 'undefined' || !window)
-      return;
+    // if (typeof window === 'undefined' || !window)
+    //   return;
+
+    setOutputs([]);
 
     // Terminate any existing worker
     if (workerRef.current) {
-      setOutputs([]);
       workerRef.current.terminate();
     }
 
