@@ -1,7 +1,6 @@
 import path from "path";
 
 import { Metadata } from 'next'
-import Head from "next/head";
 import { notFound } from "next/navigation";
 import { ErrorBoundary } from 'react-error-boundary';
 import { MoveLeft, MoveRight } from 'lucide-react';
@@ -18,7 +17,6 @@ import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer'
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 import { site_title } from "site-config";
 import CanonicalRenderer from "app/util/CanonicalRenderer";
-import { Author } from "next/dist/lib/metadata/types/metadata-types";
 import { singletonOrArrayToArray } from "app/util/Util";
 
 /**
@@ -126,6 +124,10 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   }
 
   const page = await readJsonFile<PPPage>(pageIndex.nbPath);
+
+  if (pageIndex === article.pages[0]) {
+    page.cells.shift();
+  }
   
   const authors: string = Array.isArray(page.metadata.pageinfo['authors']) ?
     page.metadata.pageinfo['authors'].join(', ') :
@@ -138,7 +140,6 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
 
   return (
     <article className='space-y-4 mx-2 py-4'>
-      <CanonicalRenderer url={canonical} />
       <ArticlePageHeader
         title={pageIndex.title}
         subtitle={pageIndex.subtitle}

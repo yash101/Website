@@ -12,7 +12,6 @@ import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
-import Head from 'next/head';
 import { site_title } from 'site-config';
 import { singletonOrArrayToArray } from 'app/util/Util';
 
@@ -30,12 +29,12 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
     const index: SIFormat = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
     const article = index.articles.find(a => a.name === params.article);
     const page: PPPage = await readJsonFile<PPPage>(article.pages[0].nbPath);
+    page.cells.shift();
 
     const publishedPages = article.pages.filter(p => p.published);
     const authors = Array.isArray(article.pages[0].authors) ?
       article.pages[0].authors.join(', ') : article.pages[0].authors;
     
-
     return (
       <article className='space-y-4 mx-2 py-4'>
         <ArticlePageHeader
