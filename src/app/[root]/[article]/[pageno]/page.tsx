@@ -1,7 +1,6 @@
 import path from "path";
 
 import { Metadata } from 'next'
-import Head from "next/head";
 import { notFound } from "next/navigation";
 import { ErrorBoundary } from 'react-error-boundary';
 import { MoveLeft, MoveRight } from 'lucide-react';
@@ -17,6 +16,8 @@ import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 import { site_title } from "site-config";
+import CanonicalRenderer from "app/util/CanonicalRenderer";
+import { singletonOrArrayToArray } from "app/util/Util";
 
 /**
  * Generates metadata for an article page.
@@ -67,12 +68,37 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
   const params = await props.params;
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
+  const page = article.pages.find(p => String(p.pageNumber) === String(params.pageno));
+  const isFirstPage: boolean = String(page.pageNumber) === String(article.pages[0].pageNumber);
+  const pageContent: PPPage = await readJsonFile<PPPage>(page.nbPath);
   
-  return {
-    title: article?.pages[0].title,
-    description: article?.pages[0].subtitle,
-    // Add other metadata as needed
+  const metadata: Metadata = {
+    title: {
+      absolute: `${page.subtitle} | ${page.title} | ${site_title}`,
+    },
+    description: page['description'] as string || page.subtitle,
+    generator: 'JupyNext',
+    applicationName: 'JupyNext',
+    referrer: 'origin-when-cross-origin',
+    keywords: page['keywords'] as string || '',
+    authors: (singletonOrArrayToArray(page.authors).map(author => ({ name: author }))),
+    creator: singletonOrArrayToArray(page.authors || []).join(', '),
+    publisher: '',
+    alternates: {
+      canonical: isFirstPage ? `/${params.root}/${params.article}` : null,
+    },
+    openGraph: {},
   };
+
+  if (pageContent.metadata.pageinfo['opengraph-image']) {
+    metadata.openGraph.images = Array.isArray(pageContent.metadata.pageinfo['opengraph-image'])
+      ? pageContent.metadata.pageinfo['opengraph-image']
+      : [pageContent.metadata.pageinfo['opengraph-image']]
+      .filter(Boolean)
+      .map(img => String(img));
+  }
+
+  return metadata;
 }
 
 interface ArticlePageProps {
@@ -98,6 +124,10 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   }
 
   const page = await readJsonFile<PPPage>(pageIndex.nbPath);
+
+  if (pageIndex === article.pages[0]) {
+    page.cells.shift();
+  }
   
   const authors: string = Array.isArray(page.metadata.pageinfo['authors']) ?
     page.metadata.pageinfo['authors'].join(', ') :
@@ -105,13 +135,11 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   
   const publishedPages = article.pages.filter(page => page.published);
   const pagination = getPreviousAndNextPage(publishedPages, params.pageno);
+  const canonical = String(pageIndex.pageNumber) === String(article.pages[0].pageNumber)
+    ? `/${params.root}/${params.article}` : null;
 
   return (
     <article className='space-y-4 mx-2 py-4'>
-      <Head>
-        <title>{pageIndex.subtitle} - {site_title}</title>
-        <meta name='description' content={pageIndex.subtitle} />
-      </Head>
       <ArticlePageHeader
         title={pageIndex.title}
         subtitle={pageIndex.subtitle}
@@ -120,14 +148,15 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         lastModifiedOn={page.metadata.pageinfo.lastModifiedOn as string}
       />
       <Separator />
-      <TableOfContents
-        links={publishedPages.map(page => ({
-          href: `/${params.root}/${params.article}/${page.pageNumber}`,
-          text: page.subtitle,
-          pageNumber: page.pageNumber,
-        }))}
-        currentPageNumber={params.pageno}
-      />
+      { publishedPages.length > 1 && <TableOfContents
+          links={publishedPages.map(page => ({
+            href: `/${params.root}/${params.article}/${page.pageNumber}`,
+            text: page.subtitle,
+            pageNumber: page.pageNumber,
+          }))}
+          currentPageNumber={params.pageno}
+        />
+      }
       <section>
         <ErrorBoundary fallback={<div>Error loading content</div>}>
           <ArticleSubpageRenderer
@@ -147,7 +176,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
               text={`${pagination.prev.subtitle}`}
               icon={<MoveLeft />}
               iconPosition='left'
-              pretext='Previous'
+              pretext='Prev'
             />
           )}
         </div>

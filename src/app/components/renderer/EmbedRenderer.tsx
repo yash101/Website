@@ -6,6 +6,8 @@ import AccordionWidget from "../embeds/Accordion";
 import CodeRunner from "../embeds/CodeRunner/CodeRunner";
 import DrawIO from "../embeds/DrawIO/DrawIO";
 import ExcalidrawEmbed from "../embeds/Excalidraw/Excalidraw";
+import ChartEmbed, { ChartEmbedProps } from "../embeds/Charts/Charts";
+import MonacoPreview, { MonacoPreviewProps } from "../embeds/MonacoPreview/MonacoPreview";
 
 type EmbedProps = {
   tool: string;
@@ -47,6 +49,16 @@ const EmbedRenderer: React.FC<EmbedRendererProps> = (props) => {
     'excalidraw': (
       <Suspense>
         <ExcalidrawEmbed args={embedData.props} />
+      </Suspense>
+    ),
+    'chart': (
+      <Suspense>
+        <ChartEmbed {...embedData.props as ChartEmbedProps} />
+      </Suspense>
+    ),
+    'monaco-preview': (
+      <Suspense>
+        <MonacoPreview { ...embedData.props as MonacoPreviewProps } />
       </Suspense>
     )
   }

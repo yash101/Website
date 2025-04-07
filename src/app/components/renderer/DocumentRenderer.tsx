@@ -11,26 +11,21 @@ interface RendererProps {
 const Renderer: React.FC<RendererProps> = ({
   page,
   toc
-}) => {
-  return (
-    <section className='nbsection'>
-      {page.cells.map((section, index) => (
-        <SectionRenderer
-          key={index}
-          page={page}
-          section={section}
-          tocContext={toc}
-        />
-      ))}
-      <div
-        dangerouslySetInnerHTML={{
-          __html: page.additionalRawHtml
-        }}
-        className='additional-raw-html-injectable'
-      />
-    </section>
-  );
-}
+}) => (
+  <section className='nbsection'>
+    {
+      page.cells.map((section, index) => (
+        <SectionRenderer key={index} page={page} section={section} tocContext={toc} />
+      ))
+    }
+    <div
+      dangerouslySetInnerHTML={{
+        __html: page.additionalRawHtml
+      }}
+      className='additional-raw-html-injectable'
+    />
+  </section>
+)
 
 interface DocumentRendererProps {
   page: PPPage;
@@ -42,16 +37,7 @@ const DocumentRenderer: React.FC<DocumentRendererProps> = ({ page }) => {
   };
 
   const renderedSections = Renderer({ page, toc });
-
-  return (
-    <>
-      {/* <section className='nbsection'>
-        Table of contents will go here
-        <SectionContents items={toc.items} />
-      </section> */}
-      {renderedSections}
-    </>
-  );
+  return renderedSections;
 };
 
 export default DocumentRenderer;

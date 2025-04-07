@@ -44,7 +44,7 @@ export class Indexer {
       }
 
       if (!root) {
-        console.warn(`Notebook ${path} has no root`);
+        console.warn(`⚠️ Notebook ${path} has no root`);
         continue;
       }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { equalButNotNullOrUndefined } from "./JsUtils";
+import { Separator } from "@/components/ui/separator";
 
 interface TableOfContentsProps {
   links: {
@@ -12,16 +13,18 @@ interface TableOfContentsProps {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ links, currentPageNumber }) => (
   <div className='flex flex-row justify-items-center w-full border-2 p-4'>
-    <section className='p-8rounded-lg w-[80%]'>
-      <h2 className='text-lg font-bold'>{'Table of Contents 📚'}</h2>
-      <ol className='pt-2 pl-8 list-decimal'>{
+    <section className='w-full'>
+      <h2 className='text-xl font-bold'>{'Jump to Page 📚'}</h2>
+      <Separator orientation='horizontal' />
+      <ol className='pt-2 pl-4 list-decimal'>{
         links.map((link, index) => (
           <li className='list-decimal' key={'item-' + index}>
             <Link className='link' href={link.href}>
               <span
-                className={
-                  String(link.pageNumber) === String(currentPageNumber) && link.pageNumber !== undefined ? 'font-bold' : ''
-                }
+                className={[
+                  String(link.pageNumber) === String(currentPageNumber) && link.pageNumber !== undefined ? 'font-bold' : '',
+                  'hover:underline'
+                ].join(' ')}
               >
                 {link.text}
               </span>

@@ -12,8 +12,8 @@ import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
-import Head from 'next/head';
 import { site_title } from 'site-config';
+import { singletonOrArrayToArray } from 'app/util/Util';
 
 interface ArticleBasePageProps {
   params: Promise<{
@@ -29,18 +29,14 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
     const index: SIFormat = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
     const article = index.articles.find(a => a.name === params.article);
     const page: PPPage = await readJsonFile<PPPage>(article.pages[0].nbPath);
+    page.cells.shift();
 
     const publishedPages = article.pages.filter(p => p.published);
     const authors = Array.isArray(article.pages[0].authors) ?
       article.pages[0].authors.join(', ') : article.pages[0].authors;
     
-
     return (
       <article className='space-y-4 mx-2 py-4'>
-        <Head>
-          <title>{article.pages[0].title} - {site_title}</title>
-          <meta name='description' content={article.pages[0].subtitle} />
-        </Head>
         <ArticlePageHeader
           title={article.pages[0].title || 'untitled'}
           subtitle={article.pages[0].subtitle || 'untitled'}
@@ -118,12 +114,33 @@ export async function generateMetadata(props: ArticleBasePageProps): Promise<Met
   const params = await props.params;
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
+  const firstPage = article.pages[0];
+  const page: PPPage = await readJsonFile<PPPage>(firstPage.nbPath);
   
-  return {
-    title: article?.pages[0].title,
-    description: article?.pages[0].subtitle,
-    // Add other metadata as needed
+  const metadata: Metadata = {
+    title: {
+      absolute: `${firstPage.title} | ${site_title}`,
+    },
+    description: firstPage['description'] as string || firstPage.subtitle,
+    generator: 'JupyNext',
+    applicationName: 'JupyNext',
+    referrer: 'origin-when-cross-origin',
+    keywords: firstPage['keywords'] as string || '',
+    authors: (singletonOrArrayToArray(firstPage.authors || []).map(author => ({ name: author }))),
+    creator: singletonOrArrayToArray(firstPage.authors || []).join(', '),
+    publisher: '',
+    openGraph: {},
   };
+
+  if (page.metadata.pageinfo['opengraph-image']) {
+    metadata.openGraph.images = Array.isArray(page.metadata.pageinfo['opengraph-image'])
+      ? page.metadata.pageinfo['opengraph-image']
+      : [page.metadata.pageinfo['opengraph-image']]
+      .filter(Boolean)
+      .map(img => String(img));
+  }
+
+  return metadata;
 }
 
 export default ArticleBasePage;

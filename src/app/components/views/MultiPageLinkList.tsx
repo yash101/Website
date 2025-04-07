@@ -60,14 +60,16 @@ const MultiPageLinkList: React.FC<MultiPageLinkListProps> = ({
                     'w-full',
                     'rounded-lg',
                   ].join(' ')}
-                ><LinkIcon className='inline-block' size={'12pt'} /> {page.subtitle}</Link>
+                >
+                  <LinkIcon className='inline-block' size={'12pt'} /> {page.subtitle}
+                </Link>
               </li>
             ))
           }</ul>
         </nav>
       }
     </section>
-  )
+  );
 };
 
 export default MultiPageLinkList;

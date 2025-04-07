@@ -28,6 +28,13 @@
       "displayArticlesInMenu": true,
       "pageTitle": "... For Dummies"
     },
+    "docs": {
+      "linkInMenu": true,
+      "menuTitle": "Bechemel Docs",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Documentation"
+    },
     "learning": {
       "linkInMenu": true,
       "menuTitle": "Freshly Baked",
@@ -40,7 +47,14 @@
       "menuTitle": "Archive",
       "rootType": "Blog",
       "displayArticlesInMenu": true,
-      "pageTitle": "Archived Content"
+      "pageTitle": "Imported Archive"
+    },
+    "food": {
+      "linkInMenu": true,
+      "menuTitle": "Cullinary Lab",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Yash's Cullinary Lab"
     }
   }
 }

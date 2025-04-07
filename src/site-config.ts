@@ -4,8 +4,6 @@ export const site_description: string = 'Yash\'s website - full of projects, tho
 
 export const maxImageWidth: number = 768;
 
-export const memoizeIndex: boolean = false;
-
 export const markdownitConfig: object = {
   // Enable HTML tags in source
   html: true,
@@ -87,5 +85,7 @@ export const mathjaxConfig: object = {
   svg: null,
 }
 
+// `drawio.devya.sh` is a public instance of drawio hosted on Cloudflare. Feel free to use it pursuant to Cloudflare TOS.
 export const DrawIOURL: string = 'https://drawio.devya.sh';
+
 export const forceUnpublishedAsPublished: boolean = false;

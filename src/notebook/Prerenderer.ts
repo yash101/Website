@@ -85,7 +85,10 @@ export class Prerenderer {
     this.metadata = this.notebook.metadata.pageinfo as PageInfo;
 
     for (const cell of this.notebook.cells) {
-      cell.source = (cell.source as string[] || [])
+      cell.source = Array.isArray(cell.source) ? cell.source : [cell.source || ''];
+      cell.props = this.magic(cell).props;
+
+      cell.source = cell.source 
         .map(line => line.replace(/(\r\n|\r|\n)$/, ''))
         .join('\n') || '';
 
@@ -111,14 +114,21 @@ export class Prerenderer {
       };
 
       // prerender the cell
-      renderers[cell.cell_type || 'raw'](cell);
-
-      // GC unnecessary data
-      delete cell.id;
-      delete cell.execution_count;
-      delete cell.attachments;
-      delete cell.metadata;
+      renderers[cell.cell_type || 'markdown'](cell);
     }
+
+    // GC loop (hidden cells & unnecessary data)
+    this.notebook.cells = this.notebook.cells
+      .filter(cell => !cell.props?.hidden)
+      .map(cell => {
+        // GC unnecessary data
+        delete cell.id;
+        delete cell.execution_count;
+        delete cell.attachments;
+        delete cell.metadata;
+
+        return cell;
+      });
 
     // TODO: experiment if moving custom CSS rules to after {mjxStyles} improves the rendering
     const mjxStyles = this.mathjax.outputStyle();
@@ -152,7 +162,11 @@ ${mjxStyles}
       try {
         return toml.parse(text);
       } catch (e) {
-        throw new Error('Compilation failed - unknown format of metadata cell');
+        try {
+          return new Function(`return ${text}`)();
+        } catch (e) {
+          throw new Error('Compilation failed - unknown format of metadata cell - ' + e.message);
+        }
       }
     }
   }
@@ -176,24 +190,33 @@ ${mjxStyles}
   }
 
   codeRenderer(cell) {
-    let language = '';
-    try {
-      language = this.notebook.metadata.lang ||
-        this.metadata['language_info'].name ||
-        this.notebook.metadata['kernelspec']['name'] || '';
-    } catch (__) { }
+    if (cell.props?.hidecode !== true) {
+      let language = '';
+      try {
+        language = this.notebook.metadata.lang ||
+          this.metadata['language_info'].name ||
+          this.notebook.metadata['kernelspec']['name'] || '';
+      } catch (__) { }
 
-    if (!this.notebook.metadata.lang) {
-      this.notebook.metadata.lang = language;
+      if (!this.notebook.metadata.lang) {
+        this.notebook.metadata.lang = language;
+      }
+
+      const rendered = this.syntaxHighlightCode(cell.source || '', language);
+      cell.source = rendered.code;
+
+      cell.metadata = {
+        ...(cell.metadata || {}),
+        language: rendered.language,
+      };
+    } else {
+      cell.source = null;
     }
 
-    const rendered = this.syntaxHighlightCode(cell.source || '', language);
-    cell.source = rendered.code;
-    cell.metadata = {
-      ...(cell.metadata || {}),
-      language: rendered.language,
-    };
     cell.outputs = cell.outputs || [];
+    if (cell.props?.hideoutput === true) {
+      cell.outputs = [];
+    }
 
     for (const output of cell.outputs) {
       if (output.output_type === 'error') {
@@ -240,5 +263,28 @@ ${mjxStyles}
 
   getHeroSection() {
     return (this.notebook.cells[0] || {}).source || '';
+  }
+
+  magic(cell) {
+    // extract magics
+    const magics = new Set();
+    for (const line of cell.source) {
+      // Match '#%... ' or '//%...'
+      if (line.match(/^(#%|\/\/%)/)) {
+        magics.add(line.replace(/^(#%|\/\/%)/, '').trim());
+        cell.source.shift();
+      } else {
+        break;
+      }
+    }
+
+    return {
+      rawMagic: magics,
+      props: {
+        hidden: magics.has('hidden') || magics.has('delete'),
+        hidecode: magics.has('hidecode'),
+        hideoutput: magics.has('hideoutput'),
+      },
+    };
   }
 }
