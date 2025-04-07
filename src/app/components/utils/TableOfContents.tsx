@@ -16,9 +16,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ links, currentPageNum
     <section className='w-full'>
       <h2 className='text-xl font-bold'>{'Jump to Page 📚'}</h2>
       <Separator orientation='horizontal' />
-      <ol className='pt-2 pl-4 list-decimal'>{
+      <ol className='pt-2 md:pl-6 list-decimal'>{
         links.map((link, index) => (
-          <li className='list-decimal' key={'item-' + index}>
+          <li className='list-none md:list-decimal' key={'item-' + index}>
             <Link className='link' href={link.href}>
               <span
                 className={[
