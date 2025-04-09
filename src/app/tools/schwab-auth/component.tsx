@@ -85,12 +85,12 @@ export default function SchwabAuthPage() {
           Note, that is the correct URI to use if you want to use my instance hosted on Cloudflare Pages.
         </p>
         <p>Step 3: put the client ID (Just the client ID, not the secret).</p>
-        <p>Step 4: click "Authorize" to be forwarded to Schwab's and go through the authorization process</p>
-        <p>Step 5: once you are redirected back here, use the "Copy" button to copy your one-time authorization code.</p>
+        <p>{'Step 4: click "Authorize" to be forwarded to Schwab\'s and go through the authorization process'}</p>
+        <p>{'Step 5: once you are redirected back here, use the "Copy" button to copy your one-time authorization code.'}</p>
         <p>Step 6: use the Schwab API to authorize and receive your access token and refresh token. Note, that is not implemented here</p>
         <p>
-          <span className='font-bold'>Note: </span>The "Save Settings" button will persist your client ID and redirect
-          URL in your browser's <code>localStorage</code> so you do not need to enter it again each time. It's a ease
+          <span className='font-bold'>Note: </span>The {`"Save Settings"`} button will persist your client ID and redirect
+          URL in your {`browser's`} <code>localStorage</code> so you do not need to enter it again each time. It is a ease
           of use feature, but is not required to use the tool.
         </p>
       </section>
@@ -131,7 +131,7 @@ export default function SchwabAuthPage() {
         <h3 className='font-bold'>Cybersecurity &amp; Safety Notes</h3>
         <ul className='md:list-disc pl-0 md:pl-5 space-y-2'>
           <li>
-            <Bold>Don't be stoooopid. If you're asking for API access, know how to stay secure.</Bold>
+            <Bold>Do not be stoooopid. If you are asking for API access, know how to stay secure.</Bold>
           </li>
           <li>
             <p><Bold>No app secret required</Bold></p>
@@ -147,7 +147,7 @@ export default function SchwabAuthPage() {
               Sharing your App ID, secret, and tokens is equivalent to providing someone with your Schwab account username and password.
             </p>
             <p>
-              In fact, it's even worse than providing a username and password to your Schwab account since they have
+              In fact, it is even worse than providing a username and password to your Schwab account since they have
               <Bold>full API access</Bold> and can make drastic account changes in under one second!
             </p>
           </li>
@@ -161,7 +161,7 @@ export default function SchwabAuthPage() {
             <p><Bold>Verify Authenticity:</Bold></p> 
             <p>
               Always cross-reference the authorization URL with your Schwab API documentation to avoid malicious links.
-              Once you click "Authorize," it becomes hard to determine if you are being phished.
+              Once you click {`"Authorize,"`} it becomes hard to determine if you are being phished.
             </p>
           </li>
           <li>
@@ -177,8 +177,8 @@ export default function SchwabAuthPage() {
             <p><Bold>Use at Your Own Risk:</Bold></p>
             <p>
               This utility assists in accessing the Schwab APIs. You are solely responsible for your own trades and account actions.
-              If you are uncertain about any action, please refrain from proceeding. Neither Schwab nor the developers of this tool
-              assume responsibility for any financial losses or risks incurred.
+              If you are uncertain about any action, please refrain from proceeding. The developers of this tool will not assume
+              responsibility for any financial losses or risks incurred.
             </p>
           </li>
         </ul>

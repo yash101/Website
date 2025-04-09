@@ -22,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({
   logoAlt = 'Logo',
   logoWidth = 120,
   logoHeight = 40,
-  companyName = 'Devyash Systems, llc.'
+  companyName = 'Yash L., S.P.',
 }) => {
   return (
     <footer className="bg-slate-200 text-white py-8">

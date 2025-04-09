@@ -29,5 +29,5 @@ export const metadata: Metadata = {
   },
 };
 
-const Page: React.FC<void> = () => <SchwabAuthPage />;
+const Page: React.FC = () => <SchwabAuthPage />;
 export default Page;
