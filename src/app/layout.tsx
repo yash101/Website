@@ -23,6 +23,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: site_title,
   description: site_description,
+  metadataBase: new URL('https://devya.sh/')
 };
 
 export default async function RootLayout({
