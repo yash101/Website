@@ -28,9 +28,16 @@
       "displayArticlesInMenu": true,
       "pageTitle": "... For Dummies"
     },
+    "projects": {
+      "linkInMenu": true,
+      "menuTitle": "Projects",
+      "rootType": "Blog",
+      "displayArticlesInMenu": true,
+      "pageTitle": "Cool Inventions and Things"
+    },
     "docs": {
       "linkInMenu": true,
-      "menuTitle": "Bechemel Docs",
+      "menuTitle": "Béchamel Docs",
       "rootType": "Blog",
       "displayArticlesInMenu": true,
       "pageTitle": "Documentation"
