@@ -50,7 +50,7 @@ function replace(node: DOMNode, index: number, notebook: PPPage, tocItems: Secti
       return (
         <ImageComponent
           attributes={node.attribs}
-          metadata={notebook.metadata.img || null}
+          metadata={notebook?.metadata?.img || null}
         />
       );
 
