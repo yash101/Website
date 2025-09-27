@@ -14,6 +14,8 @@ const eslintConfig = [
     extends: ['next/core-web-vitals', 'next/typescript'],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
+      // Relax explicit any for broader project; statxplor now typed explicitly
+      "@typescript-eslint/no-explicit-any": ["warn"],
     }
   }),
 ];
