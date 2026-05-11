@@ -12,8 +12,8 @@ import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
-import { site_title } from 'site-config';
 import { singletonOrArrayToArray } from 'app/util/Util';
+import { buildMetadata } from 'app/util/metadata';
 
 interface ArticleBasePageProps {
   params: Promise<{
@@ -114,33 +114,24 @@ export async function generateMetadata(props: ArticleBasePageProps): Promise<Met
   const params = await props.params;
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
-  const firstPage = article.pages[0];
-  const page: PPPage = await readJsonFile<PPPage>(firstPage.nbPath);
-  
-  const metadata: Metadata = {
-    title: {
-      absolute: `${firstPage.title} | ${site_title}`,
-    },
-    description: firstPage['description'] as string || firstPage.subtitle,
-    generator: 'JupyNext',
-    applicationName: 'JupyNext',
-    referrer: 'origin-when-cross-origin',
-    keywords: firstPage['keywords'] as string || '',
-    authors: (singletonOrArrayToArray(firstPage.authors || []).map(author => ({ name: author }))),
-    creator: singletonOrArrayToArray(firstPage.authors || []).join(', '),
-    publisher: '',
-    openGraph: {},
-  };
-
-  if (page.metadata.pageinfo['opengraph-image']) {
-    metadata.openGraph.images = Array.isArray(page.metadata.pageinfo['opengraph-image'])
-      ? page.metadata.pageinfo['opengraph-image']
-      : [page.metadata.pageinfo['opengraph-image']]
-      .filter(Boolean)
-      .map(img => String(img));
+  if (!article) {
+    return {};
   }
 
-  return metadata;
+  const firstPage = article.pages[0];
+  const page: PPPage = await readJsonFile<PPPage>(firstPage.nbPath);
+
+  return buildMetadata({
+    title: firstPage.title,
+    description: String(page.metadata.pageinfo.description || firstPage.subtitle || firstPage.title),
+    path: `/${params.root}/${params.article}`,
+    authors: singletonOrArrayToArray(firstPage.authors || []),
+    keywords: page.metadata.pageinfo.keywords as string,
+    openGraphImages: page.metadata.pageinfo['opengraph-image'],
+    type: 'article',
+    publishedTime: article.firstPublishedOn ? new Date(article.firstPublishedOn).toISOString() : undefined,
+    modifiedTime: article.lastModifiedOn ? new Date(article.lastModifiedOn).toISOString() : undefined,
+  });
 }
 
 export default ArticleBasePage;

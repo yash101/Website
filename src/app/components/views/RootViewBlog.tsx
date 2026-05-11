@@ -1,6 +1,5 @@
 'use client';
 
-import Head from 'next/head';
 import { useState } from 'react';
 import { ArrowDownWideNarrow, ArrowUpWideNarrow } from 'lucide-react';
 
@@ -8,8 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { SIFormat } from 'notebook/types';
-import { site_title } from 'site-config';
-
 import BlogHeroLink from './BlogHeroLink';
 
 interface RootViewBlogProps {
@@ -61,10 +58,6 @@ const RootViewBlog: React.FC<RootViewBlogProps> = ({ index }) => {
 
   return (
     <article className='px-4 py-8'>
-      <Head>
-        <title>{index.config.pageTitle} - {site_title}</title>
-        <meta name='description' content={index.config.pageTitle} />
-      </Head>
       <header className='mb-4'>
         <h1 className='heading-largest'>{title}</h1>
       </header>

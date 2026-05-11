@@ -15,9 +15,8 @@ import ArticlePageHeader from 'app/components/views/ArticlePageHeader';
 import TableOfContents from 'app/components/utils/TableOfContents';
 import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer';
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
-import { site_title } from "site-config";
-import CanonicalRenderer from "app/util/CanonicalRenderer";
 import { singletonOrArrayToArray } from "app/util/Util";
+import { buildMetadata } from "app/util/metadata";
 
 /**
  * Generates metadata for an article page.
@@ -68,37 +67,29 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
   const params = await props.params;
   const index = await readJsonFile<SIFormat>(`indices/${params.root}.index.json`);
   const article = index.articles.find(a => a.name === params.article);
-  const page = article.pages.find(p => String(p.pageNumber) === String(params.pageno));
-  const isFirstPage: boolean = String(page.pageNumber) === String(article.pages[0].pageNumber);
-  const pageContent: PPPage = await readJsonFile<PPPage>(page.nbPath);
-  
-  const metadata: Metadata = {
-    title: {
-      absolute: `${page.subtitle} | ${page.title} | ${site_title}`,
-    },
-    description: page['description'] as string || page.subtitle,
-    generator: 'JupyNext',
-    applicationName: 'JupyNext',
-    referrer: 'origin-when-cross-origin',
-    keywords: page['keywords'] as string || '',
-    authors: (singletonOrArrayToArray(page.authors).map(author => ({ name: author }))),
-    creator: singletonOrArrayToArray(page.authors || []).join(', '),
-    publisher: '',
-    alternates: {
-      canonical: isFirstPage ? `/${params.root}/${params.article}` : null,
-    },
-    openGraph: {},
-  };
-
-  if (pageContent.metadata.pageinfo['opengraph-image']) {
-    metadata.openGraph.images = Array.isArray(pageContent.metadata.pageinfo['opengraph-image'])
-      ? pageContent.metadata.pageinfo['opengraph-image']
-      : [pageContent.metadata.pageinfo['opengraph-image']]
-      .filter(Boolean)
-      .map(img => String(img));
+  if (!article) {
+    return {};
   }
 
-  return metadata;
+  const page = article.pages.find(p => String(p.pageNumber) === String(params.pageno));
+  if (!page) {
+    return {};
+  }
+
+  const isFirstPage: boolean = String(page.pageNumber) === String(article.pages[0].pageNumber);
+  const pageContent: PPPage = await readJsonFile<PPPage>(page.nbPath);
+
+  return buildMetadata({
+    title: isFirstPage ? page.title : `${page.subtitle || page.title} | ${page.title}`,
+    description: String(pageContent.metadata.pageinfo.description || page.subtitle || page.title),
+    path: isFirstPage ? `/${params.root}/${params.article}` : `/${params.root}/${params.article}/${params.pageno}`,
+    authors: singletonOrArrayToArray(page.authors || []),
+    keywords: pageContent.metadata.pageinfo.keywords as string,
+    openGraphImages: pageContent.metadata.pageinfo['opengraph-image'],
+    type: 'article',
+    publishedTime: page.publishedOn ? new Date(page.publishedOn).toISOString() : undefined,
+    modifiedTime: page.lastModifiedOn ? new Date(page.lastModifiedOn).toISOString() : undefined,
+  });
 }
 
 interface ArticlePageProps {
@@ -135,8 +126,6 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
   
   const publishedPages = article.pages.filter(page => page.published);
   const pagination = getPreviousAndNextPage(publishedPages, params.pageno);
-  const canonical = String(pageIndex.pageNumber) === String(article.pages[0].pageNumber)
-    ? `/${params.root}/${params.article}` : null;
 
   return (
     <article className='space-y-4 mx-2 py-4'>

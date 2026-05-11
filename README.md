@@ -156,5 +156,3 @@ Place magic commands at the beginning of a cell, one command per line.
   * Build output: `out`
   * Environment variables:
     * `NODE_VERSION` is `v22.13.0`
-    * `SKIP_DEPENDENCY_INSTALL` is `1` since some of the dependencies used *"don't support"* React 19.
-

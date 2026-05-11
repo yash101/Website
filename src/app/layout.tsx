@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { site_description, site_title } from 'site-config';
+import { default_og_image_path, site_description, site_title, site_url } from 'site-config';
 import { getSidebarContent } from './util/IndexUtils';
 import { TopNavItems } from './NavLinks';
 
@@ -21,9 +21,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: site_title,
+  title: {
+    default: site_title,
+    template: `%s | ${site_title}`,
+  },
   description: site_description,
-  metadataBase: new URL('https://devya.sh/')
+  metadataBase: new URL(site_url),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: site_url,
+    title: site_title,
+    description: site_description,
+    siteName: site_title,
+    images: [
+      {
+        url: default_og_image_path,
+        alt: site_title,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: site_title,
+    description: site_description,
+    images: [default_og_image_path],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({

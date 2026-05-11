@@ -18,7 +18,7 @@ import { PageInfo } from './types.js';
 export class Prerenderer {
   notebook: NotebookUnderTransformation;
   attachments: NUTAttachment[];
-  mathjax: MathjaxInstance;
+  mathjax: MathjaxInstance | null;
   markdownIt: ReturnType<typeof markdownit>;
   convertAnsiToHtml: ConvertAnsiToHtml;
   metadata: object;
@@ -26,10 +26,27 @@ export class Prerenderer {
   constructor(notebook: unknown) {
     this.notebook = notebook;
     this.attachments = [];
+    this.mathjax = null;
+    
+    this.convertAnsiToHtml = new ConvertAnsiToHtml({
+      newline: true,
+      escapeXML: true,
+      stream: false,
+    });
+  }
+
+  async initializeMarkdownRenderer() {
+    if (this.markdownIt) {
+      return;
+    }
 
     this.mathjax = createMathjaxInstance({
       ...mathjaxConfig,
     });
+
+    if (!this.mathjax) {
+      throw new Error('Compilation failed - MathJax could not be initialized');
+    }
 
     this.markdownIt = markdownit({
       ...markdownitConfig,
@@ -48,15 +65,11 @@ export class Prerenderer {
       .use(container, {
         name: 'warning',
       });
-    
-    this.convertAnsiToHtml = new ConvertAnsiToHtml({
-      newline: true,
-      escapeXML: true,
-      stream: false,
-    });
   }
 
   async prerender() {
+    await this.initializeMarkdownRenderer();
+
     this.notebook.cells = this.notebook.cells || [];
     this.notebook.metadata = this.notebook.metadata || {};
     this.notebook.metadata.img = {};
@@ -128,10 +141,10 @@ export class Prerenderer {
         delete cell.metadata;
 
         return cell;
-      });
+    });
 
     // TODO: experiment if moving custom CSS rules to after {mjxStyles} improves the rendering
-    const mjxStyles = this.mathjax.outputStyle();
+    const mjxStyles = await this.mathjax.outputStyle();
     this.notebook.additionalRawHtml = `
 <style type="text/css">
 mjx-container[jax="SVG"] > svg {

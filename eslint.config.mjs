@@ -1,22 +1,23 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+import nextVitals from "eslint-config-next/core-web-vitals";
 
 const eslintConfig = [
-  ...compat.config({
-    extends: ['next/core-web-vitals', 'next/typescript'],
-    rules: {
-      "@typescript-eslint/no-unused-vars": "off",
-      // Relax explicit any for broader project; statxplor now typed explicitly
-      "@typescript-eslint/no-explicit-any": ["warn"],
+  ...nextVitals.map((config) => {
+    if (!config.plugins?.["@typescript-eslint"]) {
+      return config;
     }
+
+    return {
+      ...config,
+      rules: {
+        ...config.rules,
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "react-hooks/error-boundaries": "off",
+        "react-hooks/immutability": "off",
+        "react-hooks/purity": "off",
+        "react-hooks/set-state-in-effect": "off",
+      },
+    };
   }),
 ];
 
