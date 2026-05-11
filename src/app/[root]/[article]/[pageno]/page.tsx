@@ -80,7 +80,7 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
   const pageContent: PPPage = await readJsonFile<PPPage>(page.nbPath);
 
   return buildMetadata({
-    title: isFirstPage ? page.title : `${page.subtitle || page.title} | ${page.title}`,
+    title: page.title,
     description: String(pageContent.metadata.pageinfo.description || page.subtitle || page.title),
     path: isFirstPage ? `/${params.root}/${params.article}` : `/${params.root}/${params.article}/${params.pageno}`,
     authors: singletonOrArrayToArray(page.authors || []),
