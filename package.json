@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "prebuild": "tsx src/notebook/build.mjs",
-    "ci-build": "./ci.sh"
+    "ci-build": "./ci.sh",
+    "watch:notebooks": "chokidar \"notebooks/**/*\" -c \"npm run prebuild\""
   },
   "engines": {
     "node": ">=v22.13.0"
@@ -55,6 +56,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "cheerio": "^1.2.0",
+    "chokidar-cli": "^3.0.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.6",
     "highlight.js": "^11.11.1",
