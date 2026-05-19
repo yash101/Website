@@ -1,5 +1,5 @@
 export const site_title: string = 'Yash\'s Site';
-export const blog_title: string = 'Hello, World!';
+export const blog_title: string = 'Yash\'s Site';
 export const site_description: string = 'Yash\'s website - full of projects, thoughts, ideas and creativity!';
 export const site_url: string = 'https://devya.sh';
 export const default_og_image_path: string = '/opengraph-image';
