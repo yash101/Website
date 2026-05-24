@@ -70,7 +70,7 @@ export function buildMetadata({
   const normalizedAuthors = normalizeAuthors(authors);
   const normalizedKeywords = normalizeKeywords(keywords);
   const images = normalizeOpenGraphImages(openGraphImages, title);
-  const url = new URL(path, site_url).toString();
+  const canonicalUrl = new URL(path, site_url).toString();
 
   return {
     title: {
@@ -78,7 +78,7 @@ export function buildMetadata({
     },
     description,
     alternates: {
-      canonical: path,
+      canonical: canonicalUrl,
     },
     keywords: normalizedKeywords,
     authors: normalizedAuthors.map(name => ({ name })),
@@ -86,7 +86,7 @@ export function buildMetadata({
     metadataBase: new URL(site_url),
     openGraph: {
       type,
-      url,
+      url: canonicalUrl,
       title,
       description,
       siteName: site_title,

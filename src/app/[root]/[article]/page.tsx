@@ -14,6 +14,7 @@ import ArticleMainPageRenderer from 'app/components/views/ArticleMainPageRendere
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 import { singletonOrArrayToArray } from 'app/util/Util';
 import { buildMetadata } from 'app/util/metadata';
+import { getArticlePagePath } from 'app/util/ArticleUrl';
 
 interface ArticleBasePageProps {
   params: Promise<{
@@ -49,7 +50,12 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
           article.pages.length > 1 && (
             <TableOfContents
               links={publishedPages.map(page => ({
-                href: `/${params.root}/${params.article}/${page.pageNumber}`,
+                href: getArticlePagePath(
+                  params.root,
+                  params.article,
+                  page.pageNumber,
+                  article.pages[0].pageNumber
+                ),
                 text: page.subtitle,
                 pageNumber: page.pageNumber,
               }))}
@@ -97,13 +103,10 @@ export async function generateStaticParams() {
       await readJsonFile<SIFormat>(path.join('indices', `${root}.index.json`));
 
     for (const article of secondaryIndex.articles) {
-      for (const page of article.pages) {
-        routes.push({
-          root,
-          article: article.name,
-          pageno: `${page.pageNumber}`,
-        });
-      }
+      routes.push({
+        root,
+        article: article.name,
+      });
     }
   }
 

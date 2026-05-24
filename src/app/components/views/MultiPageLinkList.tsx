@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Link as LinkIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SIPage } from "notebook/types";
+import { getArticlePagePathFromBase } from "app/util/ArticleUrl";
+
 interface MultiPageLinkListProps {
   pages: SIPage[];
   baseuri: string;
@@ -16,6 +18,7 @@ const MultiPageLinkList: React.FC<MultiPageLinkListProps> = ({
   baseuri
 }) => {
   const [ isOpen, setIsOpen ] = useState(false);
+  const firstPageNumber = pages[0]?.pageNumber;
 
   return (
     <section>
@@ -46,7 +49,7 @@ const MultiPageLinkList: React.FC<MultiPageLinkListProps> = ({
             pages.map((page, index) => (
               <li key={'page-' + index}>
                 <Link
-                  href={`${baseuri}/${page.pageNumber}`}
+                  href={getArticlePagePathFromBase(baseuri, page.pageNumber, firstPageNumber)}
                   className={[
                     'link',
                     'py-2',

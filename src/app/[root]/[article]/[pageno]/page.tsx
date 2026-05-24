@@ -17,6 +17,7 @@ import ArticleSubpageRenderer from 'app/components/views/ArticleSubpageRenderer'
 import IntraPagePagination from 'app/components/utils/IntraPagePagination';
 import { singletonOrArrayToArray } from "app/util/Util";
 import { buildMetadata } from "app/util/metadata";
+import { getArticlePagePath } from 'app/util/ArticleUrl';
 
 /**
  * Generates metadata for an article page.
@@ -114,6 +115,8 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
     notFound();
   }
 
+  const firstPageNumber = article.pages[0].pageNumber;
+
   const page = await readJsonFile<PPPage>(pageIndex.nbPath);
 
   if (pageIndex === article.pages[0]) {
@@ -139,7 +142,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
       <Separator />
       { publishedPages.length > 1 && <TableOfContents
           links={publishedPages.map(page => ({
-            href: `/${params.root}/${params.article}/${page.pageNumber}`,
+            href: getArticlePagePath(
+              params.root,
+              params.article,
+              page.pageNumber,
+              firstPageNumber
+            ),
             text: page.subtitle,
             pageNumber: page.pageNumber,
           }))}
@@ -161,7 +169,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         <div className='flex-1'>
           {pagination.prev && (
             <IntraPagePagination
-              href={`/${params.root}/${params.article}/${pagination.prev.pageNumber}`}
+              href={getArticlePagePath(
+                params.root,
+                params.article,
+                pagination.prev.pageNumber,
+                firstPageNumber
+              )}
               text={`${pagination.prev.subtitle}`}
               icon={<MoveLeft />}
               iconPosition='left'
@@ -172,7 +185,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async (props) => {
         <div className='flex-1 text-right'>
           {pagination.next && (
             <IntraPagePagination
-              href={`/${params.root}/${params.article}/${pagination.next.pageNumber}`}
+              href={getArticlePagePath(
+                params.root,
+                params.article,
+                pagination.next.pageNumber,
+                firstPageNumber
+              )}
               text={`${pagination.next.subtitle}`}
               icon={<MoveRight />}
               iconPosition='right'
