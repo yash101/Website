@@ -60,7 +60,7 @@ function replace(node: DOMNode, index: number, notebook: PPPage, tocItems: Secti
         href = href.replace('attachment:', '/assets/attachments/');
       }
       return (
-        <Link href={node.attribs.href}>
+        <Link href={href}>
           {domToReact(node.children as DOMNode[])}
         </Link>
       );

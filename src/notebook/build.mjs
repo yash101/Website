@@ -15,6 +15,53 @@ const INDICES_DIR_PATH = path.join(PUBLIC_DIR, 'indices');
 
 const DEBUG_INDENT_JSON = 0;
 
+function getMissingSeoFields(pageinfo) {
+  const missing = [];
+
+  const description = typeof pageinfo.description === 'string'
+    ? pageinfo.description.trim()
+    : '';
+  const keywords = pageinfo.keywords;
+  const tags = pageinfo.tags;
+  const categories = pageinfo.categories;
+
+  const hasKeywordLikeMetadata = Boolean(
+    (typeof keywords === 'string' && keywords.trim()) ||
+    (Array.isArray(keywords) && keywords.some(keyword => String(keyword).trim())) ||
+    (Array.isArray(tags) && tags.some(tag => String(tag).trim())) ||
+    (Array.isArray(categories) && categories.some(category => String(category).trim()))
+  );
+
+  if (!description) {
+    missing.push('description');
+  }
+
+  if (!hasKeywordLikeMetadata) {
+    missing.push('keywords');
+  }
+
+  return missing;
+}
+
+function warnMissingSeoFields(filepath, notebook) {
+  const pageinfo = notebook?.metadata?.pageinfo || {};
+
+  if (!pageinfo.isPublished) {
+    return;
+  }
+
+  const missing = getMissingSeoFields(pageinfo);
+  if (missing.length === 0) {
+    return;
+  }
+
+  const articlePath = pageinfo.root && pageinfo.name
+    ? `/${pageinfo.root}/${pageinfo.name}${Number(pageinfo.page) > 1 ? `/${pageinfo.page}` : ''}`
+    : filepath;
+
+  console.warn(`⚠️ seo ${articlePath} missing ${missing.join(', ')}`);
+}
+
 async function processNotebook(filepath, indexer) {
   // guard clauses for the files we should process here
   if (filepath.includes('.ipynb_checkpoints') || !filepath.endsWith('.ipynb') || filepath.startsWith('.')) {
@@ -35,6 +82,7 @@ async function processNotebook(filepath, indexer) {
     const prerenderer = new Prerenderer(ipynb);
     await prerenderer.prerender();
     const notebook = prerenderer.getNotebook();
+    warnMissingSeoFields(filepath, notebook);
 
     const notebookFileWritePromise = fs.writeFile(nbOutputPath, JSON.stringify(notebook, null, DEBUG_INDENT_JSON));
     const attachmentWriterPromise = Promise.all(prerenderer
