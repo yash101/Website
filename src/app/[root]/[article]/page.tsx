@@ -73,7 +73,7 @@ const ArticleBasePage: React.FC<ArticleBasePageProps> = async (props) => {
           {article.pages.length > 1 && (
             <IntraPagePagination
               href={`/${params.root}/${params.article}/${article.pages[1].pageNumber}`}
-              text={`Next: ${article.pages[1].subtitle}`}
+              text={`${article.pages[1].subtitle}`}
               icon={<MoveRight />}
               pretext='Next'
               iconPosition='right'
