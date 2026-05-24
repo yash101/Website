@@ -28,6 +28,11 @@ export default async function Home() {
         <p style={{marginBottom: 0}}>
           I enjoy building systems which aggressively simplify runtime execution through preprocessing, compilation, indexing and constrained execution environments.
         </p>
+        <h3>Currently Researching</h3>
+        <ul style={{marginTop: 0}}>
+          <li><Link href={"/projects/eyre"}>Software supply chain security</Link></li>
+          <li><Link href={"/blog/search-context-optimization"}>Software Topology & Improving Coding Agent Performance</Link></li>
+        </ul>
         <h3>Interests</h3>
         <ul style={{marginTop: 0}}>
           <li>Distributed systems</li>
